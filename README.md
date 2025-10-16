@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+# MeraSoftware Service Website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Modern marketing site for MeraSoftware with client portal integration.
 
-## Available Scripts
+## Quick Start
+- `npm install`
+- Copy `.env.example` to `.env` and set live URLs.
+- `npm start` for local dev, `npm run build` for production bundle.
 
-In the project directory, you can run:
+## Environment Variables
+| Key | Description |
+| --- | --- |
+| `REACT_APP_BACKEND_URL` | Base backend URL that serves `/api/signin`, `/api/user-details`, etc. |
+| `REACT_APP_CUSTOMER_PORTAL_URL` | Full URL of the client portal subdomain (opens after login / dashboard buttons). |
+| `REACT_APP_STAFF_PORTAL_URL` | Link used by “Staff Login” buttons (optional). |
 
-### `npm start`
+> The React build must be rebuilt every time these variables change.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Cross-Domain Login Checklist
+Frontend is already wired to share login state; complete the following platform tasks so a user logging in on `merasoftware.com` is recognised on the client subdomain.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### You need to do this on the backend
+- **Set cookie scope:** When issuing the auth cookie (Signin response), set  
+  `Domain=.merasoftware.com; Path=/; Secure; HttpOnly; SameSite=None`.  
+  Do the same attributes when clearing the cookie on logout.
+- **Enable credentials for both domains:** CORS config must allow `https://merasoftware.com` and the client subdomain origin, with `Access-Control-Allow-Credentials: true`.
+- **Return user details:** Keep `/api/user-details` available; both frontends call it on load to confirm the session.
 
-### `npm test`
+### You need to do this in infrastructure/DNS
+- Point `merasoftware.com` → new marketing build (this project).
+- Point client subdomain (for example `client.merasoftware.com`) → existing portal.
+- Ensure TLS certificate covers the root domain **and** `*.merasoftware.com`.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### After deploying
+1. Log in on `merasoftware.com` -> confirm the modal closes and a new tab opens to the client portal.
+2. The client portal should show the user already logged in (no extra password step).
+3. Logout from either domain should clear the session everywhere.
+4. Repeat with a staff login if you expose that link.
 
-### `npm run build`
+## Useful Scripts
+- `npm start` – development server with hot reload.
+- `npm run build` – production build in `build/`.
+- `npm test` – CRA test runner (optional).
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Folder Highlights
+- `src/components/Header.js` – shared auth-aware header and login modal triggers.
+- `src/context/AuthContext.js` – handles login, logout, and persistence.
+- `src/pages/Home.js` – hero CTA, portal buttons, and reviews section hooks.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Notes
+- Build currently emits ESLint warnings for placeholder links; address when you have final URLs.
+- For the “coming soon” alert in the reviews section, replace with the real submission flow when ready.

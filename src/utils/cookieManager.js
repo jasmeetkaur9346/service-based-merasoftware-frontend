@@ -1,6 +1,14 @@
+const COOKIE_DOMAIN = process.env.REACT_APP_COOKIE_DOMAIN || null;
+
+const isSecureContext = () => {
+  if (typeof window === 'undefined') return false;
+  return window.location.protocol === 'https:';
+};
+
 const DEFAULT_OPTIONS = {
   path: '/',
-  sameSite: 'Lax',
+  sameSite: COOKIE_DOMAIN ? 'None' : 'Lax',
+  secure: COOKIE_DOMAIN ? true : isSecureContext(),
 };
 
 const serialize = (value) => {
@@ -23,6 +31,14 @@ const parseValue = (value) => {
 
 const setCookie = (name, value, options = {}) => {
   const opts = { ...DEFAULT_OPTIONS, ...options };
+
+  if (COOKIE_DOMAIN && !opts.domain) {
+    opts.domain = COOKIE_DOMAIN;
+  }
+
+  if (opts.sameSite === 'None') {
+    opts.secure = true;
+  }
   let cookie = `${name}=${serialize(value)}`;
 
   if (opts.path) cookie += `; path=${opts.path}`;
@@ -36,7 +52,14 @@ const setCookie = (name, value, options = {}) => {
 };
 
 const removeCookie = (name) => {
-  document.cookie = `${name}=; Max-Age=0; path=/`;
+  let cookie = `${name}=; Max-Age=0; path=/`;
+  if (COOKIE_DOMAIN) {
+    cookie += `; domain=${COOKIE_DOMAIN}`;
+  }
+  if (isSecureContext()) {
+    cookie += '; Secure';
+  }
+  document.cookie = cookie;
 };
 
 const getCookie = (name) => {

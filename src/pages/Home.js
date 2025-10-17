@@ -4,6 +4,7 @@ import { ArrowRight, Award, TrendingUp, UserCheck, HelpCircle, Download, CheckCi
 import { motion } from "framer-motion";
 import { CgWebsite } from "react-icons/cg";
 import { useAuth } from "../context/AuthContext";
+import director from "../images/director.jpg"
 
 // NOTE: TailwindCSS required. Framer Motion used for subtle reveals.
 // Single <h1> for SEO, the rest are h2/h3.
@@ -641,7 +642,7 @@ const Homepage = () => {
                     <div className="relative w-[250px] h-[300px] bg-white rounded-2xl overflow-hidden shadow-xl dark:bg-slate-800">
                       <img
                         loading="lazy"
-                        src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=600&fit=crop&crop=face"
+                        src={director}
                         alt="Director portrait"
                         className="w-full h-full object-cover"
                       />

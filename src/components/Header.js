@@ -6,6 +6,8 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import ClientPortalModal from './ClientPortalModal';
+import ThemeToggleIcon from './ThemeToggleIcon';
+import StaffLoginPopup from './StaffLoginPopup';
 
 const Header = () => {
   const { user, initializing, logout, customerPortalUrl, staffPortalUrl } = useAuth();
@@ -13,6 +15,7 @@ const Header = () => {
   const [menuDisplay, setMenuDisplay] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showStaffLoginPopup, setShowStaffLoginPopup] = useState(false);
 
   const userMenuRef = useRef(null);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -74,18 +77,18 @@ const Header = () => {
     },
     { name: 'About', href: routes.about },
     { name: 'Contact', href: routes.contact },
-    {
-      name: 'Our Network',
-      dropdown: [
-        {
-          items: [
-            { name: 'Website Development', href: networkLinks.websiteDev, external: true },
-            { name: 'Digital Marketing', href: networkLinks.digitalMarketing, external: true },
-            { name: 'IT Solutions', href: networkLinks.itSolution, external: true }
-          ]
-        }
-      ]
-    },
+    // {
+    //   name: 'Our Network',
+    //   dropdown: [
+    //     {
+    //       items: [
+    //         { name: 'Website Development', href: networkLinks.websiteDev, external: true },
+    //         { name: 'Digital Marketing', href: networkLinks.digitalMarketing, external: true },
+    //         { name: 'IT Solutions', href: networkLinks.itSolution, external: true }
+    //       ]
+    //     }
+    //   ]
+    // },
     {
       name: 'Terms and Policies',
       dropdown: [
@@ -123,8 +126,8 @@ const Header = () => {
   };
 
   const handleStaffLogin = () => {
+    setShowStaffLoginPopup(true);
     closeMenus();
-    openInNewTab(staffPortalUrl, routes.staffLogin);
   };
 
   const handleDashboard = () => {
@@ -216,16 +219,16 @@ const Header = () => {
   return (
     <>
       {/* Desktop Header */}
-      <header className='hidden lg:block bg-white sticky top-0 z-50 border-b border-gray-100'>
+      <header className='hidden lg:block bg-white dark:bg-slate-950 sticky top-0 z-50 border-b border-gray-100 dark:border-slate-800 py-4'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-12">
               {/* Logo */}
               <Link to="/" className="flex items-center">
-                <div className="bg-gradient-to-br from-indigo-600 to-indigo-800 text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold shadow-lg shadow-indigo-200">
+                <div className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold">
                   M
                 </div>
-                <span className="ml-3 text-xl font-bold bg-gradient-to-r from-indigo-700 to-indigo-900 bg-clip-text text-transparent">
+                <span className="ml-3 text-xl font-bold bg-gradient-to-br from-blue-600 to-cyan-500 bg-clip-text text-transparent">
                   MeraSoftware
                 </span>
               </Link>
@@ -242,7 +245,7 @@ const Header = () => {
                     {item.href ? (
                       <Link
                         to={item.href}
-                        className="text-gray-700 hover:text-indigo-600 flex items-center py-1 transition-all duration-200 group"
+                        className="text-gray-700 dark:text-slate-200 hover:text-indigo-600 flex items-center py-1 transition-all duration-200 group"
                       >
                         {item.icon && <span className="mr-1.5">{item.icon}</span>}
                         <span className="relative">
@@ -252,7 +255,7 @@ const Header = () => {
                       </Link>
                     ) : (
                       <button
-                        className="text-gray-700 hover:text-indigo-600 flex items-center focus:outline-none py-1 transition-all duration-200 group"
+                        className="text-gray-700 dark:text-slate-200 hover:text-indigo-600 flex items-center focus:outline-none py-1 transition-all duration-200 group"
                         aria-haspopup="menu"
                         aria-expanded={activeDropdown === index}
                       >
@@ -265,7 +268,7 @@ const Header = () => {
                     )}
 
                     {item.dropdown && activeDropdown === index && (
-                      <div className="absolute left-0 mt-2 bg-white rounded-lg shadow-xl ring-1 ring-gray-100 z-50">
+                      <div className="absolute left-0 mt-2 bg-white dark:bg-slate-900 rounded-lg shadow-xl ring-1 ring-gray-100 dark:ring-slate-700 z-50">
                         {/* Services simple two-item panel */}
                         {item.name === 'Services' && (
                           <div className="p-4 min-w-[340px]">
@@ -274,12 +277,12 @@ const Header = () => {
                                 <li key={i}>
                                   <Link
                                     to={svc.href}
-                                    className="block px-4 py-3 rounded-md hover:bg-gray-50 transition"
+                                    className="block px-4 py-3 rounded-md hover:bg-gray-50 dark:hover:bg-slate-800 transition"
                                   >
-                                    <div className="text-sm font-semibold text-gray-900 mb-1">
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
                                       {svc.name}
                                     </div>
-                                    <div className="text-xs text-gray-600 leading-snug">
+                                    <div className="text-xs text-gray-600 dark:text-slate-400 leading-snug">
                                       {svc.desc}
                                     </div>
                                   </Link>
@@ -303,15 +306,15 @@ const Header = () => {
                                           href={sub.href}
                                           target="_blank"
                                           rel="noopener noreferrer"
-                                          className="flex items-center justify-between text-sm px-3 py-2 rounded-md hover:bg-gray-50 transition"
+                                          className="flex items-center justify-between text-sm px-3 py-2 rounded-md text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-800 transition"
                                         >
                                           <span>{sub.name}</span>
-                                          <ExternalLink className="h-3.5 w-3.5 text-gray-400" />
+                                          <ExternalLink className="h-3.5 w-3.5 text-gray-400 dark:text-slate-400" />
                                         </a>
                                       ) : (
                                         <Link
                                           to={sub.href}
-                                          className="block text-sm px-3 py-2 rounded-md hover:bg-gray-50 transition"
+                                          className="block text-sm px-3 py-2 rounded-md text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-800 transition"
                                         >
                                           {sub.name}
                                         </Link>
@@ -330,52 +333,61 @@ const Header = () => {
               </nav>
             </div>
             {!initializing && (
-              <div className="hidden lg:flex items-center space-x-3">
+              <div className="hidden lg:flex items-center space-x-4">
+                <ThemeToggleIcon />
+
                 {isAuthenticated ? (
                   <>
-                    <button
+                    {/* <button
                       onClick={handleDashboard}
-                      className="bg-indigo-600 text-white px-4 py-2 rounded-full hover:bg-indigo-700 transition-colors shadow-md hover:shadow-lg"
+                      className="bg-indigo-600 text-white px-4 py-2 rounded-full hover:bg-indigo-700 dark:hover:bg-indigo-500 transition-colors shadow-md hover:shadow-lg"
                     >
                       Dashboard
-                    </button>
+                    </button> */}
                     <div className="relative" ref={userMenuRef}>
                       <button
                         onClick={() => setMenuDisplay((prev) => !prev)}
-                        className="flex items-center space-x-2 px-3 py-2 rounded-full border border-gray-200 hover:border-indigo-300 transition-colors bg-white shadow-sm"
+                        className="flex items-center space-x-2 px-3 py-2 rounded-full border border-gray-200 dark:border-slate-700 hover:border-indigo-300 transition-colors bg-white dark:bg-slate-900 shadow-sm"
                       >
-                        <div className="w-9 h-9 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-semibold">
+                        <div className="w-9 h-9 rounded-full bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-200 flex items-center justify-center font-semibold">
                           {userInitial}
                         </div>
                         <div className="text-left">
-                          <div className="text-sm font-semibold text-gray-800 leading-tight">
+                          <div className="text-sm font-semibold text-gray-800 dark:text-white leading-tight">
                             {user?.name || 'User'}
                           </div>
-                          <div className="text-xs text-gray-500 leading-tight max-w-[140px] truncate">
+                          <div className="text-xs text-gray-500 dark:text-slate-400 leading-tight max-w-[140px] truncate">
                             {user?.email || ''}
                           </div>
                         </div>
-                        <ChevronDown className="w-4 h-4 text-gray-500" />
+                        <ChevronDown className="w-4 h-4 text-gray-500 dark:text-slate-400" />
                       </button>
 
                       {menuDisplay && (
-                        <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50">
-                          <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
-                            <p className="text-sm font-semibold text-gray-900 truncate">
+                        <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-gray-100 dark:border-slate-800 overflow-hidden z-50">
+                          <div className="px-4 py-3 border-b border-gray-100 dark:border-slate-800 bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-slate-800 dark:to-slate-900">
+                            <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
                               {user?.name || 'User'}
                             </p>
                             {user?.email && (
-                              <p className="text-xs text-gray-500 truncate">
+                              <p className="text-xs text-gray-500 dark:text-slate-400 truncate">
                                 {user.email}
                               </p>
                             )}
                           </div>
                           <button
+                      onClick={handleDashboard}
+                      className="w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors border-b dark:border-slate-800"
+                    >
+                      Dashboard
+                    </button>
+                          <button
                             onClick={handleLogout}
-                            className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                            className="w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
                           >
                             Logout
                           </button>
+
                         </div>
                       )}
                     </div>
@@ -384,13 +396,13 @@ const Header = () => {
                   <>
                     <button
                       onClick={handleStaffLogin}
-                      className="text-indigo-600 border border-indigo-200 px-4 py-2 rounded-full hover:bg-indigo-50 transition-colors"
+                      className="bg-white dark:bg-slate-900 text-blue-600 dark:!text-white border border-indigo-200 dark:border-slate-700 px-4 py-2 rounded-full hover:bg-blue-50 dark:hover:bg-slate-800 hover:border-indigo-300 dark:hover:border-slate-600 transition-all duration-200"
                     >
                       Staff Login
                     </button>
                     <button
                       onClick={handleLoginClick}
-                      className="bg-indigo-600 text-white px-4 py-2 rounded-full hover:bg-indigo-700 transition-colors shadow-md hover:shadow-lg"
+                      className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white px-6 py-2 rounded-full hover:bg-indigo-700 dark:hover:bg-indigo-500 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
                     >
                       Login
                     </button>
@@ -403,7 +415,7 @@ const Header = () => {
       </header>
 
       {/* Mobile Header */}
-      <header className="lg:hidden bg-white sticky top-0 z-50 border-b border-gray-100">
+      <header className="lg:hidden bg-white dark:bg-slate-900 sticky top-0 z-50 border-b border-gray-100 dark:border-slate-800">
         <div className="px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
@@ -416,27 +428,32 @@ const Header = () => {
               </span>
             </Link>
 
-            {/* Mobile Menu Toggle */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-gray-700 focus:outline-none hover:bg-gray-100 rounded-lg transition-colors"
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            {/* Actions */}
+            <div className="flex items-center space-x-3">
+              <ThemeToggleIcon />
+
+              {/* Mobile Menu Toggle */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 text-gray-700 dark:text-slate-200 focus:outline-none hover:bg-gray-100 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
 
         {/* Mobile Navigation Menu */}
         {mobileMenuOpen && (
-          <div className="bg-white border-t border-gray-100 overflow-hidden">
+          <div className="bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 overflow-hidden">
             <nav className="max-h-[70vh] overflow-y-auto py-4 px-4">
               {menuItems.map((item, index) => (
                 <div key={index} className="py-1">
                   {item.href ? (
                     <Link
                       to={item.href}
-                      className="block text-gray-700 hover:text-indigo-600 py-2 px-3 rounded-lg flex items-center"
+                      className="block text-gray-700 dark:text-slate-200 hover:text-indigo-600 py-2 px-3 rounded-lg flex items-center"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {item.icon && <span className="mr-3">{item.icon}</span>}
@@ -446,7 +463,7 @@ const Header = () => {
                     <>
                       <button
                         onClick={() => handleMobileMenuItemClick(index, true)}
-                        className="w-full text-left text-gray-700 hover:text-indigo-600 py-2 px-3 rounded-lg flex items-center justify-between"
+                        className="w-full text-left text-gray-700 dark:text-slate-200 hover:text-indigo-600 py-2 px-3 rounded-lg flex items-center justify-between"
                       >
                         <span className="font-medium">{item.name}</span>
                         <ChevronDown className={`w-5 h-5 transform transition-transform ${activeDropdown === index ? 'rotate-180' : ''}`} />
@@ -465,7 +482,7 @@ const Header = () => {
                                         href={subItem.href}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="block text-gray-800 hover:text-indigo-600 hover:bg-gray-50 text-sm py-2 px-3 rounded-md transition-colors"
+                                        className="block text-gray-800 dark:text-slate-200 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-slate-800 text-sm py-2 px-3 rounded-md transition-colors"
                                         onClick={() => setMobileMenuOpen(false)}
                                       >
                                         {subItem.name}
@@ -473,7 +490,7 @@ const Header = () => {
                                     ) : (
                                       <Link
                                         to={subItem.href}
-                                        className="block text-gray-800 hover:text-indigo-600 hover:bg-gray-50 text-sm py-2 px-3 rounded-md transition-colors"
+                                        className="block text-gray-800 dark:text-slate-200 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-slate-800 text-sm py-2 px-3 rounded-md transition-colors"
                                         onClick={() => setMobileMenuOpen(false)}
                                       >
                                         {subItem.name}
@@ -497,13 +514,13 @@ const Header = () => {
                     <div className="flex flex-col space-y-2 mt-6">
                       <button
                         onClick={handleStaffLogin}
-                        className="w-full text-indigo-600 border border-indigo-200 py-2.5 rounded-lg font-medium hover:bg-indigo-50 transition-colors"
+                        className="w-full text-indigo-600 dark:text-cyan-300 border border-indigo-200 dark:border-slate-700 py-2.5 rounded-lg font-medium hover:bg-indigo-50 dark:hover:bg-slate-800 transition-colors"
                       >
                         Staff Login
                       </button>
                       <button
                         onClick={handleLoginClick}
-                        className="w-full bg-indigo-600 text-white py-2.5 rounded-lg font-medium hover:bg-indigo-700 transition-colors shadow-md"
+                        className="w-full bg-indigo-600 text-white py-2.5 rounded-lg font-medium hover:bg-indigo-700 dark:hover:bg-indigo-500 transition-colors shadow-md"
                       >
                         Login
                       </button>
@@ -512,13 +529,13 @@ const Header = () => {
                     <div className="flex flex-col space-y-2 mt-6">
                       <button
                         onClick={handleDashboard}
-                        className="w-full bg-indigo-600 text-white py-2.5 rounded-lg font-medium hover:bg-indigo-700 transition-colors shadow-md"
+                        className="w-full bg-indigo-600 text-white py-2.5 rounded-lg font-medium hover:bg-indigo-700 dark:hover:bg-indigo-500 transition-colors shadow-md"
                       >
                         Go to Dashboard
                       </button>
                       <button
                         onClick={handleLogout}
-                        className="w-full text-gray-700 border border-gray-200 py-2.5 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                        className="w-full text-gray-700 dark:text-slate-200 border border-gray-200 dark:border-slate-700 py-2.5 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
                       >
                         Logout
                       </button>
@@ -535,6 +552,10 @@ const Header = () => {
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
         onSuccess={handleLoginSuccess}
+      />
+      <StaffLoginPopup
+        isOpen={showStaffLoginPopup}
+        onClose={() => setShowStaffLoginPopup(false)}
       />
     </>
   );

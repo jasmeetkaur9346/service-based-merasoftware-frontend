@@ -75,12 +75,12 @@ const Homepage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       {/* HERO */}
-      <section ref={sectionRefs.hero} data-section="hero" className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100">
+      <section ref={sectionRefs.hero} data-section="hero" className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-cyan-200/40 blur-3xl" />
-          <div className="absolute -left-16 bottom-0 w-72 h-72 rounded-full bg-blue-200/40 blur-3xl" />
+          <div className="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-cyan-200/40 blur-3xl dark:bg-cyan-900/30" />
+          <div className="absolute -left-16 bottom-0 w-72 h-72 rounded-full bg-blue-200/40 blur-3xl dark:bg-blue-900/30" />
         </div>
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-24">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -90,30 +90,32 @@ const Homepage = () => {
               transition={{ duration: 0.6 }}
               className="space-y-8"
             >
-              <div className="inline-block">
-              <div className="flex items-center gap-3 bg-blue-600/10 backdrop-blur rounded-full px-8 py-2 border border-blue-200">
-                                <Award className="w-5 h-5 text-blue-600" />
-                <span className="text-blue-600 font-semibold tracking-wide text-sm">A system for growing startups</span>
+              <div className="inline-block font-semibold tracking-wide text-sm">
+                <span className="inline-flex items-center gap-3 bg-blue-600/10 backdrop-blur rounded-full px-8 py-2 border border-blue-200 text-blue-600 dark:hidden">
+                  A system for growing startups
+                </span>
+                <span className="hidden dark:inline-flex items-center gap-3 bg-cyan-500/20 backdrop-blur rounded-full px-8 py-2 border border-cyan-300 text-cyan-300">
+                  A system for growing startups
+                </span>
               </div>
-            </div>
 
               <div className="space-y-4">
-                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight">
-                  Custom Software Development for <span className="text-blue-600">Startups</span>
+                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight dark:text-white">
+                  Custom Software Development for <span className="text-blue-600 dark:!text-cyan-500">Startups</span>
                 </h1>
                 <div className="w-20 h-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full" />
               </div>
 
-              <p className="text-xl sm:text-2xl text-slate-600 max-w-xl">
+              <p className="text-xl sm:text-2xl text-slate-600 max-w-xl dark:text-slate-300">
                 Build your next software with us and scale it endlessly as your business grows.
               </p>
 
               <div className="pt-8">
                 <div className="inline-block">
-                  <div className="flex items-center gap-5 bg-white/80 backdrop-blur rounded-full px-8 py-4 border border-slate-200 shadow-lg">
+                  <div className="flex items-center gap-5 bg-white/80 backdrop-blur rounded-full px-8 py-4 border border-slate-200 shadow-lg dark:bg-slate-800/60 dark:border-slate-700">
                     <div className="flex items-center gap-3">
-                      <UserCheck className="w-5 h-5 text-blue-600" />
-                      <span className="text-slate-700 text-base font-medium">Already a Client?</span>
+                      <UserCheck className="w-5 h-5 text-blue-600 dark:!text-cyan-500" />
+                      <span className="text-slate-700 text-base font-medium dark:text-slate-200">Already a Client?</span>
                     </div>
                     <button
                       type="button"
@@ -129,18 +131,18 @@ const Homepage = () => {
 
               <div className="pt-6 grid grid-cols-3 gap-4 max-w-xl">
                 {[
-                  { icon: <Globe2 className="w-4 h-4 text-blue-600" />, t: "Portal", s: "Access", color: "blue" },
-                  { icon: <UserCheck className="w-4 h-4 text-cyan-600" />, t: "Dedicated", s: "Developer", color: "cyan" },
-                  { icon: <CheckCircle2 className="w-4 h-4 text-emerald-600" />, t: "Full Control", s: "Code Ownership", color: "emerald" }
+                  { icon: <Globe2 className="w-4 h-4 text-cyan-600 dark:text-cyan-300" />, t: "Portal", s: "Access", color: "cyan" },
+                  { icon: <UserCheck className="w-4 h-4 text-cyan-600 dark:text-cyan-300" />, t: "Dedicated", s: "Developer", color: "cyan" },
+                  { icon: <CheckCircle2 className="w-4 h-4 text-cyan-600 dark:text-cyan-300" />, t: "Full Control", s: "Code Ownership", color: "cyan" }
                 ].map((k) => (
-                  <div key={k.t} className="bg-white rounded-xl p-4 shadow-lg border border-slate-200 hover:shadow-xl transition-all group">
+                  <div key={k.t} className="bg-white rounded-xl p-4 shadow-lg border border-slate-200 hover:shadow-xl transition-all group dark:bg-cyan-500/10 dark:border-cyan-900/40 ">
                     <div className="flex items-start gap-3">
-                      <div className={`w-9 h-9 rounded-lg bg-${k.color}-50 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform`}>
+                      <div className={`w-9 h-9 rounded-lg bg-${k.color}-50 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform dark:bg-cyan-500/20`}>
                         {k.icon}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="text-sm font-bold text-slate-900">{k.t}</div>
-                        <div className="text-xs text-slate-600 mt-0.5">{k.s}</div>
+                        <div className="text-sm font-bold text-slate-900 dark:text-cyan-100">{k.t}</div>
+                        <div className="text-xs text-slate-600 mt-0.5 dark:text-cyan-200">{k.s}</div>
                       </div>
                     </div>
                   </div>
@@ -155,7 +157,7 @@ const Homepage = () => {
               className="relative"
             >
               <div className="relative z-10">
-                <div className="bg-white rounded-xl shadow-2xl p-3 border border-slate-200">
+                <div className="bg-white rounded-xl shadow-2xl p-3 border border-slate-200 dark:bg-slate-800 dark:border-slate-700">
                   <img
                     loading="lazy"
                     src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&h=600&fit=crop&auto=format"
@@ -165,8 +167,8 @@ const Homepage = () => {
                 </div>
                 <div className="absolute -bottom-8 -left-8 z-20 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-xl shadow-2xl p-5">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
-                      <IndianRupee className="w-6 h-6 text-blue-600" strokeWidth={2.5} />
+                    <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center dark:bg-slate-900/20">
+                      <IndianRupee className="w-6 h-6 dark:text-cyan-100 " strokeWidth={2.5} />
                     </div>
                     <div className="text-white">
                       <div className="text-2xl font-bold">Free</div>
@@ -176,7 +178,7 @@ const Homepage = () => {
                 </div>
               </div>
               <div className="absolute -top-8 -right-8 z-30">
-                <div className="bg-white rounded-xl shadow-xl p-2 border border-slate-200">
+                <div className="bg-white rounded-xl shadow-xl p-2 border border-slate-200 dark:bg-slate-800 dark:border-slate-700">
                   <img
                     loading="lazy"
                     src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=320&h=220&fit=crop&auto=format"
@@ -191,22 +193,26 @@ const Homepage = () => {
       </section>
 
       {/* CALCULATOR */}
-      <section id="calculator" ref={sectionRefs.calculator} data-section="calculator" className="py-24 bg-white">
+      <section id="calculator" ref={sectionRefs.calculator} data-section="calculator" className="py-24 bg-white dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-20">
-             <div className="inline-block mb-6">
-              <div className="flex items-center gap-3 bg-blue-600/10 backdrop-blur rounded-full px-8 py-2 border border-blue-200">
-                <span className="text-blue-600 font-semibold tracking-wide text-sm">Interactive Project Planner</span>
-              </div>
+            <div className="inline-block mb-6 font-semibold tracking-wide text-sm">
+              <span className="inline-flex items-center gap-3 bg-blue-600/10 backdrop-blur rounded-full px-8 py-2 border border-blue-200 text-blue-600 dark:hidden">
+                Interactive Project Planner
+              </span>
+              <span className="hidden dark:inline-flex items-center gap-3 bg-cyan-500/20 backdrop-blur rounded-full px-8 py-2 border border-cyan-300 text-cyan-300">
+                Interactive Project Planner
+              </span>
             </div>
-            <h2 className="text-5xl md:text-6xl font-black mb-4 leading-tight">We Understand the Challenges</h2>
-            <p className="text-xl md:text-2xl text-blue-600 font-bold">It's never easy to manage expenses in a startup</p>
+            <h2 className="text-5xl md:text-6xl font-black mb-4 leading-tight dark:text-white">We Understand the Challenges</h2>
+            <p className="dark:hidden block text-xl md:text-2xl text-blue-600 font-bold ">It's never easy to manage expenses in a startup</p>
+            <p className="hidden dark:block text-xl md:text-2xl text-cyan-500 font-bold">It's never easy to manage expenses in a startup</p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
             <div className="space-y-8">
               <div>
-                <h3 className="text-3xl md:text-4xl font-bold mb-5 leading-tight text-slate-900">
+                <h3 className="text-3xl md:text-4xl font-bold mb-5 leading-tight text-slate-900 dark:text-white">
                   The biggest cost
                   <br /> usually comes from
                   <br /> software development
@@ -214,30 +220,31 @@ const Homepage = () => {
                 <div className="w-24 h-1.5 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full" />
               </div>
 
-              <p className="text-xl md:text-2xl font-bold text-blue-600 leading-snug">Know your budget before you start</p>
+              <p className="block dark:hidden text-xl md:text-2xl font-bold text-blue-600 leading-snug">Know your budget before you start</p>
+              <p className="hidden dark:block text-xl md:text-2xl font-bold !text-cyan-500 leading-snug">Know your budget before you start</p>
 
-              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 md:p-8 border-l-4 border-blue-600 shadow-sm">
-                <p className="text-lg md:text-xl font-semibold text-slate-900">Use our interactive <span className="font-bold text-blue-600">Project Planner</span> absolutely free</p>
+              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 md:p-8 border-l-4 border-blue-600 shadow-sm dark:from-slate-800 dark:to-slate-800 dark:border-cyan-500">
+                <p className="text-lg md:text-xl font-semibold text-slate-900 dark:text-slate-100">Use our interactive <span className="font-bold text-blue-600 dark:!text-cyan-500">Project Planner</span> absolutely free</p>
               </div>
 
               <div className="space-y-5 pt-2">
-                <p className="text-lg md:text-xl font-bold text-slate-900">A simple 3-step process from idea to project</p>
+                <p className="text-lg md:text-xl font-bold text-slate-900 dark:text-white">A simple 3-step process from idea to project</p>
                 {[
                   (<>
-                    Choose your <span className="text-blue-700 font-semibold">Service Type</span> below
+                    Choose your <span className="text-blue-700 dark:text-cyan-400 font-semibold">Service Type</span> below
                   </>),
                   (<>
-                    Click <span className="text-blue-700 font-semibold">Get Price Estimate</span> on the service page
+                    Click <span className="text-blue-700 dark:text-cyan-400 font-semibold">Get Price Estimate</span> on the service page
                   </>),
                   (<>
-                    After you decide to start, you get your <span className="text-blue-700 font-semibold">Dedicated Portal</span>
+                    After you decide to start, you get your <span className="text-blue-700 dark:text-cyan-400 font-semibold">Dedicated Portal</span>
                   </>),
                 ].map((step, i) => (
                   <div key={i} className="flex items-start gap-4 group cursor-default">
                     <div className="w-11 h-11 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-xl text-white flex items-center justify-center flex-shrink-0 font-bold text-lg shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all">
                       {i + 1}
                     </div>
-                    <span className="text-base md:text-lg font-medium pt-2 text-slate-700 leading-relaxed">{step}</span>
+                    <span className="text-base md:text-lg font-medium pt-2 text-slate-700 leading-relaxed dark:text-slate-300">{step}</span>
                   </div>
                 ))}
               </div>
@@ -245,7 +252,7 @@ const Homepage = () => {
 
             <div className="relative">
               <div className="absolute -inset-6 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-2xl opacity-15 blur-2xl" />
-              <div className="relative bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200">
+              <div className="relative bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200 dark:bg-slate-800 dark:border-slate-700">
                 <img
                   loading="lazy"
                   src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=900&h=600&fit=crop&auto=format"
@@ -253,14 +260,14 @@ const Homepage = () => {
                   className="w-full"
                 />
               </div>
-              <div className="absolute -top-6 -right-6 bg-white rounded-xl shadow-xl p-4 border border-slate-200 z-10">
+              <div className="absolute -top-6 -right-6 bg-white rounded-xl shadow-xl p-4 border border-slate-200 z-10 dark:bg-slate-800 dark:border-slate-700">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 bg-cyan-50 rounded-xl flex items-center justify-center border border-cyan-100">
-                    <CheckCircle2 className="w-6 h-6 text-cyan-600" />
+                  <div className="w-11 h-11 bg-cyan-50 dark:bg-cyan-500/20 rounded-xl flex items-center justify-center border border-cyan-100 dark:border-cyan-900/40">
+                    <CheckCircle2 className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
                   </div>
                   <div>
-                    <div className="text-xs text-slate-600 font-semibold">30 seconds</div>
-                    <div className="text-sm font-bold text-slate-900">Instant quote</div>
+                    <div className="text-xs text-slate-600 font-semibold dark:text-slate-400">30 seconds</div>
+                    <div className="text-sm font-bold text-slate-900 dark:text-white">Instant quote</div>
                   </div>
                 </div>
               </div>
@@ -274,18 +281,18 @@ const Homepage = () => {
       </section>
 
       {/* SERVICES */}
-      <section id="services" ref={sectionRefs.services} data-section="services" className="py-24 bg-gradient-to-br from-slate-50 to-blue-50">
+      <section id="services" ref={sectionRefs.services} data-section="services" className="py-24 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-900">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-20">
-            <h2 className="text-5xl md:text-6xl font-black mb-4 text-slate-900 leading-tight">Choose your service type</h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">Select the solution that fits your business needs</p>
+            <h2 className="text-5xl md:text-6xl font-black mb-4 text-slate-900 leading-tight dark:text-white">Choose your service type</h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto dark:text-slate-300">Select the solution that fits your business needs</p>
           </div>
 
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative">
               {/* Left */}
               <Link to="/website-development-service" className="group block">
-                <div className="relative bg-gradient-to-br from-blue-50/80 to-white rounded-2xl px-8 py-14 text-center shadow-lg border border-slate-200 hover:shadow-2xl hover:border-blue-200 transition-all duration-300 h-full">
+                <div className="relative bg-gradient-to-br from-blue-50/80 to-white rounded-2xl px-8 py-14 text-center shadow-lg border border-slate-200 hover:shadow-2xl hover:border-blue-200 transition-all duration-300 h-full dark:from-slate-800 dark:to-slate-800 dark:border-slate-700 dark:hover:border-slate-600">
                   <div className="absolute inset-0 rounded-2xl transition-all group-hover:bg-blue-600/5" />
                   <div className="relative z-10 flex flex-col items-center">
                     <div className="relative mb-10">
@@ -294,8 +301,8 @@ const Homepage = () => {
                         <CgWebsite className="w-14 h-14 text-white"/>
                       </div>
                     </div>
-                    <h3 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900 group-hover:text-blue-600 transition-colors">Dynamic web applications</h3>
-                    <p className="text-base md:text-lg text-slate-600 mb-10 max-w-md leading-relaxed">
+                    <h3 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900 group-hover:text-blue-600 transition-colors dark:text-white">Dynamic web applications</h3>
+                    <p className="text-base md:text-lg text-slate-600 mb-10 max-w-md leading-relaxed dark:text-slate-300">
                       Custom portals, interactive platforms, ecommerce, blogs, online booking
                     </p>
                     <div className="inline-flex items-center gap-2 text-blue-600 font-semibold text-base group-hover:gap-3 transition-all">
@@ -308,7 +315,7 @@ const Homepage = () => {
 
               {/* Right */}
               <Link to="/cloud-software-service" className="group block">
-                <div className="relative bg-gradient-to-br from-cyan-50/80 to-white rounded-2xl px-8 py-14 text-center shadow-lg border border-slate-200 hover:shadow-2xl hover:border-cyan-200 transition-all duration-300 h-full">
+                <div className="relative bg-gradient-to-br from-cyan-50/80 to-white rounded-2xl px-8 py-14 text-center shadow-lg border border-slate-200 hover:shadow-2xl hover:border-cyan-200 transition-all duration-300 h-full dark:from-slate-800 dark:to-slate-800 dark:border-slate-700 dark:hover:border-slate-600">
                   <div className="absolute inset-0 rounded-2xl transition-all group-hover:bg-cyan-600/5" />
                   <div className="relative z-10 flex flex-col items-center">
                     <div className="relative mb-10">
@@ -319,8 +326,8 @@ const Homepage = () => {
                         </svg>
                       </div>
                     </div>
-                    <h3 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900 group-hover:text-cyan-600 transition-colors">Cloud-based management software</h3>
-                    <p className="text-base md:text-lg text-slate-600 mb-10 max-w-md leading-relaxed">
+                    <h3 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900 group-hover:text-cyan-600 transition-colors dark:text-white">Cloud-based management software</h3>
+                    <p className="text-base md:text-lg text-slate-600 mb-10 max-w-md leading-relaxed dark:text-slate-300">
                       CRM, CMS, LMS, inventory management, staff management, sales monitoring
                     </p>
                     <div className="inline-flex items-center gap-2 text-cyan-600 font-semibold text-base group-hover:gap-3 transition-all">
@@ -348,7 +355,7 @@ const Homepage = () => {
           {/* Heading + sub */}
           <div className="text-center">
             <div className="inline-block mb-6">
-              <div className="flex items-center gap-3 bg-blue-600/20 backdrop-blur rounded-full px-8 py-2 border border-cyan-300">
+              <div className="flex items-center gap-3 bg-cyan-500/20 backdrop-blur rounded-full px-8 py-2 border border-cyan-300">
                 {/* <div className="w-2 h-2 bg-cyan-300 rounded-full" /> */}
                 <span className="text-cyan-300 font-semibold tracking-wide text-sm">Dedicated Client Portal</span>
               </div>
@@ -365,10 +372,10 @@ const Homepage = () => {
           <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* LEFT VISUALS (denser, never looks empty) */}
             <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/40 to-cyan-500/40 rounded-3xl blur-2xl" />
+              <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500/40 to-cyan-400/40 rounded-3xl blur-2xl" />
 
               {/* Main portal mock */}
-              <div className="relative bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden min-h-[340px]">
+              <div className="relative bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden min-h-[340px] dark:bg-slate-800 dark:border-slate-700">
                 <img
                   loading="lazy"
                   src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=800&fit=crop&auto=format"
@@ -378,25 +385,25 @@ const Homepage = () => {
               </div>
 
               {/* Overlay 1: progress chip */}
-              <div className="absolute -top-5 -right-5 bg-white rounded-xl shadow-lg border border-slate-200 px-4 py-3 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+              <div className="absolute -top-5 -right-5 bg-white rounded-xl shadow-lg border border-slate-200 px-4 py-3 flex items-center gap-3 dark:bg-slate-800 dark:border-slate-700">
+                <div className="w-9 h-9 rounded-lg bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                 </div>
                 <div className="text-sm">
-                  <div className="font-semibold text-slate-800">Milestone updated</div>
-                  <div className="text-slate-500">Design handoff complete</div>
+                  <div className="font-semibold text-slate-800 dark:text-white">Milestone updated</div>
+                  <div className="text-slate-500 dark:text-slate-400">Design handoff complete</div>
                 </div>
               </div>
 
               {/* Overlay 2: chat mini card */}
-              <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-2xl border border-slate-200 w-[260px] p-4">
+              <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-2xl border border-slate-200 w-[260px] p-4 dark:bg-slate-800 dark:border-slate-700">
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center">
-                    <UserCheck className="w-5 h-5 text-blue-600" />
+                  <div className="w-9 h-9 rounded-lg bg-blue-100 dark:bg-cyan-500/20 flex items-center justify-center">
+                    <UserCheck className="w-5 h-5 text-blue-600 dark:text-cyan-400" />
                   </div>
                   <div className="flex-1 text-sm">
-                    <div className="font-semibold text-slate-800">Direct access</div>
-                    <p className="text-slate-500 leading-snug">Chat with your developer and share files in one place</p>
+                    <div className="font-semibold text-slate-800 dark:text-white">Direct access</div>
+                    <p className="text-slate-500 dark:text-slate-400 leading-snug">Chat with your developer and share files in one place</p>
                   </div>
                 </div>
               </div>
@@ -406,14 +413,14 @@ const Homepage = () => {
             <div>
               <div className="mb-6">
                 <h3 className="text-2xl md:text-3xl font-bold text-white">What the portal gives you</h3>
-                <div className="mt-2 w-24 h-1 bg-blue-600 rounded-full" />
+                <div className="mt-2 w-24 h-1 bg-cyan-500 rounded-full" />
               </div>
 
               {/* Three concise feature cards */}
               <div className="grid sm:grid-cols-2 gap-5">
                 <div className="bg-slate-800/40 border border-slate-700 rounded-xl p-5 hover:border-slate-600 transition-colors">
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-blue-600/20 flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
                       <UserCheck className="w-5 h-5 text-cyan-300" />
                     </div>
                     <div>
@@ -425,7 +432,7 @@ const Homepage = () => {
 
                 <div className="bg-slate-800/40 border border-slate-700 rounded-xl p-5 hover:border-slate-600 transition-colors">
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-blue-600/20 flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
                       <TrendingUp className="w-5 h-5 text-cyan-300" />
                     </div>
                     <div>
@@ -437,7 +444,7 @@ const Homepage = () => {
 
                 <div className="sm:col-span-2 bg-slate-800/40 border border-slate-700 rounded-xl p-5 hover:border-slate-600 transition-colors">
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-blue-600/20 flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
                       <HelpCircle className="w-5 h-5 text-cyan-300" />
                     </div>
                     <div>
@@ -480,10 +487,10 @@ const Homepage = () => {
       </section>
 
       {/* REVIEWS */}
-      <section ref={sectionRefs.reviews} data-section="reviews" className="bg-gradient-to-br from-slate-50 to-slate-100 py-16 px-4">
+      <section ref={sectionRefs.reviews} data-section="reviews" className="bg-gradient-to-br from-slate-50 to-slate-100 py-16 px-4 dark:from-slate-900 dark:to-slate-800">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-4xl font-bold mb-3">Client reviews</h2>
+            <h2 className="text-4xl font-bold mb-3 dark:text-white">Client reviews</h2>
             <div className="flex items-center justify-center gap-3">
               <span className="text-3xl font-bold">4.9</span>
               <div className="flex gap-0.5" aria-label="rating stars">
@@ -493,7 +500,7 @@ const Homepage = () => {
                   </svg>
                 ))}
               </div>
-              <span className="text-sm text-slate-600">47 verified reviews</span>
+              <span className="text-sm text-slate-600 dark:text-slate-400">47 verified reviews</span>
             </div>
           </div>
 
@@ -506,16 +513,16 @@ const Homepage = () => {
                 { n: "Sneha Kapoor", by: "Director, InnovateLabs", t: "Project finished on time and exceeded expectations. Very skilled team." },
                 { n: "Vikram Gupta", by: "CTO, DataFlow", t: "Smooth collaboration with clear communication and technical depth." },
               ].map((r, idx) => (
-                <div key={idx} className="min-w-[300px] sm:min-w-[350px] bg-white rounded-xl p-6 shadow-lg border border-slate-200 flex-shrink-0">
+                <div key={idx} className="min-w-[300px] sm:min-w-[350px] bg-white rounded-xl p-6 shadow-lg border border-slate-200 flex-shrink-0 dark:bg-slate-800 dark:border-slate-700">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
                       {r.n.split(" ").map((p) => p[0]).join("")}
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold">{r.n}</h4>
-                      <p className="text-xs text-slate-500">{r.by}</p>
+                      <h4 className="font-semibold dark:text-white">{r.n}</h4>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">{r.by}</p>
                     </div>
-                    <span className="text-xs text-slate-400">recent</span>
+                    <span className="text-xs text-slate-400 dark:text-slate-500">recent</span>
                   </div>
                   <div className="flex gap-0.5 mb-3">
             <svg className="w-4 h-4 text-yellow-500 fill-current" viewBox="0 0 24 24">
@@ -534,7 +541,7 @@ const Homepage = () => {
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
             </svg>
           </div>
-                  <p className="text-slate-600 text-sm leading-relaxed">“{r.t}”</p>
+                  <p className="text-slate-600 text-sm leading-relaxed dark:text-slate-300">{r.t}</p>
                 </div>
               ))}
             </div>
@@ -563,30 +570,35 @@ const Homepage = () => {
       </section>
 
       {/* ABOUT + DIRECTOR */}
-      <section ref={sectionRefs.about} data-section="about" className="py-20 bg-white relative overflow-hidden">
+      <section ref={sectionRefs.about} data-section="about" className="py-20 bg-white relative overflow-hidden dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="mb-12 text-center">
-             <div className="inline-block mb-6">
-              <div className="flex items-center gap-3 bg-blue-600/10 backdrop-blur rounded-full px-6 py-2 border border-blue-200">
+         <div className="inline-block mb-6 font-semibold tracking-wide text-sm">
+              <span className="inline-flex items-center gap-3 bg-blue-600/10 backdrop-blur rounded-full px-6 py-2 border border-blue-200 text-blue-600 dark:hidden">
                 {/* <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" /> */}
-                <span className="text-blue-600 font-semibold tracking-wide text-sm">About Us</span>
-              </div>
+                About Us
+              </span>
+              <span className="hidden dark:inline-flex items-center gap-3 bg-cyan-500/20 backdrop-blur rounded-full px-6 py-2 border border-cyan-300 text-cyan-300">
+                About Us
+              </span>
             </div>
-            <h2 className="text-4xl lg:text-5xl font-bold mb-2 uppercase">The story behind</h2>
-            <p className="text-2xl lg:text-3xl text-blue-600 font-bold uppercase">Mera Software</p>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-2 uppercase dark:text-white">The story behind</h2>
+            <p className="text-2xl lg:text-3xl text-blue-600 font-bold uppercase dark:!text-cyan-500">Mera Software</p>
           </div>
 
           <div className="mb-20 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 bg-blue-50 rounded-full px-4 py-2 mb-4">
-                <span className="text-sm font-semibold text-blue-600 uppercase tracking-wide">Why we build this?</span>
+              <div className="mb-4 text-sm font-semibold uppercase tracking-wide">
+                <div className="block w-full rounded-2xl px-5 py-3 text-center bg-blue-50 text-blue-600 border border-transparent transition-colors dark:!bg-cyan-500/20 dark:!text-cyan-300 dark:border-cyan-300">
+                  Why we build this?
+                </div>
               </div>
-              <h3 className="text-3xl lg:text-4xl font-bold mb-6 tracking-tight">We almost <span className="text-blue-600">lost it all</span>!</h3>
+              <h3 className="text-3xl lg:text-4xl font-bold mb-6 tracking-tight dark:text-white">We almost <span className="text-blue-600 dark:!text-cyan-500">lost it all</span>!</h3>
               <div className="space-y-5">
-                <p className="text-lg leading-relaxed">
+                <p className="text-lg leading-relaxed dark:text-slate-200">
                   <span className="font-semibold">Our business nearly died during lockdown.</span> We rebuilt our system and automated all manual work which created a massive profit difference.
                 </p>
-                <p className="text-lg text-blue-600 font-semibold leading-relaxed">Now we help other businesses avoid the same struggle.</p>
+                <p className="text-lg text-blue-600 font-semibold leading-relaxed dark:!text-cyan-500">Now we help other businesses avoid the same struggle.</p>
               </div>
               <div className="mt-8 flex items-center gap-6">
                 <Link
@@ -607,26 +619,26 @@ const Homepage = () => {
                   alt="Business transformation"
                   className="w-full h-[400px] object-cover"
                 />
-                <div className="absolute top-6 left-6 bg-white rounded-xl px-4 py-2 shadow-lg">
+                {/* <div className="absolute top-6 left-6 bg-white rounded-xl px-4 py-2 shadow-lg dark:bg-slate-800">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full" />
-                    <span className="text-sm font-semibold">Real story</span>
+                    <span className="text-sm font-semibold dark:text-slate-200">Real story</span>
                   </div>
-                </div>
+                </div> */}
               </div>
-              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-100 rounded-2xl -z-10" />
-              <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-100 rounded-full -z-10" />
+              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-100 rounded-2xl -z-10 dark:bg-cyan-900/40" />
+              <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-100 rounded-full -z-10 dark:bg-orange-900/40" />
             </div>
           </div>
 
           {/* Director */}
-          <div className="bg-white rounded-2xl overflow-hidden">
+          <div className="bg-white rounded-2xl overflow-hidden dark:bg-slate-900">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
               <div className="lg:col-span-3 ml-10">
                 <div className="relative h-full min-h-[400px] flex items-center justify-center p-8">
                   <div className="relative">
-                    <div className="absolute inset-0 bg-blue-600 rounded-2xl rotate-3" />
-                    <div className="relative w-[250px] h-[300px] bg-white rounded-2xl overflow-hidden shadow-xl">
+                    <div className="absolute inset-0 bg-blue-600 dark:bg-cyan-500 rounded-2xl rotate-3" />
+                    <div className="relative w-[250px] h-[300px] bg-white rounded-2xl overflow-hidden shadow-xl dark:bg-slate-800">
                       <img
                         loading="lazy"
                         src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=600&fit=crop&crop=face"
@@ -641,15 +653,15 @@ const Homepage = () => {
               <div className="lg:col-span-9 p-8 lg:p-12">
                 <div className="h-full flex flex-col justify-center">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-1 h-10 bg-blue-600 rounded-full" />
-                    <h4 className="text-2xl font-bold">Director message</h4>
+                    <div className="w-1 h-10 bg-blue-600 dark:bg-cyan-500 rounded-full" />
+                    <h4 className="text-2xl font-bold dark:text-white">Director message</h4>
                   </div>
                   <div className="space-y-6">
-                    <p className="text-xl leading-relaxed">
+                    <p className="text-xl leading-relaxed dark:text-slate-200">
                       At Mera Software, your service and satisfaction are our priority. To ensure you receive the attention you deserve, we built a special portal where you can connect in real time and access your developer directly.
                     </p>
-                    <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl px-4 py-8  border-l-4 border-blue-600">
-                      <p className="text-xl italic leading-relaxed">
+                    <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl px-4 py-8  border-l-4 border-blue-600 dark:from-slate-800 dark:to-slate-800 dark:border-cyan-500">
+                      <p className="text-xl italic leading-relaxed dark:text-slate-200">
                         We take time to understand your specific needs and deliver solutions that fit your budget. Professional automation should feel simple and valuable, that is our commitment to you.
                       </p>
                     </div>
@@ -662,70 +674,70 @@ const Homepage = () => {
       </section>
 
       {/* CONTACT */}
-      <section ref={sectionRefs.contact} data-section="contact" className="py-16 bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50">
+      <section ref={sectionRefs.contact} data-section="contact" className="py-16 bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-900">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12">
-            <div className="inline-block mb-6">
-              <div className="flex items-center gap-3 bg-blue-600/10 backdrop-blur rounded-full px-8 py-2 border border-blue-200">
+            <div className="inline-block mb-6 font-semibold tracking-wide text-sm">
+              <span className="inline-flex items-center gap-3 bg-blue-600/10 backdrop-blur rounded-full px-8 py-2 border border-blue-200 text-blue-600 dark:hidden">
                 {/* <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" /> */}
-                <span className="text-blue-600 font-semibold tracking-wide text-sm">Get in touch</span>
-              </div>
+                Get in touch
+              </span>
+              <span className="hidden dark:inline-flex items-center gap-3 bg-cyan-500/20 backdrop-blur rounded-full px-8 py-2 border border-cyan-300 text-cyan-300">
+                {/* <div className="w-2 h-2 bg-cyan-500 rounded-full animate-pulse" /> */}
+                Get in touch
+              </span>
             </div>
-            <h2 className="text-5xl font-bold mb-3">Let us build something amazing</h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto">Ready to transform your business with modern software</p>
+            <h2 className="text-5xl font-bold mb-3 dark:text-white">Let us build something amazing</h2>
+            <p className="text-xl text-slate-600 max-w-2xl mx-auto dark:text-slate-300">Ready to transform your business with modern software</p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {/* Form */}
-            <div className="bg-white rounded-3xl p-8 shadow-xl border border-slate-200">
+            <div className="bg-white rounded-3xl p-8 shadow-xl border border-slate-200 dark:bg-slate-900 dark:border-slate-700">
               {formStatus === "success" ? (
                 <div className="text-center py-16">
-                  <div className="mx-auto w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
+                  <div className="mx-auto w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4 dark:bg-emerald-900/30">
                     <CheckCircle2 className="w-8 h-8 text-green-600" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-2">Message sent</h3>
-                  <p className="text-slate-600">We will reach out within twenty four hours</p>
+                  <h3 className="text-2xl font-bold mb-2 dark:text-white">Message sent</h3>
+                  <p className="text-slate-600 dark:text-slate-300">We will reach out within twenty four hours</p>
                 </div>
               ) : (
                 <form onSubmit={onSubmit} className="space-y-5">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-semibold mb-2">Full Name *</label>
-                      <input required type="text" placeholder="John Doe" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all" />
+                      <input required type="text" placeholder="Name" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100 dark:placeholder-slate-400 dark:focus:bg-slate-900" />
                     </div>
                     <div>
                       <label className="block text-sm font-semibold mb-2">Phone Number *</label>
-                      <input required type="tel" placeholder="+91 98765 43210" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all" />
+                      <input required type="tel" placeholder="+91 98765 43210" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100 dark:placeholder-slate-400 dark:focus:bg-slate-900" />
                     </div>
                   </div>
                   <div>
                     <label className="block text-sm font-semibold mb-2">Email Address *</label>
-                    <input required type="email" placeholder="john@example.com" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all" />
+                    <input required type="email" placeholder="Email" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100 dark:placeholder-slate-400 dark:focus:bg-slate-900" />
                   </div>
                   <div>
                     <label className="block text-sm font-semibold mb-2">Service interested in</label>
-                    <select className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all">
+                    <select className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100 dark:focus:bg-slate-900">
                       <option value="">Select a service</option>
-                      <option value="automation">Business automation</option>
-                      <option value="crm">CRM development</option>
-                      <option value="erp">ERP solutions</option>
-                      <option value="mobile">Mobile app development</option>
-                      <option value="web">Web development</option>
-                      <option value="consultation">Free consultation</option>
+                      <option value="web">Web Application Development</option>
+                      <option value="consultation">Cloud Software Solutions</option>
                     </select>
                   </div>
-                  <div>
+                  {/* <div>
                     <label className="block text-sm font-semibold mb-2">Project details *</label>
-                    <textarea required rows="4" placeholder="Tell us about your project requirements" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all resize-none" />
-                  </div>
-                  <button disabled={formStatus === "submitting"} className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 px-6 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
+                    <textarea required rows="4" placeholder="Tell us about your project requirements" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all resize-none dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100 dark:placeholder-slate-400 dark:focus:bg-slate-900" />
+                  </div> */}
+                  <button disabled={formStatus === "submitting"} className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-blue-800 text-white py-4 px-6 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
                     {formStatus === "submitting" ? (
                       <span className="animate-pulse">Sending…</span>
                     ) : (
                       <>
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        {/* <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                        </svg>
+                        </svg> */}
                         Send message
                       </>
                     )}
@@ -736,7 +748,7 @@ const Homepage = () => {
 
             {/* Map and quick contacts */}
             <div className="space-y-6">
-              <div className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200 h-[400px]">
+              <div className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200 h-[400px] dark:bg-slate-900 dark:border-slate-700">
                 <iframe
                   title="Office location"
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3430.1234567890!2d75.8573!3d30.9010!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDU0JzAzLjYiTiA3NcKwNTEnMjYuMyJF!5e0!3m2!1sen!2sin!4v1234567890"
@@ -750,7 +762,7 @@ const Homepage = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              {/* <div className="grid grid-cols-2 gap-4">
                 <div className="bg-white rounded-2xl p-6 shadow-lg border border-slate-200 hover:shadow-xl transition-shadow">
                   <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-3">
                     <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -769,7 +781,7 @@ const Homepage = () => {
                   <h4 className="font-bold mb-1">Mail us</h4>
                   <p className="text-sm text-slate-600">hello@merasoftware.com</p>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

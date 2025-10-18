@@ -18,6 +18,7 @@ const Header = () => {
   const [showStaffLoginPopup, setShowStaffLoginPopup] = useState(false);
 
   const userMenuRef = useRef(null);
+  const mobileUserMenuRef = useRef(null);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const dropdownTimeoutRef = useRef(null);
 
@@ -156,6 +157,9 @@ const Header = () => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target) && menuDisplay) {
+        setMenuDisplay(false);
+      }
+      if (mobileUserMenuRef.current && !mobileUserMenuRef.current.contains(event.target) && menuDisplay) {
         setMenuDisplay(false);
       }
       if (activeDropdown !== null && !event.target.closest('.main-nav-dropdown')) {
@@ -420,10 +424,10 @@ const Header = () => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex items-center">
-              <div className="bg-gradient-to-br from-indigo-600 to-indigo-800 text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold shadow-md">
+              <div className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold shadow-md">
                 M
               </div>
-              <span className="ml-2 text-lg font-bold bg-gradient-to-r from-indigo-700 to-indigo-900 bg-clip-text text-transparent">
+              <span className="ml-2 text-lg font-bold bg-gradient-to-br from-blue-600 to-cyan-500 bg-clip-text text-transparent">
                 MeraSoftware
               </span>
             </Link>
@@ -431,6 +435,37 @@ const Header = () => {
             {/* Actions */}
             <div className="flex items-center space-x-3">
               <ThemeToggleIcon />
+
+              {/* Login Button or User Profile Icon */}
+              {!initializing && (
+                <>
+                  {!isAuthenticated ? (
+                    <button
+                      onClick={handleLoginClick}
+                      className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white px-4 py-2 rounded-full hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 text-sm font-medium"
+                    >
+                      Login
+                    </button>
+                  ) : (
+                    <div
+                      onClick={() => setMenuDisplay((prev) => !prev)}
+                      className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-500/20 dark:to-cyan-500/20 flex items-center justify-center cursor-pointer border-2 border-blue-200 dark:border-blue-500/30 hover:border-blue-400 transition-colors overflow-hidden"
+                    >
+                      {user?.profilePic ? (
+                        <img
+                          src={user.profilePic}
+                          alt={user?.name || 'User'}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-sm font-semibold text-blue-700 dark:text-blue-200">
+                          {userInitial}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </>
+              )}
 
               {/* Mobile Menu Toggle */}
               <button
@@ -443,6 +478,37 @@ const Header = () => {
             </div>
           </div>
         </div>
+
+        {/* Mobile User Menu Dropdown */}
+        {isAuthenticated && menuDisplay && (
+          <div
+            ref={mobileUserMenuRef}
+            className="absolute right-4 top-16 w-56 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-gray-100 dark:border-slate-800 overflow-hidden z-50"
+          >
+            <div className="px-4 py-3 border-b border-gray-100 dark:border-slate-800 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-slate-800 dark:to-slate-900">
+              <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                {user?.name || 'User'}
+              </p>
+              {user?.email && (
+                <p className="text-xs text-gray-500 dark:text-slate-400 truncate">
+                  {user.email}
+                </p>
+              )}
+            </div>
+            <button
+              onClick={handleDashboard}
+              className="w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors border-b dark:border-slate-800"
+            >
+              Dashboard
+            </button>
+            <button
+              onClick={handleLogout}
+              className="w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+            >
+              Logout
+            </button>
+          </div>
+        )}
 
         {/* Mobile Navigation Menu */}
         {mobileMenuOpen && (
@@ -508,40 +574,15 @@ const Header = () => {
                 </div>
               ))}
 
-              {!initializing && (
-                <>
-                  {!isAuthenticated ? (
-                    <div className="flex flex-col space-y-2 mt-6">
-                      <button
-                        onClick={handleStaffLogin}
-                        className="w-full text-indigo-600 dark:text-cyan-300 border border-indigo-200 dark:border-slate-700 py-2.5 rounded-lg font-medium hover:bg-indigo-50 dark:hover:bg-slate-800 transition-colors"
-                      >
-                        Staff Login
-                      </button>
-                      <button
-                        onClick={handleLoginClick}
-                        className="w-full bg-indigo-600 text-white py-2.5 rounded-lg font-medium hover:bg-indigo-700 dark:hover:bg-indigo-500 transition-colors shadow-md"
-                      >
-                        Login
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col space-y-2 mt-6">
-                      <button
-                        onClick={handleDashboard}
-                        className="w-full bg-indigo-600 text-white py-2.5 rounded-lg font-medium hover:bg-indigo-700 dark:hover:bg-indigo-500 transition-colors shadow-md"
-                      >
-                        Go to Dashboard
-                      </button>
-                      <button
-                        onClick={handleLogout}
-                        className="w-full text-gray-700 dark:text-slate-200 border border-gray-200 dark:border-slate-700 py-2.5 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
-                      >
-                        Logout
-                      </button>
-                    </div>
-                  )}
-                </>
+              {!initializing && !isAuthenticated && (
+                <div className="flex flex-col space-y-2 mt-6">
+                  <button
+                    onClick={handleStaffLogin}
+                    className="w-full text-blue-600 dark:text-cyan-300 border border-blue-200 dark:border-slate-700 py-2.5 rounded-full font-medium hover:bg-blue-50 dark:hover:bg-slate-800 transition-colors"
+                  >
+                    Staff Login
+                  </button>
+                </div>
               )}
             </nav>
           </div>

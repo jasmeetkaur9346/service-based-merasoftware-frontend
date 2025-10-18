@@ -51,15 +51,19 @@ const setCookie = (name, value, options = {}) => {
   document.cookie = cookie;
 };
 
+const buildRemovalString = (name, options = {}) => {
+  const parts = [`${name}=`, 'Max-Age=0', 'path=/'];
+  if (options.domain) parts.push(`domain=${options.domain}`);
+  if (options.secure) parts.push('Secure');
+  return parts.join('; ');
+};
+
 const removeCookie = (name) => {
-  let cookie = `${name}=; Max-Age=0; path=/`;
+  const secure = isSecureContext();
   if (COOKIE_DOMAIN) {
-    cookie += `; domain=${COOKIE_DOMAIN}`;
+    document.cookie = buildRemovalString(name, { domain: COOKIE_DOMAIN, secure });
   }
-  if (isSecureContext()) {
-    cookie += '; Secure';
-  }
-  document.cookie = cookie;
+  document.cookie = buildRemovalString(name, { secure });
 };
 
 const getCookie = (name) => {

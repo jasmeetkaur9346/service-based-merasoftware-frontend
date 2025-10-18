@@ -18,7 +18,6 @@ const Header = () => {
   const [showStaffLoginPopup, setShowStaffLoginPopup] = useState(false);
 
   const userMenuRef = useRef(null);
-  const mobileUserMenuRef = useRef(null);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const dropdownTimeoutRef = useRef(null);
 
@@ -157,9 +156,6 @@ const Header = () => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target) && menuDisplay) {
-        setMenuDisplay(false);
-      }
-      if (mobileUserMenuRef.current && !mobileUserMenuRef.current.contains(event.target) && menuDisplay) {
         setMenuDisplay(false);
       }
       if (activeDropdown !== null && !event.target.closest('.main-nav-dropdown')) {
@@ -481,10 +477,7 @@ const Header = () => {
 
         {/* Mobile User Menu Dropdown */}
         {isAuthenticated && menuDisplay && (
-          <div
-            ref={mobileUserMenuRef}
-            className="absolute right-4 top-16 w-56 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-gray-100 dark:border-slate-800 overflow-hidden z-50"
-          >
+          <div className="absolute right-4 top-16 w-56 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-gray-100 dark:border-slate-800 overflow-hidden z-50">
             <div className="px-4 py-3 border-b border-gray-100 dark:border-slate-800 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-slate-800 dark:to-slate-900">
               <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
                 {user?.name || 'User'}

@@ -109,6 +109,7 @@ const Header = () => {
   const closeMenus = useCallback(() => {
     setMenuDisplay(false);
     setMobileMenuOpen(false);
+    setActiveDropdown(null);
   }, []);
 
   const openInNewTab = (url, fallbackPath) => {
@@ -213,6 +214,11 @@ const Header = () => {
     dropdownTimeoutRef.current = setTimeout(() => setActiveDropdown(null), 160);
   };
 
+  const toggleDropdown = (index) => {
+    setActiveDropdown((prev) => (prev === index ? null : index));
+  };
+
+
   const handleMobileMenuItemClick = (index, hasDropdown) => {
     if (hasDropdown) setActiveDropdown(activeDropdown === index ? null : index);
     else {
@@ -260,6 +266,7 @@ const Header = () => {
                       </Link>
                     ) : (
                       <button
+                        onClick={() => toggleDropdown(index)}
                         className="text-gray-700 dark:text-slate-200 hover:text-indigo-600 flex items-center focus:outline-none py-1 transition-all duration-200 group"
                         aria-haspopup="menu"
                         aria-expanded={activeDropdown === index}
@@ -282,6 +289,7 @@ const Header = () => {
                                 <li key={i}>
                                   <Link
                                     to={svc.href}
+                                    onClick={closeMenus}
                                     className="block px-4 py-3 rounded-md hover:bg-gray-50 dark:hover:bg-slate-800 transition"
                                   >
                                     <div className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
@@ -319,6 +327,7 @@ const Header = () => {
                                       ) : (
                                         <Link
                                           to={sub.href}
+                                          onClick={closeMenus}
                                           className="block text-sm px-3 py-2 rounded-md text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-800 transition"
                                         >
                                           {sub.name}
@@ -514,7 +523,7 @@ const Header = () => {
 
         {/* Mobile Navigation Menu */}
         {mobileMenuOpen && (
-          <div className="bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 overflow-hidden">
+          <div className="bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800">
             <nav className="max-h-[70vh] overflow-y-auto py-4 px-4">
               {menuItems.map((item, index) => (
                 <div key={index} className="py-1">
@@ -522,7 +531,7 @@ const Header = () => {
                     <Link
                       to={item.href}
                       className="block text-gray-700 dark:text-slate-200 hover:text-indigo-600 py-2 px-3 rounded-lg flex items-center"
-                      onClick={() => setMobileMenuOpen(false)}
+                      onClick={closeMenus}
                     >
                       {item.icon && <span className="mr-3">{item.icon}</span>}
                       <span className="font-medium">{item.name}</span>
@@ -537,31 +546,41 @@ const Header = () => {
                         <ChevronDown className={`w-5 h-5 transform transition-transform ${activeDropdown === index ? 'rotate-180' : ''}`} />
                       </button>
 
-                      {activeDropdown === index && (
-                        <div className="ml-4 mt-2 space-y-3 overflow-hidden">
+                      {activeDropdown === index && item.dropdown && (
+                        <div className="ml-4 mt-2 space-y-2 overflow-hidden">
                           {item.dropdown.map((category, catIndex) => (
                             <div key={catIndex} className="mb-1">
-                              {category.category && <h4 className="text-xs font-semibold text-indigo-600 uppercase mb-2 px-2">{category.category}</h4>}
+                              {category.category && <h4 className="text-xs font-semibold text-blue-600 dark:text-cyan-400 uppercase mb-2 px-2">{category.category}</h4>}
                               <ul className="space-y-1">
-                                {category.items.map((subItem, subIndex) => (
+                                {category.items && category.items.map((subItem, subIndex) => (
                                   <li key={subIndex}>
                                     {subItem.external ? (
                                       <a
                                         href={subItem.href}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="block text-gray-800 dark:text-slate-200 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-slate-800 text-sm py-2 px-3 rounded-md transition-colors"
-                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="block text-gray-800 dark:text-slate-200 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-slate-800 text-sm py-2.5 px-3 rounded-md transition-colors"
+                                        onClick={closeMenus}
                                       >
-                                        {subItem.name}
+                                        <div className="font-medium">{subItem.name}</div>
+                                        {subItem.desc && (
+                                          <div className="text-xs text-gray-500 dark:text-slate-400 mt-0.5">
+                                            {subItem.desc}
+                                          </div>
+                                        )}
                                       </a>
                                     ) : (
                                       <Link
                                         to={subItem.href}
-                                        className="block text-gray-800 dark:text-slate-200 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-slate-800 text-sm py-2 px-3 rounded-md transition-colors"
-                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="block text-gray-800 dark:text-slate-200 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-slate-800 text-sm py-2.5 px-3 rounded-md transition-colors"
+                                        onClick={closeMenus}
                                       >
-                                        {subItem.name}
+                                        <div className="font-medium">{subItem.name}</div>
+                                        {subItem.desc && (
+                                          <div className="text-xs text-gray-500 dark:text-slate-400 mt-0.5">
+                                            {subItem.desc}
+                                          </div>
+                                        )}
                                       </Link>
                                     )}
                                   </li>

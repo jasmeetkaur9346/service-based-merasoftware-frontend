@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import SummaryApi, { ADMIN_PORTAL_URL } from '../common';
+import SummaryApi, { ADMIN_PORTAL_URL, PARTNER_PORTAL_URL } from '../common';
 import CookieManager from '../utils/cookieManager';
 import StorageService from '../utils/storageService';
 import { useAuth } from '../context/AuthContext';
@@ -9,12 +9,14 @@ const StaffLoginPopup = ({ isOpen, onClose }) => {
   const { setSessionUser } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [selectedRole, setSelectedRole] = useState('admin');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [isClosing, setIsClosing] = useState(false);
   const formRef = useRef(null);
 
   const adminPortalTarget = ADMIN_PORTAL_URL || 'https://admin.merasoftware.com';
+  const partnerPortalTarget = PARTNER_PORTAL_URL || 'https://partner.merasoftware.com';
 
   const handleClose = useCallback(() => {
     setIsClosing(true);
@@ -23,6 +25,7 @@ const StaffLoginPopup = ({ isOpen, onClose }) => {
       setEmail('');
       setPassword('');
       setError('');
+      setSelectedRole('admin');
       onClose?.();
     }, 250);
   }, [onClose]);
@@ -50,6 +53,8 @@ const StaffLoginPopup = ({ isOpen, onClose }) => {
     setLoading(true);
     setError('');
 
+    const requestedRole = selectedRole.toLowerCase();
+
     try {
       const response = await fetch(SummaryApi.signIn.url, {
         method: SummaryApi.signIn.method.toUpperCase(),
@@ -60,7 +65,7 @@ const StaffLoginPopup = ({ isOpen, onClose }) => {
         body: JSON.stringify({
           email: email.trim(),
           password,
-          role: 'admin',
+          role: requestedRole,
         }),
       });
 
@@ -72,9 +77,16 @@ const StaffLoginPopup = ({ isOpen, onClose }) => {
       }
 
       const userPayload = data?.data?.user || {};
-      const userRole = userPayload.role || userPayload.roles?.[0];
-      if (userRole !== 'admin') {
-        setError('You do not have admin access.');
+      const userRoles = [
+        userPayload.role,
+        ...(Array.isArray(userPayload.roles) ? userPayload.roles : []),
+      ]
+        .filter(Boolean)
+        .map((role) => role.toLowerCase());
+
+      if (!userRoles.includes(requestedRole)) {
+        const readableRole = requestedRole.charAt(0).toUpperCase() + requestedRole.slice(1);
+        setError(`You do not have ${readableRole} access.`);
         return;
       }
 
@@ -82,7 +94,7 @@ const StaffLoginPopup = ({ isOpen, onClose }) => {
         _id: userPayload._id || userPayload.id || null,
         name: userPayload.name || '',
         email: userPayload.email || '',
-        role: 'admin',
+        role: requestedRole,
       };
 
       CookieManager.setUserDetails({
@@ -96,9 +108,28 @@ const StaffLoginPopup = ({ isOpen, onClose }) => {
         setSessionUser(normalisedUser);
       }
 
-      toast.success('Admin login successful');
+      const readableRole = requestedRole.charAt(0).toUpperCase() + requestedRole.slice(1);
+      toast.success(`${readableRole} login successful`);
+
       handleClose();
-      window.open(adminPortalTarget, '_blank', 'noopener,noreferrer');
+
+      const portalTargets = {
+        admin: adminPortalTarget,
+        partner: partnerPortalTarget,
+      };
+
+      const targetUrl = portalTargets[requestedRole];
+      if (!targetUrl) {
+        toast.info('Portal URL is not configured for this role yet.');
+        return;
+      }
+
+      if (requestedRole === 'partner') {
+        window.location.href = targetUrl;
+        return;
+      }
+
+      window.open(targetUrl, '_blank', 'noopener,noreferrer');
     } catch (err) {
       console.error('Staff login failed:', err);
       setError('Unable to login right now. Please check your details and try again.');
@@ -132,6 +163,23 @@ const StaffLoginPopup = ({ isOpen, onClose }) => {
           <h2 className="text-xl font-bold text-center text-gray-800 dark:text-white mb-4">Staff Login</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
+                Select Role
+              </label>
+              <select
+                value={selectedRole}
+                onChange={(e) => {
+                  setSelectedRole(e.target.value);
+                  if (error) setError('');
+                }}
+                className="w-full px-4 py-3 mt-1 border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-cyan-500 focus:border-transparent text-sm"
+              >
+                <option value="admin">Admin</option>
+                <option value="partner">Partner</option>
+              </select>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Email</label>
               <input

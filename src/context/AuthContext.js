@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import SummaryApi, {
   CUSTOMER_PORTAL_URL,
+  PARTNER_PORTAL_URL,
   STAFF_PORTAL_URL,
 } from '../common';
 import CookieManager from '../utils/cookieManager';
@@ -156,6 +157,7 @@ export const AuthProvider = ({ children }) => {
       login,
       logout,
       customerPortalUrl: CUSTOMER_PORTAL_URL,
+      partnerPortalUrl: PARTNER_PORTAL_URL,
       staffPortalUrl: STAFF_PORTAL_URL,
       setSessionUser: applySession,
     }),

@@ -155,10 +155,15 @@ const Header = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target) && menuDisplay) {
+      const targetElement = event.target instanceof Element ? event.target : null;
+      const clickedInsideUserMenu =
+        (userMenuRef.current && userMenuRef.current.contains(event.target)) ||
+        (targetElement && targetElement.closest('[data-user-menu="true"]'));
+
+      if (menuDisplay && !clickedInsideUserMenu) {
         setMenuDisplay(false);
       }
-      if (activeDropdown !== null && !event.target.closest('.main-nav-dropdown')) {
+      if (activeDropdown !== null && !(targetElement && targetElement.closest('.main-nav-dropdown'))) {
         setActiveDropdown(null);
       }
     };
@@ -344,7 +349,7 @@ const Header = () => {
                     >
                       Dashboard
                     </button> */}
-                    <div className="relative" ref={userMenuRef}>
+                    <div className="relative" ref={userMenuRef} data-user-menu="true">
                       <button
                         onClick={() => setMenuDisplay((prev) => !prev)}
                         className="flex items-center space-x-2 px-3 py-2 rounded-full border border-gray-200 dark:border-slate-700 hover:border-indigo-300 transition-colors bg-white dark:bg-slate-900 shadow-sm"
@@ -446,6 +451,7 @@ const Header = () => {
                     <div
                       onClick={() => setMenuDisplay((prev) => !prev)}
                       className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-500/20 dark:to-cyan-500/20 flex items-center justify-center cursor-pointer border-2 border-blue-200 dark:border-blue-500/30 hover:border-blue-400 transition-colors overflow-hidden"
+                      data-user-menu="true"
                     >
                       {user?.profilePic ? (
                         <img
@@ -477,7 +483,10 @@ const Header = () => {
 
         {/* Mobile User Menu Dropdown */}
         {isAuthenticated && menuDisplay && (
-          <div className="absolute right-4 top-16 w-56 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-gray-100 dark:border-slate-800 overflow-hidden z-50">
+          <div
+            className="absolute right-4 top-16 w-56 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-gray-100 dark:border-slate-800 overflow-hidden z-50"
+            data-user-menu="true"
+          >
             <div className="px-4 py-3 border-b border-gray-100 dark:border-slate-800 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-slate-800 dark:to-slate-900">
               <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
                 {user?.name || 'User'}

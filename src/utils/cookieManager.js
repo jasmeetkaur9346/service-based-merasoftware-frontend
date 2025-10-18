@@ -52,18 +52,25 @@ const setCookie = (name, value, options = {}) => {
 };
 
 const buildRemovalString = (name, options = {}) => {
-  const parts = [`${name}=`, 'Max-Age=0', 'path=/'];
+  const parts = [
+    `${name}=`,
+    'Max-Age=0',
+    `Expires=${new Date(0).toUTCString()}`,
+    'path=/',
+  ];
   if (options.domain) parts.push(`domain=${options.domain}`);
   if (options.secure) parts.push('Secure');
+  if (options.sameSite) parts.push(`SameSite=${options.sameSite}`);
   return parts.join('; ');
 };
 
 const removeCookie = (name) => {
   const secure = isSecureContext();
+  const sameSite = COOKIE_DOMAIN ? 'None' : DEFAULT_OPTIONS.sameSite;
   if (COOKIE_DOMAIN) {
-    document.cookie = buildRemovalString(name, { domain: COOKIE_DOMAIN, secure });
+    document.cookie = buildRemovalString(name, { domain: COOKIE_DOMAIN, secure, sameSite });
   }
-  document.cookie = buildRemovalString(name, { secure });
+  document.cookie = buildRemovalString(name, { secure, sameSite });
 };
 
 const getCookie = (name) => {

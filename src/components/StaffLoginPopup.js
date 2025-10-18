@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import SummaryApi, { ADMIN_PORTAL_URL } from '../common';
+import CookieManager from '../utils/cookieManager';
+import StorageService from '../utils/storageService';
 
 const StaffLoginPopup = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
@@ -67,11 +69,27 @@ const StaffLoginPopup = ({ isOpen, onClose }) => {
         return;
       }
 
-      const userRole = data?.data?.user?.role || data?.data?.user?.roles?.[0];
+      const userPayload = data?.data?.user || {};
+      const userRole = userPayload.role || userPayload.roles?.[0];
       if (userRole !== 'admin') {
         setError('You do not have admin access.');
         return;
       }
+
+      const normalisedUser = {
+        _id: userPayload._id || userPayload.id || null,
+        name: userPayload.name || '',
+        email: userPayload.email || '',
+        role: 'admin',
+      };
+
+      CookieManager.setUserDetails({
+        id: normalisedUser._id,
+        name: normalisedUser.name,
+        email: normalisedUser.email,
+        role: normalisedUser.role,
+      });
+      StorageService.setUserDetails(normalisedUser);
 
       toast.success('Admin login successful');
       handleClose();

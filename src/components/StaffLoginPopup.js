@@ -3,8 +3,10 @@ import { toast } from 'react-toastify';
 import SummaryApi, { ADMIN_PORTAL_URL } from '../common';
 import CookieManager from '../utils/cookieManager';
 import StorageService from '../utils/storageService';
+import { useAuth } from '../context/AuthContext';
 
 const StaffLoginPopup = ({ isOpen, onClose }) => {
+  const { setSessionUser } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -90,6 +92,9 @@ const StaffLoginPopup = ({ isOpen, onClose }) => {
         role: normalisedUser.role,
       });
       StorageService.setUserDetails(normalisedUser);
+      if (typeof setSessionUser === 'function') {
+        setSessionUser(normalisedUser);
+      }
 
       toast.success('Admin login successful');
       handleClose();

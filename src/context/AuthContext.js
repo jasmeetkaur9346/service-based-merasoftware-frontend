@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useMemo,
   useState,
+  useCallback,
 } from 'react';
 import SummaryApi, {
   CUSTOMER_PORTAL_URL,
@@ -16,7 +17,6 @@ const AuthContext = createContext(null);
 
 const normaliseUser = (rawUser) => {
   if (!rawUser) return null;
-  // Ensure we always return a plain object with expected fields
   return {
     _id: rawUser._id || rawUser.id || null,
     name: rawUser.name || '',
@@ -40,6 +40,25 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [initializing, setInitializing] = useState(true);
 
+  const applySession = useCallback((details) => {
+    if (!details) {
+      setUser(null);
+      StorageService.clearUserDetails();
+      CookieManager.clearAll();
+      return;
+    }
+
+    const normalised = normaliseUser(details);
+    setUser(normalised);
+    StorageService.setUserDetails(normalised);
+    CookieManager.setUserDetails({
+      id: normalised._id,
+      name: normalised.name,
+      email: normalised.email,
+      role: normalised.role,
+    });
+  }, []);
+
   useEffect(() => {
     let isMounted = true;
 
@@ -47,7 +66,7 @@ export const AuthProvider = ({ children }) => {
       try {
         const storedUser = StorageService.getUserDetails();
         if (storedUser && isMounted) {
-          setUser(normaliseUser(storedUser));
+          applySession(storedUser);
         }
 
         if (SummaryApi.currentUser.url) {
@@ -57,11 +76,7 @@ export const AuthProvider = ({ children }) => {
           });
 
           if (data?.success === false) {
-            StorageService.clearUserDetails();
-            CookieManager.clearAll();
-            if (isMounted) {
-              setUser(null);
-            }
+            applySession(null);
           } else {
             const payload =
               data?.data?.user ||
@@ -70,24 +85,14 @@ export const AuthProvider = ({ children }) => {
               null;
 
             if (payload && isMounted) {
-              const normalised = normaliseUser(payload);
-              setUser(normalised);
-              StorageService.setUserDetails(normalised);
-              CookieManager.setUserDetails({
-                id: normalised._id,
-                name: normalised.name,
-                email: normalised.email,
-                role: normalised.role,
-              });
+              applySession(payload);
             }
           }
         }
       } catch (error) {
         console.warn('Auth initialisation failed:', error?.message || error);
         if (isMounted) {
-          setUser(null);
-          StorageService.clearUserDetails();
-          CookieManager.clearAll();
+          applySession(null);
         }
       } finally {
         if (isMounted) {
@@ -100,9 +105,9 @@ export const AuthProvider = ({ children }) => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [applySession]);
 
-  const login = async ({ email, password, role = 'customer' }) => {
+  const login = useCallback(async ({ email, password, role = 'customer' }) => {
     if (!SummaryApi.signIn.url) {
       throw new Error('Backend URL is not configured.');
     }
@@ -125,20 +130,11 @@ export const AuthProvider = ({ children }) => {
       throw new Error('User details are missing from the response.');
     }
 
-    const normalised = normaliseUser(payload);
-    setUser(normalised);
-    StorageService.setUserDetails(normalised);
-    CookieManager.setUserDetails({
-      id: normalised._id,
-      name: normalised.name,
-      email: normalised.email,
-      role: normalised.role,
-    });
+    applySession(payload);
+    return normaliseUser(payload);
+  }, [applySession]);
 
-    return normalised;
-  };
-
-  const logout = async () => {
+  const logout = useCallback(async () => {
     if (SummaryApi.logout.url) {
       try {
         await fetchJson(SummaryApi.logout.url, {
@@ -150,10 +146,8 @@ export const AuthProvider = ({ children }) => {
       }
     }
 
-    setUser(null);
-    StorageService.clearUserDetails();
-    CookieManager.clearAll();
-  };
+    applySession(null);
+  }, [applySession]);
 
   const value = useMemo(
     () => ({
@@ -163,8 +157,9 @@ export const AuthProvider = ({ children }) => {
       logout,
       customerPortalUrl: CUSTOMER_PORTAL_URL,
       staffPortalUrl: STAFF_PORTAL_URL,
+      setSessionUser: applySession,
     }),
-    [user, initializing],
+    [user, initializing, login, logout, applySession],
   );
 
   return (

@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Code,
   HelpCircle,
   CheckCircle2,
   MessageCircle,
-  Calculator
+  Calculator,
+  Sparkles,
+  CheckCircle,
+  ArrowRight
 } from 'lucide-react';
+import SmartPlanner from './ProjectPlanner';
 
 const WebSoftwareService = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -13,7 +17,8 @@ const WebSoftwareService = () => {
   const [selectedNeed, setSelectedNeed] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [submitted, setSubmitted] = useState(false);
-
+  const plannerRef = useRef(null);
+  
   const businessTypes = [
     'Professional Services',
     'Medical & Healthcare',
@@ -56,6 +61,11 @@ const WebSoftwareService = () => {
     setSelectedNeed('');
     setSelectedType('');
     setSubmitted(false);
+  };
+   const openPlannerModal = () => {
+    if (plannerRef.current && typeof plannerRef.current.open === 'function') {
+      plannerRef.current.open();
+    }
   };
 
   return (
@@ -391,167 +401,146 @@ const WebSoftwareService = () => {
 
       <div className="divider" />
 
+     {/* Project Planner */}
       <section id="project-planner" className="section bg-gradient-to-br from-slate-50 via-cyan-50 to-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-br from-cyan-500 to-cyan-900 text-white px-8 py-2 rounded-full font-bold mb-4 shadow-lg">
+            {/* <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-900 text-white px-8 py-2 rounded-full font-bold mb-4 shadow-lg">
               <Calculator className="w-4 h-4" />
               The Project Planner
-            </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-5 leading-tight">
+            </div> */}
+            {/* <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-5 leading-tight">
               Plan Your Project
             </h2>
             <p className="text-2xl text-slate-600 font-medium mb-2">
               Discover what your business needs and plan your project instantly.
             </p>
-            <p className="text-sm text-cyan-600 font-semibold dark:text-cyan-400">
+            <p className="text-sm text-blue-600 font-semibold">
               Exclusive tool by Mera Software
-            </p>
+            </p> */}
           </div>
 
           <div className="grid lg:grid-cols-12 gap-10 items-start">
+            {/* Left Info Box - Project Planning Tool Intro */}
             <aside className="lg:col-span-4">
-              <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 sticky top-6">
-                <div className="w-14 h-14 bg-gradient-to-br from-cyan-500 to-cyan-900 rounded-xl flex items-center justify-center mb-5 shadow-lg">
-                  <HelpCircle className="w-7 h-7 text-white" />
+              <div className="bg-gradient-to-br from-cyan-50 via-white to-slate-50 rounded-2xl shadow-xl border-2 border-cyan-200 p-8 sticky top-6">
+                {/* Icon with Animation */}
+                <div className="relative mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-cyan-900 rounded-2xl flex items-center justify-center shadow-2xl mx-auto animate-pulse">
+                    <Sparkles className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500 to-cyan-900 rounded-2xl opacity-20 blur-xl" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">
-                  What is the Project Planner?
+
+                {/* Heading */}
+                <h3 className="text-2xl font-bold text-slate-900 mb-4 text-center">
+                  Try Our Smart Project Planning Tool
                 </h3>
-                <p className="text-base text-slate-600 leading-relaxed dark:text-slate-300">
-                  The Project Planner is our in-house tool that helps you explore features, estimate pricing, and get a clear idea of your project requirements before development begins.
+
+                {/* Description */}
+                <p className="text-base text-slate-700 leading-relaxed mb-6 text-center">
+                  An intelligent wizard that helps you select your business category, explore features, and get instant AI-powered recommendations with pricing estimates.
+                </p>
+
+                {/* Features List */}
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-cyan-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-cyan-600" />
+                    </div>
+                    <p className="text-sm text-slate-600 font-medium">6 Business Categories with Smart Recommendations</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-cyan-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-cyan-600" />
+                    </div>
+                    <p className="text-sm text-slate-600 font-medium">Interactive Feature Selection & Configuration</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-cyan-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-cyan-600" />
+                    </div>
+                    <p className="text-sm text-slate-600 font-medium">Instant Price Estimation & Project Preview</p>
+                  </div>
+                </div>
+
+                {/* Call to Action Button */}
+                <a
+                  href="/practice"
+                  className="group relative inline-flex items-center justify-center gap-3 w-full rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-900 text-white px-6 py-4 text-base font-bold shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                >
+                  <span>Launch Planning Tool</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-900 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity -z-10 blur-lg" />
+                </a>
+
+                {/* Note */}
+                <p className="text-xs text-slate-500 text-center mt-4">
+                  No orders will be created automatically
                 </p>
               </div>
             </aside>
 
+            {/* Main Planner */}
             <div className="lg:col-span-8">
-              {!submitted ? (
-                <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 sm:p-12">
-                  <div className="space-y-8">
-                    <div>
-                      <label className="block text-2xl text-slate-900 mb-4 font-bold">
-                        What type of business do you have?
-                        <span className="text-red-500 ml-1">*</span>
-                      </label>
-                      <div className="relative">
-                        <select
-                          value={selectedBusiness}
-                          onChange={(e) => {
-                            setSelectedBusiness(e.target.value);
-                            setSelectedNeed('');
-                            setSelectedType('');
-                          }}
-                          className="w-full px-5 py-4 bg-white border border-slate-300 rounded-xl text-slate-900 text-base font-medium appearance-none cursor-pointer hover:border-cyan-400 focus:outline-none focus:border-cyan-600 focus:ring-2 focus:ring-cyan-100 transition-all"
-                        >
-                          <option value="">Please Select</option>
-                          {businessTypes.map((business, index) => (
-                            <option key={index} value={business}>
-                              {business}
-                            </option>
-                          ))}
-                        </select>
-                        <span className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 text-xl">â–¾</span>
-                      </div>
-                    </div>
+              <div className="rounded-2xl p-8">
+                <div className="text-center mb-10">
+                <div className="inline-flex items-center gap-2 bg-gradient-to-br from-cyan-500 to-cyan-900 text-white px-8 py-2 rounded-full font-bold mb-4 shadow-lg">
+              <Calculator className="w-4 h-4" />
+              The Project Planner
+            </div>
+            </div>
 
-                    {selectedBusiness && (
-                      <div className="animate-fadeIn">
-                        <label className="block text-lg text-slate-900 mb-4 font-bold">
-                          What do you need?
-                          <span className="text-red-500 ml-1">*</span>
-                        </label>
-                        <div className="relative">
-                          <select
-                            value={selectedNeed}
-                            onChange={(e) => {
-                              setSelectedNeed(e.target.value);
-                              setSelectedType('');
-                            }}
-                            className="w-full px-5 py-4 bg-white border border-slate-300 rounded-xl text-slate-900 text-base font-medium appearance-none cursor-pointer hover:border-cyan-400 focus:outline-none focus:border-cyan-600 focus:ring-2 focus:ring-cyan-100 transition-all"
-                          >
-                            <option value="">Please Select</option>
-                            {needTypes.map((need, index) => (
-                              <option key={index} value={need}>
-                                {need}
-                              </option>
-                            ))}
-                          </select>
-                          <span className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 text-xl">â–¾</span>
-                        </div>
-                      </div>
-                    )}
+                {/* Heading */}
+                <h1 className="text-5xl md:text-6xl font-black mb-6 text-center">
+                  <span className="bg-gradient-to-r from-slate-900 via-cyan-800 to-cyan-800 bg-clip-text text-transparent">
+                    Build Your
+                  </span>
+                  <br />
+                  <span className="bg-gradient-to-r from-cyan-600 via-cyan-800 to-cyan-600 bg-clip-text text-transparent">
+                    Next Project
+                  </span>
+                </h1>
 
-                    {selectedNeed && (
-                      <div className="animate-fadeIn">
-                        <label className="block text-lg text-slate-900 mb-4 font-bold">
-                          Choose specific type
-                          <span className="text-red-500 ml-1">*</span>
-                        </label>
-                        <div className="relative">
-                          <select
-                            value={selectedType}
-                            onChange={(e) => setSelectedType(e.target.value)}
-                            className="w-full px-5 py-4 bg-white border border-slate-300 rounded-xl text-slate-900 text-base font-medium appearance-none cursor-pointer hover:border-cyan-400 focus:outline-none focus:border-cyan-600 focus:ring-2 focus:ring-cyan-100 transition-all"
-                          >
-                            <option value="">Please Select</option>
-                            {(selectedNeed === 'Web Application' ? webApplications : managementSoftware).map((type, index) => (
-                              <option key={index} value={type}>
-                                {type}
-                              </option>
-                            ))}
-                          </select>
-                          <span className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 text-xl">â–¾</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                {/* Description */}
+                <p className="text-xl text-slate-600 max-w-2xl mx-auto mb-10 text-center leading-relaxed">
+                  Intelligent wizard to guide you through selecting business categories and services with AI-powered recommendations
+                </p>
 
-                  <div className="mt-12">
-                    <button
-                      onClick={handleSubmit}
-                      disabled={!isFormComplete}
-                      className={`w-full px-8 py-5 rounded-xl font-bold text-lg transition-all shadow-lg ${
-                        isFormComplete 
-                          ? 'bg-gradient-to-r from-cyan-500 to-cyan-900 text-white hover:shadow-xl' 
-                          : 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                      }`}
-                    >
-                      Start with Project Planner
-                    </button>
-                  </div>
-
-                  {isFormComplete && (
-                    <div className="mt-8 p-5 bg-gradient-to-r from-slate-50 to-slate-100 border border-slate-300 rounded-xl animate-fadeIn">
-                      <p className="text-sm text-slate-800 leading-relaxed">
-                        <span className="font-bold text-slate-800">Note:</span> Final pricing may vary based on your specific requirements. We'll contact you to understand your complete needs and provide a detailed quote.
-                      </p>
-                    </div>
-                  )}
+                {/* CTA Button */}
+                <div className="text-center mb-8">
+                  <button
+                    type="button"
+                    onClick={openPlannerModal}
+                    className="group relative inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-cyan-600 to-cyan-500 text-white px-10 py-5 text-lg font-bold shadow-2xl shadow-cyan-500/50 hover:shadow-cyan-500/70 transition-all duration-300 hover:scale-105"
+                  >
+                    <span>Start Planning</span>
+                    <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity -z-10 blur-xl" />
+                  </button>
                 </div>
-              ) : (
-                <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-12 sm:p-16 text-center animate-fadeIn">
-                  <div className="w-20 h-20 bg-gradient-to-br from-cyan-500 to-cyan-900 rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg">
-                    <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
+
+              </div>
+
+                   <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 sm:p-12">
+                    {/* Features */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                  <div className="flex items-center justify-center gap-3 text-slate-700">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-500" />
+                    <span className="text-sm font-medium">6 Business Categories</span>
                   </div>
-                  <h3 className="text-4xl font-bold text-slate-900 mb-4">Thank you!</h3>
-                  <p className="text-xl text-slate-600 mb-10 font-medium">
-                    We've received your request. Our team will contact you shortly with a detailed plan and quote.
-                  </p>
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <button
-                      onClick={handleReset}
-                      className="px-8 py-4 border border-slate-300 text-slate-700 rounded-xl hover:border-slate-400 hover:bg-slate-50 transition-all font-bold shadow-md"
-                    >
-                      Plan Another Project
-                    </button>
-                    <a href="#process" className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-cyan-900 text-white rounded-xl hover:shadow-lg transition-all font-bold shadow-md">
-                      See Our Process
-                    </a>
+                  <div className="flex items-center justify-center gap-3 text-slate-700">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-500" />
+                    <span className="text-sm font-medium">Smart Recommendations</span>
+                  </div>
+                  <div className="flex items-center justify-center gap-3 text-slate-700">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-500" />
+                    <span className="text-sm font-medium">Instant Preview</span>
                   </div>
                 </div>
-              )}
+                   </div>
+
             </div>
           </div>
         </div>
@@ -861,6 +850,7 @@ const WebSoftwareService = () => {
           </div>
         </div>
       </section>
+      <SmartPlanner ref={plannerRef} showHero={false} />
     </div>
   );
 };

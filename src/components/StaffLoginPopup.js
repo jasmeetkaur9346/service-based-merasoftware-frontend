@@ -1,12 +1,27 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
+import SummaryApi, { ADMIN_PORTAL_URL } from '../common';
 
 const StaffLoginPopup = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('admin');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [isClosing, setIsClosing] = useState(false);
   const formRef = useRef(null);
+
+  const adminPortalTarget = ADMIN_PORTAL_URL || 'https://admin.merasoftware.com';
+
+  const handleClose = useCallback(() => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      setEmail('');
+      setPassword('');
+      setError('');
+      onClose?.();
+    }, 250);
+  }, [onClose]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -17,32 +32,56 @@ const StaffLoginPopup = ({ isOpen, onClose }) => {
     };
     document.addEventListener('mousedown', handleOutside);
     return () => document.removeEventListener('mousedown', handleOutside);
-  }, [isOpen]);
+  }, [isOpen, handleClose]);
 
   if (!isOpen) return null;
-
-  const handleClose = () => {
-    setIsClosing(true);
-    setTimeout(() => {
-      setIsClosing(false);
-      onClose?.();
-    }, 250);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
-      alert('Please enter email and password');
+      setError('Please enter email and password');
       return;
     }
-    setLoading(true);
 
-    // Dummy implementation - Replace with actual API call
-    setTimeout(() => {
-      alert(`Staff Login Attempted:\nEmail: ${email}\nRole: ${role}\n\nThis is a dummy popup. Implement actual authentication here.`);
-      setLoading(false);
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch(SummaryApi.signIn.url, {
+        method: SummaryApi.signIn.method.toUpperCase(),
+        credentials: 'include',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+          password,
+          role: 'admin',
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        setError(data?.message || 'Login failed. Please try again.');
+        return;
+      }
+
+      const userRole = data?.data?.user?.role || data?.data?.user?.roles?.[0];
+      if (userRole !== 'admin') {
+        setError('You do not have admin access.');
+        return;
+      }
+
+      toast.success('Admin login successful');
       handleClose();
-    }, 1500);
+      window.open(adminPortalTarget, '_blank', 'noopener,noreferrer');
+    } catch (err) {
+      console.error('Staff login failed:', err);
+      setError('Unable to login right now. Please check your details and try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -75,7 +114,10 @@ const StaffLoginPopup = ({ isOpen, onClose }) => {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (error) setError('');
+                }}
                 className="w-full px-4 py-3 mt-1 border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-cyan-500 focus:border-transparent text-sm"
                 placeholder="name@company.com"
                 required
@@ -87,26 +129,21 @@ const StaffLoginPopup = ({ isOpen, onClose }) => {
               <input
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  if (error) setError('');
+                }}
                 className="w-full px-4 py-3 mt-1 border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-cyan-500 focus:border-transparent text-sm"
                 placeholder="••••••••"
                 required
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Role</label>
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="w-full px-4 py-3 mt-1 border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-cyan-500 focus:border-transparent text-sm"
-              >
-                <option value="admin">Admin</option>
-                <option value="manager">Manager</option>
-                <option value="developer">Developer</option>
-                <option value="partner">Partner</option>
-              </select>
-            </div>
+            {error && (
+              <div className="rounded-lg bg-red-50 text-red-600 text-sm px-4 py-2">
+                {error}
+              </div>
+            )}
 
             <button
               type="submit"

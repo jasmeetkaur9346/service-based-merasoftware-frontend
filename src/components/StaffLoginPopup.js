@@ -124,11 +124,6 @@ const StaffLoginPopup = ({ isOpen, onClose }) => {
         return;
       }
 
-      if (requestedRole === 'partner') {
-        window.location.href = targetUrl;
-        return;
-      }
-
       window.open(targetUrl, '_blank', 'noopener,noreferrer');
     } catch (err) {
       console.error('Staff login failed:', err);

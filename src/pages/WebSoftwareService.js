@@ -59,39 +59,40 @@ const WebSoftwareService = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
-      <div className="relative bg-slate-900 py-20 border-b border-slate-700 overflow-hidden">
+    <div className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+      {/* Path with Dashboard Image Section */}
+      <div className="relative bg-slate-900 py-20 border-b border-slate-700 overflow-hidden dark:bg-slate-950 dark:border-slate-800 dark:text-slate-100">
         <div className="absolute inset-0">
           <img 
             src="https://www.shutterstock.com/image-photo/panorama-shot-analyst-team-utilizing-260nw-2332286999.jpg" 
             alt="Technology web background"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover dark:opacity-80 dark:saturate-75 dark:brightness-90"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-cyan-900/80 to-slate-900/80" />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-cyan-900/80 to-slate-900/80 dark:from-slate-950/90 dark:via-cyan-800/75 dark:to-slate-950/90" />
         </div>
 
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
           <div className="flex items-center gap-3 text-sm mb-6">
-            <a href="/" className="text-slate-300 hover:text-white transition-colors font-medium flex items-center gap-2 hover:gap-3">
+            <a href="/" className="text-slate-300 hover:text-white transition-colors font-medium flex items-center gap-2 hover:gap-3 dark:text-slate-300 dark:hover:text-cyan-400">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
               </svg>
               Home
             </a>
-            <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-slate-500 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-            <a href="/services" className="text-slate-300 hover:text-white transition-colors font-medium">
+            <a href="/services" className="text-slate-300 hover:text-white transition-colors font-medium dark:text-slate-300 dark:hover:text-cyan-400">
               Services
             </a>
-            <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-slate-500 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-            <span className="text-white font-semibold">Web Application Development</span>
+            <span className="text-white font-semibold dark:text-white">Web Application Development</span>
           </div>
 
           <div className="max-w-3xl">
-            <h1 className="text-3xl sm:text-4xl lg:text-4xl font-bold text-white leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-4xl font-bold text-white leading-tight dark:text-white">
               Cloud-Based Management Softwares
             </h1>
           </div>
@@ -131,59 +132,61 @@ const WebSoftwareService = () => {
         }
       `}</style>
 
-      <section className="section bg-gradient-to-br from-slate-50 via-cyan-50 to-slate-100">
+      {/* Hero Section */}
+      <section className="section bg-gradient-to-br from-slate-50 via-cyan-50 to-slate-100 dark:bg-gradient-to-br dark:from-slate-800 dark:via-slate-850 dark:to-slate-900">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="relative order-1">
               <div className="relative z-10 animate-float">
-                <div className="bg-white rounded-2xl shadow-xl p-4 border border-slate-200">
+                <div className="bg-white rounded-2xl shadow-xl p-4 border border-slate-200 dark:bg-slate-900/80 dark:border-slate-800 dark:shadow-cyan-900/20 relative overflow-hidden">
                   <img
                     loading="lazy"
                     src="https://www.scnsoft.com/blog-pictures/web-apps/web-application-vs-website-01.png"
                     alt="Web application dashboard"
-                    className="rounded-xl w-full"
+                    className="rounded-xl w-full dark:opacity-90"
                   />
+                  <div className="pointer-events-none hidden dark:block absolute inset-0 bg-gradient-to-br from-slate-950/50 via-cyan-900/40 to-slate-900/45 mix-blend-multiply" />
                 </div>
               </div>
-              <div className="absolute -inset-8 bg-gradient-to-r from-cyan-500 to-cyan-900 rounded-3xl opacity-20 blur-2xl -z-10" />
+              <div className="absolute -inset-8 bg-gradient-to-r from-cyan-500 to-cyan-900 rounded-3xl opacity-20 blur-2xl -z-10 dark:from-slate-950 dark:via-cyan-900 dark:to-slate-900 dark:opacity-45" />
             </div>
 
             <div className="space-y-8 order-2">
               <div className="inline-block mb-4">
-                <span className="bg-gradient-to-br from-cyan-500 to-cyan-900 text-white text-sm font-bold px-8 py-2 rounded-full">
+                <span className="bg-gradient-to-br from-cyan-500 to-cyan-900 text-white text-sm font-bold px-8 py-2 rounded-full dark:from-cyan-900 dark:via-cyan-800 dark:to-cyan-700 dark:text-white">
                   Custom Management Software
                 </span>
               </div>
 
               <div className="space-y-5">
-                <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
+                <h2 className="text-4xl lg:text-5xl font-bold leading-tight dark:text-slate-100">
                   Cloud-Based{' '}
-                  <span className="text-cyan-600 bg-clip-text ">
+                  <span className="text-cyan-600 bg-clip-text dark:text-cyan-400">
                     Management Softwares
                   </span>
                 </h2>
                 <div className="flex items-center gap-2">
-                  <div className="w-24 h-1.5 bg-gradient-to-r from-cyan-500 to-cyan-900 rounded-full" />
+                  <div className="w-24 h-1.5 bg-gradient-to-r from-cyan-500 to-cyan-900 rounded-full dark:from-slate-950 dark:to-cyan-700" />
                 </div>
               </div>
 
-              <p className="text-2xl text-slate-800 font-bold leading-relaxed">
+              <p className="text-2xl text-slate-800 font-bold leading-relaxed dark:text-slate-100">
                 Built to grow your business through automation
               </p>
 
-              <p className="text-lg text-slate-700 leading-relaxed max-w-xl">
+              <p className="text-lg text-slate-700 leading-relaxed max-w-xl dark:text-slate-300">
                 Get a management software that automates your business, eliminates manual work, and keeps operations running even when you're away — with real-time reports at your fingertips.
               </p>
 
               <div className="flex flex-wrap gap-4 pt-4">
-                <div className="inline-flex items-center gap-2 bg-white border border-cyan-200 rounded-xl px-5 py-3 shadow-sm">
-                  <span className="text-sm font-bold text-slate-800">No Data Loss</span>
+                <div className="inline-flex items-center gap-2 bg-white border border-cyan-200 rounded-xl px-5 py-3 shadow-sm dark:bg-slate-900/70 dark:border-cyan-700 dark:shadow-cyan-900/20">
+                  <span className="text-sm font-bold text-slate-800 dark:text-slate-100">No Data Loss</span>
                 </div>
-                <div className="inline-flex items-center gap-2 bg-white border border-cyan-200 rounded-xl px-5 py-3 shadow-sm">
-                  <span className="text-sm font-bold text-slate-800">Traceable Workflow</span>
+                <div className="inline-flex items-center gap-2 bg-white border border-cyan-200 rounded-xl px-5 py-3 shadow-sm dark:bg-slate-900/70 dark:border-cyan-700 dark:shadow-cyan-900/20">
+                  <span className="text-sm font-bold text-slate-800 dark:text-slate-100">Traceable Workflow</span>
                 </div>
-                <div className="inline-flex items-center gap-2 bg-white border border-cyan-200 rounded-xl px-5 py-3 shadow-sm">
-                  <span className="text-sm font-bold text-slate-800">Fully Coded Software</span>
+                <div className="inline-flex items-center gap-2 bg-white border border-cyan-200 rounded-xl px-5 py-3 shadow-sm dark:bg-slate-900/70 dark:border-cyan-700 dark:shadow-cyan-900/20">
+                  <span className="text-sm font-bold text-slate-800 dark:text-slate-100">Fully Coded Software</span>
                 </div>
               </div>
             </div>
@@ -193,14 +196,14 @@ const WebSoftwareService = () => {
 
       <div className="divider" />
 
-      <section className="py-12 lg:py-16 bg-white relative overflow-hidden">
+      <section className="py-12 lg:py-16 bg-white relative overflow-hidden dark:bg-slate-950 dark:text-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 dark:text-slate-100">
               Cloud-Based Solutions
             </h2>
-            <p className="text-xl text-slate-600 leading-relaxed">
+            <p className="text-xl text-slate-600 leading-relaxed dark:text-slate-300">
               We understand how important your data is — Discover why cloud-based solutions matter
             </p>
           </div>
@@ -209,65 +212,65 @@ const WebSoftwareService = () => {
 
             <div className="space-y-5">
               <div>
-                <h3 className="text-4xl font-bold text-slate-900 mb-3">
+                <h3 className="text-4xl font-bold text-slate-900 mb-3 dark:text-slate-100">
                   Management Software
                 </h3>
-                <div className="w-16 h-1 bg-cyan-600"></div>
+                <div className="w-16 h-1 bg-cyan-600 dark:bg-cyan-500"></div>
               </div>
 
-              <p className="text-lg text-slate-700 leading-relaxed">
-                <span className="font-semibold text-slate-900"></span> Management software helps businesses handle everyday tasks like sales tracking, staff management, and inventory — keeping everything organized and easy to manage from one place. Popular examples include CRM, CMS, LMS, and project management systems.
+              <p className="text-lg text-slate-700 leading-relaxed dark:text-slate-300">
+                <span className="font-semibold text-slate-900 dark:text-slate-100"></span> Management software helps businesses handle everyday tasks like sales tracking, staff management, and inventory — keeping everything organized and easy to manage from one place. Popular examples include CRM, CMS, LMS, and project management systems.
               </p>
               
-              <p className="text-lg text-slate-700 leading-relaxed">
+              <p className="text-lg text-slate-700 leading-relaxed dark:text-slate-300">
                 Cloud-based solutions make any software more effective, secure, and easy to access from anywhere — the main benefits are listed below.
               </p>
 
                <div className="relative !mt-10">
-                <div className="absolute -inset-4 bg-gradient-to-br from-cyan-500 to-cyan-900 rounded-2xl opacity-10 blur-xl" />
-                <div className="relative bg-gradient-to-br from-cyan-50 via-slate-50 to-cyan-50 rounded-2xl px-6 py-6 border-l-4 border-cyan-600 shadow-lg">
-                  <p className="text-lg leading-relaxed text-slate-700">
+                <div className="absolute -inset-4 bg-gradient-to-br from-cyan-500 to-cyan-900 rounded-2xl opacity-10 blur-xl dark:from-slate-900 dark:via-cyan-900/50 dark:to-slate-900 dark:opacity-20 dark:blur-2xl" />
+                <div className="relative bg-gradient-to-br from-cyan-50 via-slate-50 to-cyan-50 rounded-2xl px-6 py-6 border-l-4 border-cyan-600 shadow-lg dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 dark:border-cyan-600 dark:shadow-none">
+                  <p className="text-lg leading-relaxed text-slate-700 dark:text-slate-200">
                    Adding management software marks the start of a bigger journey.
                   </p>
                 </div>
               </div>
 
               <div className="lg:hidden relative mt-6">
-                <div className="relative bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
+                <div className="relative bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200 dark:bg-slate-900 dark:border-slate-800 dark:shadow-cyan-900/20">
                   <img 
                     src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop&auto=format" 
                     alt="Development Portal Dashboard"
-                    className="w-full"
+                    className="w-full dark:opacity-90"
                   />
                 </div>
-                <div className="absolute -top-3 -right-3 bg-cyan-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm font-bold">
+                <div className="absolute -top-3 -right-3 bg-cyan-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm font-bold dark:shadow-cyan-900/40">
                   24/7 Access
                 </div>
               </div>
 
               {/* <div className="pt-4 hidden lg:block">
-                <h3 className="text-3xl font-bold text-slate-900 mb-3">
+                <h3 className="text-3xl font-bold text-slate-900 mb-3 dark:text-slate-100">
                   Why Cloud-Based is Better
                 </h3>
-                <div className="w-16 h-1 bg-cyan-600"></div>
+                <div className="w-16 h-1 bg-cyan-600 dark:bg-cyan-500"></div>
               </div> */}
             </div> 
             
             <div className="relative hidden lg:block">
               <div className="sticky top-8">
-                <div className="relative bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
+                <div className="relative bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200 dark:bg-slate-900 dark:border-slate-800 dark:shadow-cyan-900/25">
                   <img 
                     src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop&auto=format" 
                     alt="Development Portal Dashboard"
-                    className="w-full"
+                    className="w-full dark:opacity-90"
                   />
-                  <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg px-3 py-2 border border-slate-200">
+                  <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg px-3 py-2 border border-slate-200 dark:bg-slate-900/80 dark:border-slate-700 dark:text-slate-100 dark:shadow-cyan-900/30">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-cyan-600 rounded-full animate-pulse"></div>
-                      <span className="text-xs font-semibold text-slate-900">Live Updates</span>
+                      <span className="text-xs font-semibold text-slate-900 dark:text-slate-100">Live Updates</span>
                     </div>
                   </div>
-                  <div className="absolute bottom-4 left-4 bg-cyan-600 text-white px-4 py-2 rounded-lg shadow-lg">
+                  <div className="absolute bottom-4 left-4 bg-cyan-600 text-white px-4 py-2 rounded-lg shadow-lg dark:shadow-cyan-900/40">
                     <div className="text-lg font-black">24/7</div>
                     <div className="text-xs">Portal Access</div>
                   </div>
@@ -278,93 +281,93 @@ const WebSoftwareService = () => {
           </div>
 
           <div className=" mb-8">
-            <h3 className="text-3xl font-bold text-slate-900 mb-3">
+            <h3 className="text-3xl font-bold text-slate-900 mb-3 dark:text-slate-100">
               Why Smart Businesses Are Moving to the Cloud
             </h3>
-            <div className="w-16 h-1 bg-cyan-600"></div>
+            <div className="w-16 h-1 bg-cyan-600 dark:bg-cyan-500"></div>
           </div>
 
           <div className="max-w-6xl mx-auto lg:ml-0">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               
-              <div className="group bg-slate-50 hover:bg-cyan-50 rounded-lg p-5 border border-slate-200 hover:border-cyan-300 transition-all duration-300">
+              <div className="group bg-slate-50 hover:bg-cyan-50 rounded-lg p-5 border border-slate-200 hover:border-cyan-300 transition-all duration-300 dark:bg-slate-900/70 dark:hover:bg-slate-900/50 dark:border-slate-800 dark:hover:border-cyan-700 dark:shadow-cyan-900/20">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 bg-cyan-600 text-white rounded-lg flex items-center justify-center font-bold text-sm mt-0.5">
                     1
                   </div>
                   <div>
-                    <h4 className="text-lg font-bold text-slate-900 mb-1">No Data Loss</h4>
-                    <p className="text-base text-slate-600 leading-snug">
+                    <h4 className="text-lg font-bold text-slate-900 mb-1 dark:text-slate-100">No Data Loss</h4>
+                    <p className="text-base text-slate-600 leading-snug dark:text-slate-300">
                       Automatic cloud backups and secure storage keep your data safe.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="group bg-slate-50 hover:bg-cyan-50 rounded-lg p-5 border border-slate-200 hover:border-cyan-300 transition-all duration-300">
+              <div className="group bg-slate-50 hover:bg-cyan-50 rounded-lg p-5 border border-slate-200 hover:border-cyan-300 transition-all duration-300 dark:bg-slate-900/70 dark:hover:bg-slate-900/50 dark:border-slate-800 dark:hover:border-cyan-700 dark:shadow-cyan-900/20">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 bg-cyan-600 text-white rounded-lg flex items-center justify-center font-bold text-sm mt-0.5">
                     2
                   </div>
                   <div>
-                    <h4 className="text-lg font-bold text-slate-900 mb-1">Access Anywhere</h4>
-                    <p className="text-base text-slate-600 leading-snug">
+                    <h4 className="text-lg font-bold text-slate-900 mb-1 dark:text-slate-100">Access Anywhere</h4>
+                    <p className="text-base text-slate-600 leading-snug dark:text-slate-300">
                       Work from any device — your business stays connected.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="group bg-slate-50 hover:bg-cyan-50 rounded-lg p-5 border border-slate-200 hover:border-cyan-300 transition-all duration-300">
+              <div className="group bg-slate-50 hover:bg-cyan-50 rounded-lg p-5 border border-slate-200 hover:border-cyan-300 transition-all duration-300 dark:bg-slate-900/70 dark:hover:bg-slate-900/50 dark:border-slate-800 dark:hover:border-cyan-700 dark:shadow-cyan-900/20">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 bg-cyan-600 text-white rounded-lg flex items-center justify-center font-bold text-sm mt-0.5">
                     3
                   </div>
                   <div>
-                    <h4 className="text-lg font-bold text-slate-900 mb-1">Team Collaboration</h4>
-                    <p className="text-base text-slate-600 leading-snug">
+                    <h4 className="text-lg font-bold text-slate-900 mb-1 dark:text-slate-100">Team Collaboration</h4>
+                    <p className="text-base text-slate-600 leading-snug dark:text-slate-300">
                       Role-based access and real-time updates for seamless teamwork.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="group bg-slate-50 hover:bg-cyan-50 rounded-lg p-5 border border-slate-200 hover:border-cyan-300 transition-all duration-300">
+              <div className="group bg-slate-50 hover:bg-cyan-50 rounded-lg p-5 border border-slate-200 hover:border-cyan-300 transition-all duration-300 dark:bg-slate-900/70 dark:hover:bg-slate-900/50 dark:border-slate-800 dark:hover:border-cyan-700 dark:shadow-cyan-900/20">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 bg-cyan-600 text-white rounded-lg flex items-center justify-center font-bold text-sm mt-0.5">
                     4
                   </div>
                   <div>
-                    <h4 className="text-lg font-bold text-slate-900 mb-1">No Maintenance</h4>
-                    <p className="text-base text-slate-600 leading-snug">
+                    <h4 className="text-lg font-bold text-slate-900 mb-1 dark:text-slate-100">No Maintenance</h4>
+                    <p className="text-base text-slate-600 leading-snug dark:text-slate-300">
                       Everything runs online and stays automatically managed.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="group bg-slate-50 hover:bg-cyan-50 rounded-lg p-5 border border-slate-200 hover:border-cyan-300 transition-all duration-300">
+              <div className="group bg-slate-50 hover:bg-cyan-50 rounded-lg p-5 border border-slate-200 hover:border-cyan-300 transition-all duration-300 dark:bg-slate-900/70 dark:hover:bg-slate-900/50 dark:border-slate-800 dark:hover:border-cyan-700 dark:shadow-cyan-900/20">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 bg-cyan-600 text-white rounded-lg flex items-center justify-center font-bold text-sm mt-0.5">
                     5
                   </div>
                   <div>
-                    <h4 className="text-lg font-bold text-slate-900 mb-1">Cost Efficient</h4>
-                    <p className="text-base text-slate-600 leading-snug">
+                    <h4 className="text-lg font-bold text-slate-900 mb-1 dark:text-slate-100">Cost Efficient</h4>
+                    <p className="text-base text-slate-600 leading-snug dark:text-slate-300">
                       Save on servers and IT costs — pay only for what you use.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="group bg-slate-50 hover:bg-cyan-50 rounded-lg p-5 border border-slate-200 hover:border-cyan-300 transition-all duration-300">
+              <div className="group bg-slate-50 hover:bg-cyan-50 rounded-lg p-5 border border-slate-200 hover:border-cyan-300 transition-all duration-300 dark:bg-slate-900/70 dark:hover:bg-slate-900/50 dark:border-slate-800 dark:hover:border-cyan-700 dark:shadow-cyan-900/20">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 bg-cyan-600 text-white rounded-lg flex items-center justify-center font-bold text-sm mt-0.5">
                     6
                   </div>
                   <div>
-                    <h4 className="text-lg font-bold text-slate-900 mb-1">Disaster-Proof</h4>
-                    <p className="text-base text-slate-600 leading-snug">
+                    <h4 className="text-lg font-bold text-slate-900 mb-1 dark:text-slate-100">Disaster-Proof</h4>
+                    <p className="text-base text-slate-600 leading-snug dark:text-slate-300">
                       Your data remains secure and instantly recoverable from the cloud.
                     </p>
                   </div>
@@ -375,9 +378,9 @@ const WebSoftwareService = () => {
 
             {/* bridge section */}
            <div className="mt-16 flex justify-center">
-            <div className="bg-white rounded-xl p-6 shadow-md border border-slate-200 max-w-5xl text-center">
-            <p className="text-lg font-semibold text-slate-800 flex items-center justify-center gap-1.5">
-        See what fits your business and what it costs — with our <span className="text-cyan-600 font-semibold">Project Planner</span> below.
+            <div className="bg-white rounded-xl p-6 shadow-md border border-slate-200 max-w-5xl text-center dark:bg-slate-900 dark:border-slate-800 dark:shadow-cyan-900/20">
+            <p className="text-lg font-semibold text-slate-800 dark:text-slate-100 flex items-center justify-center gap-1.5">
+        See what fits your business and what it costs — with our <span className="text-cyan-600 font-semibold dark:text-cyan-400">Project Planner</span> below.
              </p>
             </div>
           </div>
@@ -401,7 +404,7 @@ const WebSoftwareService = () => {
             <p className="text-2xl text-slate-600 font-medium mb-2">
               Discover what your business needs and plan your project instantly.
             </p>
-            <p className="text-sm text-cyan-600 font-semibold">
+            <p className="text-sm text-cyan-600 font-semibold dark:text-cyan-400">
               Exclusive tool by Mera Software
             </p>
           </div>
@@ -415,7 +418,7 @@ const WebSoftwareService = () => {
                 <h3 className="text-xl font-bold text-slate-900 mb-3">
                   What is the Project Planner?
                 </h3>
-                <p className="text-base text-slate-600 leading-relaxed">
+                <p className="text-base text-slate-600 leading-relaxed dark:text-slate-300">
                   The Project Planner is our in-house tool that helps you explore features, estimate pricing, and get a clear idea of your project requirements before development begins.
                 </p>
               </div>
@@ -447,7 +450,7 @@ const WebSoftwareService = () => {
                             </option>
                           ))}
                         </select>
-                        <span className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 text-xl">▾</span>
+                        <span className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 text-xl">â–¾</span>
                       </div>
                     </div>
 
@@ -473,7 +476,7 @@ const WebSoftwareService = () => {
                               </option>
                             ))}
                           </select>
-                          <span className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 text-xl">▾</span>
+                          <span className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 text-xl">â–¾</span>
                         </div>
                       </div>
                     )}
@@ -497,7 +500,7 @@ const WebSoftwareService = () => {
                               </option>
                             ))}
                           </select>
-                          <span className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 text-xl">▾</span>
+                          <span className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 text-xl">â–¾</span>
                         </div>
                       </div>
                     )}
@@ -556,7 +559,7 @@ const WebSoftwareService = () => {
 
       <div className="divider" />
 
-      <section id="process" className="section bg-white">
+      <section id="process" className="section bg-white dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-20">
             <div className="inline-block mb-4">
@@ -564,10 +567,10 @@ const WebSoftwareService = () => {
                 Our Process
               </span>
             </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4 leading-tight">
+            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4 leading-tight dark:text-slate-100">
               How We Turn Plans Into Systems
             </h2>
-            <p className="text-2xl text-slate-600 font-medium">
+            <p className="text-2xl text-slate-600 font-medium dark:text-slate-300">
               A clear process built for clarity, speed, and results.
             </p>
           </div>
@@ -577,38 +580,38 @@ const WebSoftwareService = () => {
               <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-cyan-900 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                 <Calculator className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">Plan</h3>
-              <p className="text-slate-600 text-lg">Use the Project Planner to scope needs and budget.</p>
+              <h3 className="text-xl font-semibold text-slate-900 mb-2 dark:text-slate-100">Plan</h3>
+              <p className="text-slate-600 text-lg dark:text-slate-300">Use the Project Planner to scope needs and budget.</p>
             </div>
 
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-cyan-900 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                 <MessageCircle className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">Discuss</h3>
-              <p className="text-slate-600 text-lg">We discuss and document your exact requirements.</p>
+              <h3 className="text-xl font-semibold text-slate-900 mb-2 dark:text-slate-100">Discuss</h3>
+              <p className="text-slate-600 text-lg dark:text-slate-300">We discuss and document your exact requirements.</p>
             </div>
 
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-cyan-900 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                 <Code className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">Build</h3>
-              <p className="text-slate-600 text-lg">Development will begin after 30% advance with portal access.</p>
+              <h3 className="text-xl font-semibold text-slate-900 mb-2 dark:text-slate-100">Build</h3>
+              <p className="text-slate-600 text-lg dark:text-slate-300">Development will begin after 30% advance with portal access.</p>
             </div>
 
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-cyan-900 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                 <CheckCircle2 className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">Launch</h3>
-              <p className="text-slate-600 text-lg">You'll get the source code and support after deployment.</p>
+              <h3 className="text-xl font-semibold text-slate-900 mb-2 dark:text-slate-100">Launch</h3>
+              <p className="text-slate-600 text-lg dark:text-slate-300">You'll get the source code and support after deployment.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="section bg-slate-800">
+      <section className="section bg-gradient-to-br from-slate-800 via-slate-850 to-slate-900">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <span className="bg-gradient-to-br from-cyan-500 to-cyan-900 text-white text-xs font-bold px-6 py-2 rounded-full inline-block mb-3">
@@ -689,7 +692,7 @@ const WebSoftwareService = () => {
                     </svg>
                   </div>
                   <h4 className="text-lg font-semibold mb-1">Live Project Progress</h4>
-                  <p className="text-sm text-cyan-100">Monitor your project's journey from 0–100% completion.</p>
+                  <p className="text-sm text-cyan-100">Monitor your project's journey from 0—100% completion.</p>
                 </div>
 
                 <div className="bg-gradient-to-br from-cyan-800 to-cyan-900 border border-cyan-700 rounded-xl p-5 text-white">
@@ -832,7 +835,7 @@ const WebSoftwareService = () => {
                   </button>
                   
                   <p className="text-center text-cyan-100 text-sm">
-                    🔒 Your information is secure and will never be shared
+                    ðŸ”’ Your information is secure and will never be shared
                   </p>
                 </div>
               ) : (

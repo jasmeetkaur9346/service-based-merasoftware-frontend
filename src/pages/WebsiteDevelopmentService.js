@@ -73,9 +73,9 @@ const WebsiteDevelopmentPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       {/* Breadcrumb/Path Area with Background Image */}
-      <div className="relative bg-slate-900 py-20 border-b border-slate-700 overflow-hidden">
+      <div className="relative bg-slate-900 py-20 border-b border-slate-700 overflow-hidden dark:bg-slate-900">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0">
           <img 
@@ -151,56 +151,57 @@ const WebsiteDevelopmentPage = () => {
       `}</style>
 
   {/* Main Hero Section */}
-      <section className="section bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
+      <section className="section bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:bg-gradient-to-br dark:from-slate-800 dark:via-slate-850 dark:to-slate-900">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left - Image */}
             <div className="relative order-1">
               <div className="relative z-10 animate-float">
-                <div className="bg-white rounded-2xl shadow-xl p-4 border border-slate-200">
+                <div className="bg-white rounded-2xl shadow-xl p-4 border border-slate-200 dark:bg-slate-900/80 dark:border-slate-800 dark:shadow-blue-900/20 relative overflow-hidden">
                   <img
                     loading="lazy"
                     src="https://www.scnsoft.com/blog-pictures/web-apps/web-application-vs-website-01.png"
                     alt="Web application dashboard"
-                    className="rounded-xl w-full"
+                    className="rounded-xl w-full dark:opacity-90"
                   />
+                  <div className="pointer-events-none hidden dark:block absolute inset-0 bg-gradient-to-br from-slate-950/50 via-blue-900/40 to-slate-900/45 mix-blend-multiply" />
                 </div>
               </div>
-              <div className="absolute -inset-8 bg-gradient-to-r from-blue-500 to-blue-900 rounded-3xl opacity-20 blur-2xl -z-10" />
+              <div className="absolute -inset-8 bg-gradient-to-r from-blue-500 to-blue-900 rounded-3xl opacity-20 blur-2xl -z-10 dark:from-slate-950 dark:via-blue-900 dark:to-slate-900 dark:opacity-45" />
             </div>
             {/* Right - Content */}
             <div className="space-y-8 order-2">
               <div className="inline-block mb-4">
-                <span className="bg-gradient-to-r from-blue-500 to-blue-900 text-white text-sm font-bold px-8 py-2 rounded-full">
+                <span className="bg-gradient-to-br from-blue-500 to-blue-900 text-white text-sm font-bold px-8 py-2 rounded-full dark:from-blue-900 dark:via-blue-800 dark:to-blue-700 dark:text-white">
                   Custom Development Service
                 </span>
               </div>
               <div className="space-y-5">
-                <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
+                <h2 className="text-4xl lg:text-5xl font-bold leading-tight dark:text-slate-100">
                   Dynamic Web{' '}
-                  <span className="bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
+                  <span className="text-blue-600 bg-clip-text dark:text-blue-400">
                     Applications
                   </span>
                 </h2>
                 <div className="flex items-center gap-2">
-                  <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-900 rounded-full" />
+                  <div className="w-24 h-1.5 bg-gradient-to-r from-blue-500 to-blue-900 rounded-full dark:from-slate-950 dark:to-blue-700" />
                 </div>
               </div>
-              <p className="text-2xl text-slate-800 font-bold leading-relaxed">
+              <p className="text-2xl text-slate-800 font-bold leading-relaxed dark:text-slate-100">
                 Built to scale with your business, not restrict it
               </p>
-              <p className="text-lg text-slate-700 leading-relaxed max-w-xl">
+              <p className="text-lg text-slate-700 leading-relaxed max-w-xl dark:text-slate-300">
                 Get a custom web application that grows with your operations. No feature limits or plugin bottlenecks like WordPress and Shopify — just a system that works the way you do.
               </p>
               <div className="flex flex-wrap gap-4 pt-4">
-                <div className="inline-flex items-center gap-2 bg-white border border-blue-200 rounded-xl px-5 py-3 shadow-sm">
-                  <span className="text-sm font-bold text-slate-800">No Feature Limits</span>
+                <div className="inline-flex items-center gap-2 bg-white border border-blue-200 rounded-xl px-5 py-3 shadow-sm dark:bg-slate-900/70 dark:border-blue-700 dark:shadow-blue-900/20">
+                  <span className="text-sm font-bold text-slate-800 dark:text-slate-100">No Feature Limits</span>
                 </div>
-                <div className="inline-flex items-center gap-2 bg-white border border-blue-200 rounded-xl px-5 py-3 shadow-sm">
-                  <span className="text-sm font-bold text-slate-800">Built from Code</span>
+                <div className="inline-flex items-center gap-2 bg-white border border-blue-200 rounded-xl px-5 py-3 shadow-sm dark:bg-slate-900/70 dark:border-blue-700 dark:shadow-blue-900/20">
+                  <span className="text-sm font-bold text-slate-800 dark:text-slate-100">Built from Code</span>
                 </div>
-                <div className="inline-flex items-center gap-2 bg-white border border-blue-200 rounded-xl px-5 py-3 shadow-sm">
-                  <span className="text-sm font-bold text-slate-800">Dedicated Developer</span>
+                <div className="inline-flex items-center gap-2 bg-white border border-blue-200 rounded-xl px-5 py-3 shadow-sm dark:bg-slate-900/70 dark:border-blue-700 dark:shadow-blue-900/20">
+                  <span className="text-sm font-bold text-slate-800 dark:text-slate-100">Dedicated Developer</span>
                 </div>
               </div>
             </div>
@@ -211,34 +212,34 @@ const WebsiteDevelopmentPage = () => {
       <div className="divider" />
 
   {/* Understanding Section */}
-<section className="section bg-white">
+<section className="section bg-white dark:bg-slate-950">
   <div className="max-w-7xl mx-auto px-6">
     <div className="grid lg:grid-cols-2 gap-20 items-center">
       {/* Left Content */}
       <div className="space-y-8">
         <div>
           <div className="inline-block mb-4">
-            <span className="bg-gradient-to-r from-blue-500 to-blue-900 text-white text-sm font-bold px-8 py-2 rounded-full">
+            <span className="bg-gradient-to-br from-blue-500 to-blue-900 text-white text-sm font-bold px-8 py-2 rounded-full dark:from-blue-900 dark:via-blue-800 dark:to-blue-700">
               The Difference
             </span>
           </div>
-          <h2 className="text-4xl lg:text-5xl mb-4 mt-6 font-bold leading-tight">
+          <h2 className="text-4xl lg:text-5xl mb-4 mt-6 font-bold leading-tight dark:text-slate-100">
             Understanding Web{' '}
-            <span className="bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
+            <span className="text-blue-600 bg-clip-text dark:text-blue-400">
               Applications
             </span>
           </h2>
-          <p className="text-2xl text-slate-600 font-medium">
+          <p className="text-2xl text-slate-600 font-medium dark:text-slate-300">
             Websites that don't just show — They work.
           </p>
           <div className="mt-6 flex items-center gap-2">
-            <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-blue-900 rounded-full" />
+            <div className="w-24 h-1.5 bg-gradient-to-r from-blue-500 to-blue-900 rounded-full dark:from-slate-950 dark:to-blue-700" />
           </div>
         </div>
         <div className="relative">
-          <div className="absolute -inset-4 bg-gradient-to-br from-blue-500 to-blue-900 rounded-2xl opacity-10 blur-xl" />
-          <div className="relative bg-gradient-to-br from-blue-50 via-slate-50 to-blue-50 rounded-2xl p-8 border-l-4 border-blue-600 shadow-lg">
-            <p className="text-lg leading-relaxed text-slate-700">
+          <div className="absolute -inset-4 bg-gradient-to-br from-blue-500 to-blue-900 rounded-2xl opacity-10 blur-xl dark:from-slate-900 dark:via-blue-900/50 dark:to-slate-900 dark:opacity-20 dark:blur-2xl" />
+          <div className="relative bg-gradient-to-br from-blue-50 via-slate-50 to-blue-50 rounded-2xl p-8 border-l-4 border-blue-600 shadow-lg dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 dark:border-blue-600 dark:shadow-none">
+            <p className="text-lg leading-relaxed text-slate-700 dark:text-slate-200">
               A web application is similar to a website, but it's built to work like a system — not just to showcase your business. This small difference makes a web application far more complex and systematic to build, and that's where our expertise lies.
             </p>
           </div>
@@ -250,27 +251,27 @@ const WebsiteDevelopmentPage = () => {
           className="absolute -inset-6 bg-gradient-to-r from-blue-500 via-blue-700 to-blue-900 rounded-2xl opacity-20 blur-2xl"
           aria-hidden="true"
         />
-        <div className="relative bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
+        <div className="relative bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200 dark:bg-slate-900 dark:border-slate-800 dark:shadow-blue-900/20">
           <img
             loading="lazy"
             src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=900&h=600&fit=crop&auto=format"
             alt="Operational system preview"
-            className="w-full"
+            className="w-full dark:opacity-90"
           />
         </div>
         {/* Callouts */}
-        <div className="absolute top-6 right-6 bg-white rounded-xl shadow-lg p-5 border border-blue-200 z-10">
+        <div className="absolute top-6 right-6 bg-white rounded-xl shadow-lg p-5 border border-blue-200 z-10 dark:bg-slate-900 dark:border-blue-700 dark:shadow-blue-900/20">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-900 rounded-xl flex items-center justify-center shadow-lg">
               <CheckCircle2 className="w-7 h-7 text-white" />
             </div>
             <div>
-              <div className="text-xs text-slate-600 font-semibold">Runs Operations</div>
-              <div className="text-sm font-bold text-slate-900">Not Just Pages</div>
+              <div className="text-xs text-slate-600 font-semibold dark:text-slate-300">Runs Operations</div>
+              <div className="text-sm font-bold text-slate-900 dark:text-white">Not Just Pages</div>
             </div>
           </div>
         </div>
-        <div className="absolute bottom-6 left-6 bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 rounded-xl shadow-lg p-6 z-10 text-center text-white">
+        <div className="absolute bottom-6 left-6 bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 rounded-xl shadow-lg p-6 z-10 text-center text-white dark:shadow-blue-900/40">
           <div className="text-3xl font-bold">Scales Cleanly</div>
           <div className="text-sm text-blue-100 font-semibold mt-1">Code-first Architecture</div>
         </div>
@@ -278,9 +279,9 @@ const WebsiteDevelopmentPage = () => {
     </div>
     {/* Bridge box */}
     <div className="mt-16 flex justify-center">
-      <div className="bg-white rounded-xl p-6 shadow-md border border-slate-200 max-w-5xl text-center">
-       <p className="text-lg font-semibold text-slate-800 flex items-center justify-center gap-1.5">
-  See what fits your business and what it costs — with our <span className="text-blue-600 font-semibold">Project Planner</span> below.
+      <div className="bg-white rounded-xl p-6 shadow-md border border-slate-200 max-w-5xl text-center dark:bg-slate-900 dark:border-slate-800 dark:shadow-blue-900/20">
+       <p className="text-lg font-semibold text-slate-800 dark:text-slate-100 flex items-center justify-center gap-1.5">
+  See what fits your business and what it costs — with our <span className="text-blue-600 font-semibold dark:text-blue-400">Project Planner</span> below.
 </p>
       </div>
     </div>
@@ -438,19 +439,19 @@ const WebsiteDevelopmentPage = () => {
       <div className="divider" />
 
       {/* Process Section */}
-      <section id="process" className="section bg-white">
+      <section id="process" className="section bg-white dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-6">
           {/* Heading */}
           <div className="text-center mb-20">
             <div className="inline-block mb-4">
-              <span className="bg-gradient-to-r from-blue-500 to-blue-900 text-white text-sm font-bold px-8 py-2 rounded-full">
+              <span className="bg-gradient-to-br from-blue-500 to-blue-900 text-white text-sm font-bold px-8 py-2 rounded-full">
                 OUR PROCESS
               </span>
             </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4 leading-tight">
+            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4 leading-tight dark:text-slate-100">
               How We Turn Plans Into Systems
             </h2>
-            <p className="text-2xl text-slate-600 font-medium">
+            <p className="text-2xl text-slate-600 font-medium dark:text-slate-300">
               A clear process built for clarity, speed, and results.
             </p>
           </div>
@@ -467,8 +468,8 @@ const WebsiteDevelopmentPage = () => {
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-900 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                   <step.icon className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">{step.title}</h3>
-                <p className="text-slate-600 text-lg">{step.desc}</p>
+                <h3 className="text-xl font-semibold text-slate-900 mb-2 dark:text-slate-100">{step.title}</h3>
+                <p className="text-slate-600 text-lg dark:text-slate-300">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -476,15 +477,15 @@ const WebsiteDevelopmentPage = () => {
       </section>
 
       {/* Portal Section */}
-<section className="section bg-slate-800">
+<section className="section bg-gradient-to-br from-slate-800 via-slate-850 to-slate-900">
   <div className="max-w-7xl mx-auto px-6">
     {/* Compact Header */}
     <div className="text-center mb-16">
-      <span className="bg-gradient-to-r from-blue-500 to-blue-900 text-white text-xs font-bold px-6 py-2 rounded-full inline-block mb-3">
-        YOUR PROJECT PORTAL
+      <span className="bg-gradient-to-br from-blue-500 to-blue-900 text-white text-xs font-bold px-6 py-2 rounded-full inline-block mb-3">
+        Your Project Portal
       </span>
       <h2 className="text-3xl lg:text-4xl font-bold text-white mb-3 leading-tight">
-        Introducing the <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Client Portal </span> —  Built for You
+        Introducing the <span className="text-blue-500 bg-clip-text">Client Portal </span> —  Built for You
       </h2>
       <p className="text-2xl text-slate-300 max-w-7xl mx-auto">
        We built this portal to make you feel part of every milestone — Take a look at how it keeps you involved.
@@ -555,18 +556,18 @@ const WebsiteDevelopmentPage = () => {
         
         {/* Top 4 Features - Compact Cards */}
         <div className="grid grid-cols-2 gap-3">
-          
-          <div className="bg-gradient-to-br from-blue-500 to-blue-900 rounded-xl p-5 text-white relative">
+
+          <div className="bg-gradient-to-br from-blue-800 to-blue-900 border border-blue-700 rounded-xl p-5 text-white relative">
             <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mb-3">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
             </div>
             <h4 className="text-lg font-semibold mb-1">Live Project Progress</h4>
-            <p className="text-sm text-blue-100">Monitor your project's journey from 0–100% completion.</p>
+            <p className="text-sm text-blue-100">Monitor your project's journey from 0—100% completion.</p>
           </div>
 
-          <div className="bg-gradient-to-br from-blue-500 to-blue-900 rounded-xl p-5 text-white">
+          <div className="bg-gradient-to-br from-blue-800 to-blue-900 border border-blue-700 rounded-xl p-5 text-white">
             <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mb-3">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -576,7 +577,7 @@ const WebsiteDevelopmentPage = () => {
             <p className="text-sm text-blue-100">Work directly with the developer building your project.</p>
           </div>
 
-          <div className="bg-gradient-to-br from-blue-500 to-blue-900 rounded-xl p-5 text-white">
+          <div className="bg-gradient-to-br from-blue-800 to-blue-900 border border-blue-700 rounded-xl p-5 text-white">
             <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mb-3">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
@@ -586,7 +587,7 @@ const WebsiteDevelopmentPage = () => {
             <p className="text-sm text-blue-100">Share all your project information securely with your developer.</p>
           </div>
 
-          <div className="bg-gradient-to-br from-blue-500 to-blue-900 rounded-xl p-5 text-white">
+          <div className="bg-gradient-to-br from-blue-800 to-blue-900 border border-blue-700 rounded-xl p-5 text-white">
             <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mb-3">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />

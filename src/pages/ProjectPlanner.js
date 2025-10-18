@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useImperativeHandle } from "react";
+import React, { useState, forwardRef, useImperativeHandle, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ShoppingBag,
@@ -266,7 +266,7 @@ const SmartPlanner = forwardRef(({ showHero = true }, ref) => {
     setService(null);
   };
 
-  const openPlanner = () => {
+  const openPlanner = useCallback(() => {
     // Determine if intro should be shown for this browser
     let showIntro = false;
     try {
@@ -284,7 +284,7 @@ const SmartPlanner = forwardRef(({ showHero = true }, ref) => {
     try { prevFocusRef.current = document.activeElement; } catch {}
     setIsOpen(true);
     track("planner_open");
-  };
+  }, []);
 
   const closePlanner = () => {
     setIsOpen(false);
@@ -297,6 +297,15 @@ const SmartPlanner = forwardRef(({ showHero = true }, ref) => {
     open: openPlanner,
     close: closePlanner
   }));
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const handleOpen = () => openPlanner();
+    window.addEventListener('project-planner:open', handleOpen);
+    return () => {
+      window.removeEventListener('project-planner:open', handleOpen);
+    };
+  }, [openPlanner]);
 
   // Handlers
   const onPickCategory = (c) => {

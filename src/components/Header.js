@@ -160,11 +160,13 @@ const Header = () => {
       const clickedInsideUserMenu =
         (userMenuRef.current && userMenuRef.current.contains(event.target)) ||
         (targetElement && targetElement.closest('[data-user-menu="true"]'));
+      const insideDropdownRegion =
+        targetElement && targetElement.closest('[data-dropdown-region="true"]');
 
       if (menuDisplay && !clickedInsideUserMenu) {
         setMenuDisplay(false);
       }
-      if (activeDropdown !== null && !(targetElement && targetElement.closest('.main-nav-dropdown'))) {
+      if (activeDropdown !== null && !insideDropdownRegion) {
         setActiveDropdown(null);
       }
     };
@@ -250,6 +252,7 @@ const Header = () => {
                   <div
                     key={index}
                     className="relative group main-nav-dropdown"
+                    data-dropdown-region="true"
                     onMouseEnter={() => handleMouseEnter(index)}
                     onMouseLeave={handleMouseLeave}
                   >
@@ -526,7 +529,7 @@ const Header = () => {
           <div className="bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800">
             <nav className="max-h-[70vh] overflow-y-auto py-4 px-4">
               {menuItems.map((item, index) => (
-                <div key={index} className="py-1">
+                <div key={index} className="py-1" data-dropdown-region="true">
                   {item.href ? (
                     <Link
                       to={item.href}

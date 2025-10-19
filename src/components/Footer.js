@@ -1,11 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Home, Info, Phone, Calculator } from 'lucide-react';
+import { Home, Info, Phone, Calculator, Globe, Cloud, User } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const Footer = () => {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('home');
   const openPlanner = useCallback(() => {
-    setActiveTab('calculator');
+    setActiveTab('planner');
     try {
       if (typeof window !== 'undefined') {
         window.dispatchEvent(new CustomEvent('project-planner:open'));
@@ -14,6 +16,20 @@ const Footer = () => {
       console.error('Failed to open planner from footer:', error);
     }
   }, []);
+
+  const isAuthenticated = Boolean(user?._id);
+  const userInitial = user?.name?.[0]?.toUpperCase() || 'U';
+
+  const handleProfileClick = useCallback(() => {
+    setActiveTab('profile');
+    try {
+      if (!isAuthenticated && typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('client-portal:open-login'));
+      }
+    } catch (error) {
+      console.error('Failed to open profile/login from footer:', error);
+    }
+  }, [isAuthenticated]);
 
   return (
     <>
@@ -74,39 +90,57 @@ const Footer = () => {
       <div className="md:hidden mt-24">
         {/* Bottom Navigation */}
         <footer className="bg-white dark:bg-slate-900 border-t dark:border-slate-800 fixed bottom-0 left-0 right-0 z-10">
-          <div className="flex justify-between items-center px-2">
-            <Link to={"/"}
-              className={`flex flex-col items-center py-2 px-4 ${activeTab === 'home' ? 'text-blue-600 dark:text-cyan-400' : 'text-gray-600 dark:text-slate-400'}`}
+          <div className="flex justify-around items-center px-2">
+            <Link
+              to="/"
+              className={`flex flex-col items-center py-2 px-3 ${activeTab === 'home' ? 'text-blue-600 dark:text-cyan-400' : 'text-gray-600 dark:text-slate-400'}`}
               onClick={() => setActiveTab('home')}
             >
               <Home size={20} />
               <span className="text-xs mt-1">Home</span>
             </Link>
 
-            <Link to={"/about-us"}
-              className={`flex flex-col items-center py-2 px-4 ${activeTab === 'about' ? 'text-blue-600 dark:text-cyan-400' : 'text-gray-600 dark:text-slate-400'}`}
-              onClick={() => setActiveTab('about')}
+            <Link
+              to="/website-development-service"
+              className={`flex flex-col items-center py-2 px-3 ${activeTab === 'web' ? 'text-blue-600 dark:text-cyan-400' : 'text-gray-600 dark:text-slate-400'}`}
+              onClick={() => setActiveTab('web')}
             >
-              <Info size={20} />
-              <span className="text-xs mt-1">About</span>
+              <Globe size={20} />
+              <span className="text-xs mt-1">Web Apps</span>
+            </Link>
+
+            <Link
+              to="/cloud-software-service"
+              className={`flex flex-col items-center py-2 px-3 ${activeTab === 'cloud' ? 'text-blue-600 dark:text-cyan-400' : 'text-gray-600 dark:text-slate-400'}`}
+              onClick={() => setActiveTab('cloud')}
+            >
+              <Cloud size={20} />
+              <span className="text-xs mt-1">Cloud</span>
             </Link>
 
             <button
               type="button"
               onClick={openPlanner}
-              className={`flex flex-col items-center py-2 px-4 ${activeTab === 'calculator' ? 'text-blue-600 dark:text-cyan-400' : 'text-gray-600 dark:text-slate-400'}`}
+              className={`flex flex-col items-center py-2 px-3 ${activeTab === 'planner' ? 'text-blue-600 dark:text-cyan-400' : 'text-gray-600 dark:text-slate-400'}`}
             >
               <Calculator size={20} />
-              <span className="text-xs mt-1">Calculator</span>
+              <span className="text-xs mt-1">Planner</span>
             </button>
 
-            <Link to={"/contact"}
-              className={`flex flex-col items-center py-2 px-4 ${activeTab === 'contact' ? 'text-blue-600 dark:text-cyan-400' : 'text-gray-600 dark:text-slate-400'}`}
-              onClick={() => setActiveTab('contact')}
+            <button
+              type="button"
+              onClick={handleProfileClick}
+              className={`flex flex-col items-center py-2 px-3 ${activeTab === 'profile' ? 'text-blue-600 dark:text-cyan-400' : 'text-gray-600 dark:text-slate-400'}`}
             >
-              <Phone size={20} />
-              <span className="text-xs mt-1">Contact</span>
-            </Link>
+              <span className={`flex items-center justify-center h-8 w-8 rounded-full border ${activeTab === 'profile' ? 'border-blue-600 dark:border-cyan-400 bg-blue-50 dark:bg-slate-800' : 'border-gray-300 dark:border-slate-700 bg-gray-100 dark:bg-slate-800'}`}>
+                {isAuthenticated ? (
+                  <span className="text-sm font-semibold">{userInitial}</span>
+                ) : (
+                  <User size={18} />
+                )}
+              </span>
+              <span className="text-xs mt-1">Profile</span>
+            </button>
           </div>
         </footer>
       </div>

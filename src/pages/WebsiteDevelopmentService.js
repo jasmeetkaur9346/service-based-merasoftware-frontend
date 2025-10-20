@@ -1,4 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import {
   Code,
   HelpCircle,
@@ -19,7 +21,75 @@ const WebsiteDevelopmentPage = () => {
   const [selectedNeed, setSelectedNeed] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [visible, setVisible] = useState({});
   const plannerRef = useRef(null);
+  const calculatorSectionRef = useRef(null);
+  const location = useLocation();
+
+  const sectionRefs = {
+    intro: useRef(null),
+    features: useRef(null),
+    planner: useRef(null),
+    process: useRef(null),
+    cta: useRef(null),
+    contact: useRef(null)
+  };
+
+  // IntersectionObserver for slide-in animations
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            setVisible((prev) => ({ ...prev, [e.target.dataset.section]: true }));
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
+    );
+
+    Object.values(sectionRefs).forEach((ref) => ref.current && io.observe(ref.current));
+    return () => Object.values(sectionRefs).forEach((ref) => ref.current && io.unobserve(ref.current));
+  }, []);
+
+  // Smooth scroll effect when coming from service card
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const shouldSmoothScroll = params.get('smoothScroll') === 'true';
+
+    if (shouldSmoothScroll && calculatorSectionRef.current) {
+      // First, scroll to top instantly
+      window.scrollTo(0, 0);
+
+      // Custom smooth scroll with slower speed
+      setTimeout(() => {
+        const targetPosition = calculatorSectionRef.current.getBoundingClientRect().top + window.pageYOffset;
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        const duration = 2000; // 2 seconds for slower, more visible animation
+        let start = null;
+
+        const easeInOutQuad = (t) => {
+          return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        };
+
+        const animation = (currentTime) => {
+          if (start === null) start = currentTime;
+          const timeElapsed = currentTime - start;
+          const progress = Math.min(timeElapsed / duration, 1);
+          const ease = easeInOutQuad(progress);
+
+          window.scrollTo(0, startPosition + distance * ease);
+
+          if (timeElapsed < duration) {
+            requestAnimationFrame(animation);
+          }
+        };
+
+        requestAnimationFrame(animation);
+      }, 400);
+    }
+  }, [location]);
 
   const businessTypes = [
     'Professional Services',
@@ -151,11 +221,15 @@ const WebsiteDevelopmentPage = () => {
       `}</style>
 
   {/* Main Hero Section */}
-      <section className="section bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:bg-gradient-to-br dark:from-slate-800 dark:via-slate-850 dark:to-slate-900">
+      <section ref={sectionRefs.intro} data-section="intro" className="section bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:bg-gradient-to-br dark:from-slate-800 dark:via-slate-850 dark:to-slate-900">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left - Image */}
-            <div className="relative order-1">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={visible.intro ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6 }}
+              className="relative order-1">
               <div className="relative z-10 animate-float">
                 <div className="bg-white rounded-2xl shadow-xl p-4 border border-slate-200 dark:bg-slate-900/80 dark:border-slate-800 dark:shadow-blue-900/20 relative overflow-hidden">
                   <img
@@ -168,9 +242,13 @@ const WebsiteDevelopmentPage = () => {
                 </div>
               </div>
               <div className="absolute -inset-8 bg-gradient-to-r from-blue-500 to-blue-900 rounded-3xl opacity-20 blur-2xl -z-10 dark:from-slate-950 dark:via-blue-900 dark:to-slate-900 dark:opacity-45" />
-            </div>
+            </motion.div>
             {/* Right - Content */}
-            <div className="space-y-8 order-2">
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={visible.intro ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="space-y-8 order-2">
               <div className="inline-block mb-4">
                 <span className="bg-gradient-to-br from-blue-500 to-blue-900 text-white text-sm font-bold px-8 py-2 rounded-full dark:from-blue-900 dark:via-blue-800 dark:to-blue-700 dark:text-white">
                   Custom Development Service
@@ -204,95 +282,104 @@ const WebsiteDevelopmentPage = () => {
                   <span className="text-sm font-bold text-slate-800 dark:text-slate-100">Dedicated Developer</span>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       <div className="divider" />
 
-  {/* Understanding Section */}
-<section className="section bg-white dark:bg-slate-950">
-  <div className="max-w-7xl mx-auto px-6">
-    <div className="grid lg:grid-cols-2 gap-20 items-center">
-      {/* Left Content */}
-      <div className="space-y-8">
-        <div>
-          <div className="inline-block mb-4">
-            <span className="bg-gradient-to-br from-blue-500 to-blue-900 text-white text-sm font-bold px-8 py-2 rounded-full dark:from-blue-900 dark:via-blue-800 dark:to-blue-700">
-              The Difference
-            </span>
+      {/* Understanding Section */}
+      <section ref={sectionRefs.features} data-section="features" className="section bg-white dark:bg-slate-950">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+            {/* Left Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={visible.features ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6 }}
+              className="space-y-8">
+              <div>
+                <div className="inline-block mb-4">
+                  <span className="bg-gradient-to-br from-blue-500 to-blue-900 text-white text-sm font-bold px-8 py-2 rounded-full dark:from-blue-900 dark:via-blue-800 dark:to-blue-700">
+                    The Difference
+                  </span>
+                </div>
+                <h2 className="text-4xl lg:text-5xl mb-4 mt-6 font-bold leading-tight dark:text-slate-100">
+                  Understanding Web{' '}
+                  <span className="text-blue-600 bg-clip-text dark:text-blue-400">
+                    Applications
+                  </span>
+                </h2>
+                <p className="text-2xl text-slate-600 font-medium dark:text-slate-300">
+                  Websites that don't just show — They work.
+                </p>
+                <div className="mt-6 flex items-center gap-2">
+                  <div className="w-24 h-1.5 bg-gradient-to-r from-blue-500 to-blue-900 rounded-full dark:from-slate-950 dark:to-blue-700" />
+                </div>
+              </div>
+              <div className="relative">
+                <div className="absolute -inset-4 bg-gradient-to-br from-blue-500 to-blue-900 rounded-2xl opacity-10 blur-xl dark:from-slate-900 dark:via-blue-900/50 dark:to-slate-900 dark:opacity-20 dark:blur-2xl" />
+                <div className="relative bg-gradient-to-br from-blue-50 via-slate-50 to-blue-50 rounded-2xl p-8 border-l-4 border-blue-600 shadow-lg dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 dark:border-blue-600 dark:shadow-none">
+                  <p className="text-lg leading-relaxed text-slate-700 dark:text-slate-200">
+                    A web application is similar to a website, but it's built to work like a system — not just to showcase your business. This small difference makes a web application far more complex and systematic to build, and that's where our expertise lies.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Right Image */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={visible.features ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="relative">
+              <div
+                className="absolute -inset-6 bg-gradient-to-r from-blue-500 via-blue-700 to-blue-900 rounded-2xl opacity-20 blur-2xl"
+                aria-hidden="true"
+              />
+              <div className="relative bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200 dark:bg-slate-900 dark:border-slate-800 dark:shadow-blue-900/20">
+                <img
+                  loading="lazy"
+                  src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=900&h=600&fit=crop&auto=format"
+                  alt="Operational system preview"
+                  className="w-full dark:opacity-90"
+                />
+              </div>
+              {/* Callouts */}
+              <div className="absolute top-6 right-6 bg-white rounded-xl shadow-lg p-5 border border-blue-200 z-10 dark:bg-slate-900 dark:border-blue-700 dark:shadow-blue-900/20">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-900 rounded-xl flex items-center justify-center shadow-lg">
+                    <CheckCircle2 className="w-7 h-7 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-xs text-slate-600 font-semibold dark:text-slate-300">Runs Operations</div>
+                    <div className="text-sm font-bold text-slate-900 dark:text-white">Not Just Pages</div>
+                  </div>
+                </div>
+              </div>
+              <div className="absolute bottom-6 left-6 bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 rounded-xl shadow-lg p-6 z-10 text-center text-white dark:shadow-blue-900/40">
+                <div className="text-3xl font-bold">Scales Cleanly</div>
+                <div className="text-sm text-blue-100 font-semibold mt-1">Code-first Architecture</div>
+              </div>
+            </motion.div>
           </div>
-          <h2 className="text-4xl lg:text-5xl mb-4 mt-6 font-bold leading-tight dark:text-slate-100">
-            Understanding Web{' '}
-            <span className="text-blue-600 bg-clip-text dark:text-blue-400">
-              Applications
-            </span>
-          </h2>
-          <p className="text-2xl text-slate-600 font-medium dark:text-slate-300">
-            Websites that don't just show — They work.
-          </p>
-          <div className="mt-6 flex items-center gap-2">
-            <div className="w-24 h-1.5 bg-gradient-to-r from-blue-500 to-blue-900 rounded-full dark:from-slate-950 dark:to-blue-700" />
-          </div>
-        </div>
-        <div className="relative">
-          <div className="absolute -inset-4 bg-gradient-to-br from-blue-500 to-blue-900 rounded-2xl opacity-10 blur-xl dark:from-slate-900 dark:via-blue-900/50 dark:to-slate-900 dark:opacity-20 dark:blur-2xl" />
-          <div className="relative bg-gradient-to-br from-blue-50 via-slate-50 to-blue-50 rounded-2xl p-8 border-l-4 border-blue-600 shadow-lg dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 dark:border-blue-600 dark:shadow-none">
-            <p className="text-lg leading-relaxed text-slate-700 dark:text-slate-200">
-              A web application is similar to a website, but it's built to work like a system — not just to showcase your business. This small difference makes a web application far more complex and systematic to build, and that's where our expertise lies.
-            </p>
-          </div>
-        </div>
-      </div>
-      {/* Right Image */}
-      <div className="relative">
-        <div
-          className="absolute -inset-6 bg-gradient-to-r from-blue-500 via-blue-700 to-blue-900 rounded-2xl opacity-20 blur-2xl"
-          aria-hidden="true"
-        />
-        <div className="relative bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200 dark:bg-slate-900 dark:border-slate-800 dark:shadow-blue-900/20">
-          <img
-            loading="lazy"
-            src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=900&h=600&fit=crop&auto=format"
-            alt="Operational system preview"
-            className="w-full dark:opacity-90"
-          />
-        </div>
-        {/* Callouts */}
-        <div className="absolute top-6 right-6 bg-white rounded-xl shadow-lg p-5 border border-blue-200 z-10 dark:bg-slate-900 dark:border-blue-700 dark:shadow-blue-900/20">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-900 rounded-xl flex items-center justify-center shadow-lg">
-              <CheckCircle2 className="w-7 h-7 text-white" />
+          {/* Bridge box */}
+          <div className="mt-16 flex justify-center">
+            <div className="bg-white rounded-xl p-6 shadow-md border border-slate-200 max-w-5xl text-center dark:bg-slate-900 dark:border-slate-800 dark:shadow-blue-900/20">
+              <p className="text-lg font-semibold text-slate-800 dark:text-slate-100 flex items-center justify-center gap-1.5">
+                See what fits your business and what it costs — with our <span className="text-blue-600 font-semibold dark:text-blue-400">Project Planner</span> below.
+              </p>
             </div>
-            <div>
-              <div className="text-xs text-slate-600 font-semibold dark:text-slate-300">Runs Operations</div>
-              <div className="text-sm font-bold text-slate-900 dark:text-white">Not Just Pages</div>
-            </div>
           </div>
         </div>
-        <div className="absolute bottom-6 left-6 bg-gradient-to-br from-blue-500 via-blue-700 to-blue-900 rounded-xl shadow-lg p-6 z-10 text-center text-white dark:shadow-blue-900/40">
-          <div className="text-3xl font-bold">Scales Cleanly</div>
-          <div className="text-sm text-blue-100 font-semibold mt-1">Code-first Architecture</div>
-        </div>
-      </div>
-    </div>
-    {/* Bridge box */}
-    <div className="mt-16 flex justify-center">
-      <div className="bg-white rounded-xl p-6 shadow-md border border-slate-200 max-w-5xl text-center dark:bg-slate-900 dark:border-slate-800 dark:shadow-blue-900/20">
-       <p className="text-lg font-semibold text-slate-800 dark:text-slate-100 flex items-center justify-center gap-1.5">
-  See what fits your business and what it costs — with our <span className="text-blue-600 font-semibold dark:text-blue-400">Project Planner</span> below.
-</p>
-      </div>
-    </div>
-  </div>
-</section>
+      </section>
 
 
       <div className="divider" />
 
       {/* Project Planner */}
-      <section id="project-planner" className="section bg-gradient-to-br from-slate-50 via-blue-50 to-white">
+      <section id="project-planner" ref={calculatorSectionRef} className="section bg-gradient-to-br from-slate-50 via-blue-50 to-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-16">
@@ -439,7 +526,7 @@ const WebsiteDevelopmentPage = () => {
       <div className="divider" />
 
       {/* Process Section */}
-      <section id="process" className="section bg-white dark:bg-slate-950">
+      <section id="process" ref={sectionRefs.process} data-section="process" className="section bg-white dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-6">
           {/* Heading */}
           <div className="text-center mb-20">

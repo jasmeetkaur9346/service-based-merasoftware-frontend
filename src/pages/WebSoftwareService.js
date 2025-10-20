@@ -1,4 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import {
   Code,
   HelpCircle,
@@ -17,7 +19,13 @@ const WebSoftwareService = () => {
   const [selectedNeed, setSelectedNeed] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [visible, setVisible] = useState({});
   const plannerRef = useRef(null);
+  const plannerSectionRef = useRef(null);
+  const location = useLocation();
+
+  const heroRef = useRef(null);
+  const featuresRef = useRef(null);
   
   const businessTypes = [
     'Professional Services',
@@ -67,6 +75,68 @@ const WebSoftwareService = () => {
       plannerRef.current.open();
     }
   };
+
+  // IntersectionObserver for hero and features animations
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            const section = e.target.dataset.section;
+            setVisible((prev) => ({ ...prev, [section]: true }));
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
+    );
+
+    if (heroRef.current) io.observe(heroRef.current);
+    if (featuresRef.current) io.observe(featuresRef.current);
+
+    return () => {
+      if (heroRef.current) io.unobserve(heroRef.current);
+      if (featuresRef.current) io.unobserve(featuresRef.current);
+    };
+  }, []);
+
+  // Custom smooth scroll to planner section
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const shouldSmoothScroll = params.get('smoothScroll') === 'true';
+
+    if (shouldSmoothScroll && plannerSectionRef.current) {
+      // Start at top
+      window.scrollTo(0, 0);
+
+      // Smooth scroll to planner section after delay
+      setTimeout(() => {
+        const targetPosition = plannerSectionRef.current.getBoundingClientRect().top + window.pageYOffset;
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        const duration = 2000; // 2 seconds
+        let start = null;
+
+        const easeInOutQuad = (t) => {
+          return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        };
+
+        const animation = (currentTime) => {
+          if (start === null) start = currentTime;
+          const timeElapsed = currentTime - start;
+          const progress = Math.min(timeElapsed / duration, 1);
+          const ease = easeInOutQuad(progress);
+
+          window.scrollTo(0, startPosition + distance * ease);
+
+          if (timeElapsed < duration) {
+            requestAnimationFrame(animation);
+          }
+        };
+
+        requestAnimationFrame(animation);
+      }, 400);
+    }
+  }, [location]);
 
   return (
     <div className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
@@ -143,10 +213,14 @@ const WebSoftwareService = () => {
       `}</style>
 
       {/* Hero Section */}
-      <section className="section bg-gradient-to-br from-slate-50 via-cyan-50 to-slate-100 dark:bg-gradient-to-br dark:from-slate-800 dark:via-slate-850 dark:to-slate-900">
+      <section ref={heroRef} data-section="hero" className="section bg-gradient-to-br from-slate-50 via-cyan-50 to-slate-100 dark:bg-gradient-to-br dark:from-slate-800 dark:via-slate-850 dark:to-slate-900">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="relative order-1">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={visible.hero ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6 }}
+              className="relative order-1">
               <div className="relative z-10 animate-float">
                 <div className="bg-white rounded-2xl shadow-xl p-4 border border-slate-200 dark:bg-slate-900/80 dark:border-slate-800 dark:shadow-cyan-900/20 relative overflow-hidden">
                   <img
@@ -159,9 +233,13 @@ const WebSoftwareService = () => {
                 </div>
               </div>
               <div className="absolute -inset-8 bg-gradient-to-r from-cyan-500 to-cyan-900 rounded-3xl opacity-20 blur-2xl -z-10 dark:from-slate-950 dark:via-cyan-900 dark:to-slate-900 dark:opacity-45" />
-            </div>
+            </motion.div>
 
-            <div className="space-y-8 order-2">
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={visible.hero ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="space-y-8 order-2">
               <div className="inline-block mb-4">
                 <span className="bg-gradient-to-br from-cyan-500 to-cyan-900 text-white text-sm font-bold px-8 py-2 rounded-full dark:from-cyan-900 dark:via-cyan-800 dark:to-cyan-700 dark:text-white">
                   Custom Management Software
@@ -199,16 +277,16 @@ const WebSoftwareService = () => {
                   <span className="text-sm font-bold text-slate-800 dark:text-slate-100">Fully Coded Software</span>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       <div className="divider" />
 
-      <section className="py-12 lg:py-16 bg-white relative overflow-hidden dark:bg-slate-950 dark:text-slate-100">
+      <section ref={featuresRef} data-section="features" className="py-12 lg:py-16 bg-white relative overflow-hidden dark:bg-slate-950 dark:text-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          
+
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 dark:text-slate-100">
               Cloud-Based Solutions
@@ -218,9 +296,13 @@ const WebSoftwareService = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start mb-16">    
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start mb-16">
 
-            <div className="space-y-5">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={visible.features ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6 }}
+              className="space-y-5">
               <div>
                 <h3 className="text-4xl font-bold text-slate-900 mb-3 dark:text-slate-100">
                   Management Software
@@ -264,9 +346,13 @@ const WebSoftwareService = () => {
                 </h3>
                 <div className="w-16 h-1 bg-cyan-600 dark:bg-cyan-500"></div>
               </div> */}
-            </div> 
-            
-            <div className="relative hidden lg:block">
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={visible.features ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="relative hidden lg:block">
               <div className="sticky top-8">
                 <div className="relative bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200 dark:bg-slate-900 dark:border-slate-800 dark:shadow-cyan-900/25">
                   <img 
@@ -286,7 +372,7 @@ const WebSoftwareService = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
           </div>
 
@@ -402,7 +488,7 @@ const WebSoftwareService = () => {
       <div className="divider" />
 
      {/* Project Planner */}
-      <section id="project-planner" className="section bg-gradient-to-br from-slate-50 via-cyan-50 to-white">
+      <section ref={plannerSectionRef} id="project-planner" className="section bg-gradient-to-br from-slate-50 via-cyan-50 to-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-16">
@@ -548,7 +634,7 @@ const WebSoftwareService = () => {
 
       <div className="divider" />
 
-      <section id="process" className="section bg-white dark:bg-slate-950">
+      <section className="section bg-white dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-20">
             <div className="inline-block mb-4">
@@ -615,7 +701,7 @@ const WebSoftwareService = () => {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-start mb-12">
-            
+
             <div className="space-y-6">
               <div className="relative">
                 <div className="bg-slate-700 rounded-xl shadow-2xl p-3 border border-slate-600">

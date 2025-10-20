@@ -16,6 +16,7 @@ import CookiesPolicyPage from './pages/CookiesPolicyPage';
 import RefundPolicyPage from './pages/RefundPolicyPage';
 import DeliveryPolicyPage from './pages/DeliveryPolicyPage';
 import DisclaimersPage from './pages/DisclaimersPage';
+import ClientPortal from './pages/ClientPortal';
 
 function App() {
   return (
@@ -42,6 +43,8 @@ function App() {
             <Route path="/refund-policy" element={<RefundPolicyPage />} />
             <Route path="/delivery-policy" element={<DeliveryPolicyPage />} />
             <Route path="/disclaimers" element={<DisclaimersPage />} />
+
+            <Route path="/client-portal" element={<ClientPortal />} />
 
           </Routes>
         </main>

@@ -24,6 +24,10 @@ const SummaryApi = {
     url: buildUrl('/api/userLogout'),
     method: 'get',
   },
+  arrangeCallback: {
+    url: buildUrl('/api/arrange-callback'),
+    method: 'post',
+  },
 };
 
 export const CUSTOMER_PORTAL_URL = process.env.REACT_APP_CUSTOMER_PORTAL_URL || '';

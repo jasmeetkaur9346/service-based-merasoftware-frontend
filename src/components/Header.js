@@ -349,84 +349,78 @@ const Header = () => {
                 ))}
               </nav>
             </div>
-            {!initializing && (
-              <div className="hidden lg:flex items-center space-x-4">
-                <ThemeToggleIcon />
+            <div className="hidden lg:flex items-center space-x-4">
+              <ThemeToggleIcon />
 
-                {isAuthenticated ? (
-                  <>
-                    {/* <button
-                      onClick={handleDashboard}
-                      className="bg-indigo-600 text-white px-4 py-2 rounded-full hover:bg-indigo-700 dark:hover:bg-indigo-500 transition-colors shadow-md hover:shadow-lg"
-                    >
-                      Dashboard
-                    </button> */}
-                    <div className="relative" ref={userMenuRef} data-user-menu="true">
-                      <button
-                        onClick={() => setMenuDisplay((prev) => !prev)}
-                        className="flex items-center space-x-2 px-3 py-2 rounded-full border border-gray-200 dark:border-slate-700 hover:border-indigo-300 transition-colors bg-white dark:bg-slate-900 shadow-sm"
-                      >
-                        <div className="w-9 h-9 rounded-full bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-200 flex items-center justify-center font-semibold">
-                          {userInitial}
-                        </div>
-                        <div className="text-left">
-                          <div className="text-sm font-semibold text-gray-800 dark:text-white leading-tight">
-                            {user?.name || 'User'}
-                          </div>
-                          <div className="text-xs text-gray-500 dark:text-slate-400 leading-tight max-w-[140px] truncate">
-                            {user?.email || ''}
-                          </div>
-                        </div>
-                        <ChevronDown className="w-4 h-4 text-gray-500 dark:text-slate-400" />
-                      </button>
-
-                      {menuDisplay && (
-                        <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-gray-100 dark:border-slate-800 overflow-hidden z-50">
-                          <div className="px-4 py-3 border-b border-gray-100 dark:border-slate-800 bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-slate-800 dark:to-slate-900">
-                            <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
-                              {user?.name || 'User'}
-                            </p>
-                            {user?.email && (
-                              <p className="text-xs text-gray-500 dark:text-slate-400 truncate">
-                                {user.email}
-                              </p>
-                            )}
-                          </div>
-                          <button
-                      onClick={handleDashboard}
-                      className="w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors border-b dark:border-slate-800"
-                    >
-                      Dashboard
-                    </button>
-                          <button
-                            onClick={handleLogout}
-                            className="w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
-                          >
-                            Logout
-                          </button>
-
-                        </div>
-                      )}
+              {initializing ? (
+                <div className="flex items-center space-x-3">
+                  <div className="h-9 w-24 rounded-full bg-gray-200/70 dark:bg-slate-800 animate-pulse" />
+                  <div className="h-9 w-24 rounded-full bg-gray-200/70 dark:bg-slate-800 animate-pulse" />
+                </div>
+              ) : isAuthenticated ? (
+                <div className="relative" ref={userMenuRef} data-user-menu="true">
+                  <button
+                    onClick={() => setMenuDisplay((prev) => !prev)}
+                    className="flex items-center space-x-2 px-3 py-2 rounded-full border border-gray-200 dark:border-slate-700 hover:border-indigo-300 transition-colors bg-white dark:bg-slate-900 shadow-sm"
+                  >
+                    <div className="w-9 h-9 rounded-full bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-200 flex items-center justify-center font-semibold">
+                      {userInitial}
                     </div>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      onClick={handleStaffLogin}
-                      className="bg-white dark:bg-slate-900 text-blue-600 dark:!text-white border border-indigo-200 dark:border-slate-700 px-4 py-2 rounded-full hover:bg-blue-50 dark:hover:bg-slate-800 hover:border-indigo-300 dark:hover:border-slate-600 transition-all duration-200"
-                    >
-                      Staff Login
-                    </button>
-                    <button
-                      onClick={handleLoginClick}
-                      className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white px-6 py-2 rounded-full hover:bg-indigo-700 dark:hover:bg-indigo-500 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
-                    >
-                      Login
-                    </button>
-                  </>
-                )}
-              </div>
-            )}
+                    <div className="text-left">
+                      <div className="text-sm font-semibold text-gray-800 dark:text-white leading-tight">
+                        {user?.name || 'User'}
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-slate-400 leading-tight max-w-[140px] truncate">
+                        {user?.email || ''}
+                      </div>
+                    </div>
+                    <ChevronDown className="w-4 h-4 text-gray-500 dark:text-slate-400" />
+                  </button>
+
+                  {menuDisplay && (
+                    <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-gray-100 dark:border-slate-800 overflow-hidden z-50">
+                      <div className="px-4 py-3 border-b border-gray-100 dark:border-slate-800 bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-slate-800 dark:to-slate-900">
+                        <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                          {user?.name || 'User'}
+                        </p>
+                        {user?.email && (
+                          <p className="text-xs text-gray-500 dark:text-slate-400 truncate">
+                            {user.email}
+                          </p>
+                        )}
+                      </div>
+                      <button
+                        onClick={handleDashboard}
+                        className="w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors border-b dark:border-slate-800"
+                      >
+                        Dashboard
+                      </button>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <>
+                  <button
+                    onClick={handleStaffLogin}
+                    className="bg-white dark:bg-slate-900 text-blue-600 dark:!text-white border border-indigo-200 dark:border-slate-700 px-4 py-2 rounded-full hover:bg-blue-50 dark:hover:bg-slate-800 hover:border-indigo-300 dark:hover:border-slate-600 transition-all duration-200"
+                  >
+                    Staff Login
+                  </button>
+                  <button
+                    onClick={handleLoginClick}
+                    className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white px-6 py-2 rounded-full hover:bg-indigo-700 dark:hover:bg-indigo-500 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+                  >
+                    Login
+                  </button>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </header>
@@ -450,35 +444,33 @@ const Header = () => {
               <ThemeToggleIcon />
 
               {/* Login Button or User Profile Icon */}
-              {!initializing && (
-                <>
-                  {!isAuthenticated ? (
-                    <button
-                      onClick={handleLoginClick}
-                      className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white px-4 py-2 rounded-full hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 text-sm font-medium"
-                    >
-                      Login
-                    </button>
+              {initializing ? (
+                <div className="w-16 h-8 rounded-full bg-gray-200/70 dark:bg-slate-800 animate-pulse" />
+              ) : !isAuthenticated ? (
+                <button
+                  onClick={handleLoginClick}
+                  className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white px-4 py-2 rounded-full hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 text-sm font-medium"
+                >
+                  Login
+                </button>
+              ) : (
+                <div
+                  onClick={() => setMenuDisplay((prev) => !prev)}
+                  className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-500/20 dark:to-cyan-500/20 flex items-center justify-center cursor-pointer border-2 border-blue-200 dark:border-blue-500/30 hover:border-blue-400 transition-colors overflow-hidden"
+                  data-user-menu="true"
+                >
+                  {user?.profilePic ? (
+                    <img
+                      src={user.profilePic}
+                      alt={user?.name || 'User'}
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
-                    <div
-                      onClick={() => setMenuDisplay((prev) => !prev)}
-                      className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-500/20 dark:to-cyan-500/20 flex items-center justify-center cursor-pointer border-2 border-blue-200 dark:border-blue-500/30 hover:border-blue-400 transition-colors overflow-hidden"
-                      data-user-menu="true"
-                    >
-                      {user?.profilePic ? (
-                        <img
-                          src={user.profilePic}
-                          alt={user?.name || 'User'}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <span className="text-sm font-semibold text-blue-700 dark:text-blue-200">
-                          {userInitial}
-                        </span>
-                      )}
-                    </div>
+                    <span className="text-sm font-semibold text-blue-700 dark:text-blue-200">
+                      {userInitial}
+                    </span>
                   )}
-                </>
+                </div>
               )}
 
               {/* Mobile Menu Toggle */}
@@ -598,14 +590,18 @@ const Header = () => {
                 </div>
               ))}
 
-              {!initializing && !isAuthenticated && (
+              {(initializing || !isAuthenticated) && (
                 <div className="flex flex-col space-y-2 mt-6">
-                  <button
-                    onClick={handleStaffLogin}
-                    className="w-full text-blue-600 dark:text-cyan-300 border border-blue-200 dark:border-slate-700 py-2.5 rounded-full font-medium hover:bg-blue-50 dark:hover:bg-slate-800 transition-colors"
-                  >
-                    Staff Login
-                  </button>
+                  {initializing ? (
+                    <div className="h-10 rounded-full bg-gray-200/70 dark:bg-slate-800 animate-pulse" />
+                  ) : (
+                    <button
+                      onClick={handleStaffLogin}
+                      className="w-full text-blue-600 dark:text-cyan-300 border border-blue-200 dark:border-slate-700 py-2.5 rounded-full font-medium hover:bg-blue-50 dark:hover:bg-slate-800 transition-colors"
+                    >
+                      Staff Login
+                    </button>
+                  )}
                 </div>
               )}
             </nav>

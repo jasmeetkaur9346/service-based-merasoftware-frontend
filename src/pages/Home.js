@@ -1,10 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
+﻿import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Award, TrendingUp, UserCheck, HelpCircle, Download, CheckCircle2, MessageSquare, IndianRupee, Globe, Globe2 } from "lucide-react";
+import { ArrowRight, Award, TrendingUp, UserCheck, HelpCircle, Download, CheckCircle2, MessageSquare, IndianRupee, Globe, Globe2, ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 import { CgWebsite } from "react-icons/cg";
 import { useAuth } from "../context/AuthContext";
-import director from "../images/director.jpg"
+import director from "../images/director.jpg";
+import SummaryApi from "../common";
+
+const COUNTRY_OPTIONS = [
+  { value: "IND", shortLabel: "IND", dialCode: "+91", flag: "🇮🇳" },
+  { value: "USA", shortLabel: "USA", dialCode: "+1", flag: "🇺🇸" },
+  { value: "AUS", shortLabel: "AUS", dialCode: "+61", flag: "🇦🇺" },
+  { value: "CAN", shortLabel: "CAN", dialCode: "+1", flag: "🇨🇦" },
+];
+
+const INPUT_BASE_CLASSES =
+  "w-full rounded-xl border border-slate-200 bg-slate-50 px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base text-slate-700 placeholder:text-slate-400 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100 dark:placeholder-slate-400 dark:focus:bg-slate-900";
+const LABEL_STYLES = "block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5 sm:mb-2 dark:text-slate-200";
 
 // NOTE: TailwindCSS required. Framer Motion used for subtle reveals.
 // Single <h1> for SEO, the rest are h2/h3.
@@ -12,8 +24,14 @@ import director from "../images/director.jpg"
 const Homepage = () => {
   const [visible, setVisible] = useState({});
   const [formStatus, setFormStatus] = useState("idle"); // idle | submitting | success | error
+  const [formError, setFormError] = useState("");
+  const [emailError, setEmailError] = useState(""); // Real-time email validation error
+  const [selectedCountry, setSelectedCountry] = useState(COUNTRY_OPTIONS[0].value);
+  const [selectedTestimonial, setSelectedTestimonial] = useState(null);
   const { user, customerPortalUrl } = useAuth();
   const isAuthenticated = Boolean(user?._id);
+  const selectedCountryOption = COUNTRY_OPTIONS.find((country) => country.value === selectedCountry) ?? COUNTRY_OPTIONS[0];
+  const selectedDialCode = selectedCountryOption.dialCode;
 
   const sectionRefs = {
     hero: useRef(null),
@@ -42,14 +60,97 @@ const Homepage = () => {
   }, []);
 
 
-  const onSubmit = (e) => {
+  // Client-side email validation function
+  const validateEmail = (email) => {
+    // Basic regex check
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regex.test(email)) return false;
+
+    // Block obvious fake emails
+    const fakeEmails = ['test@gmail.com', 'example@gmail.com', 'test@test.com', 'fake@gmail.com', 'demo@gmail.com', 'sample@gmail.com'];
+    if (fakeEmails.includes(email.toLowerCase())) return false;
+
+    return true;
+  };
+
+  // Real-time email validation on blur
+  const handleEmailBlur = (e) => {
+    const email = e.target.value.trim();
+
+    if (!email) {
+      setEmailError("");
+      return;
+    }
+
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regex.test(email)) {
+      setEmailError("Please enter a valid email format (e.g., example@gmail.com)");
+      return;
+    }
+
+    const fakeEmails = ['test@gmail.com', 'example@gmail.com', 'test@test.com', 'fake@gmail.com', 'demo@gmail.com', 'sample@gmail.com'];
+    if (fakeEmails.includes(email.toLowerCase())) {
+      setEmailError("Please use a real email address, not a test email");
+      return;
+    }
+
+    setEmailError("");
+  };
+
+  // Clear email error when user starts typing
+  const handleEmailChange = () => {
+    if (emailError) {
+      setEmailError("");
+    }
+  };
+
+  const onSubmit = async (e) => {
     e.preventDefault();
+    setFormError("");
     setFormStatus("submitting");
-    // Simulate request
-    setTimeout(() => {
-      setFormStatus("success");
-      e.target.reset();
-    }, 900);
+
+    const formData = new FormData(e.target);
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const phone = formData.get("phone");
+    const serviceType = formData.get("serviceType");
+
+    // Client-side email validation
+    if (!validateEmail(email)) {
+      setFormStatus("idle");
+      setFormError("Please enter a valid email format (e.g., example@gmail.com)");
+      return;
+    }
+
+    try {
+      const response = await fetch(SummaryApi.arrangeCallback.url, {
+        method: SummaryApi.arrangeCallback.method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.toLowerCase().trim(),
+          phone: selectedDialCode + phone.trim(),
+          serviceType: serviceType || "",
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setFormStatus("success");
+        setSelectedCountry(COUNTRY_OPTIONS[0].value);
+        e.target.reset();
+      } else {
+        setFormStatus("error");
+        setFormError(data.message || "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error("Callback form error:", error);
+      setFormStatus("error");
+      setFormError("Unable to submit request. Please check your connection and try again.");
+    }
   };
 
   const handleAccessPortal = () => {
@@ -352,7 +453,7 @@ const Homepage = () => {
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-2 gap-2.5 sm:gap-6 lg:gap-8 relative">
               {/* Left */}
-              <Link to="/website-development-service" className="group block">
+              <Link to="/website-development-service?smoothScroll=true" className="group block">
                 <div className="relative bg-gradient-to-br from-blue-50/80 to-white rounded-2xl px-4 sm:px-6 py-5 sm:py-10 text-center shadow-lg border border-slate-200 hover:shadow-2xl hover:border-blue-200 transition-all duration-300 h-full dark:from-slate-800 dark:to-slate-800 dark:border-slate-700 dark:hover:border-slate-600">
                   <div className="absolute inset-0 rounded-2xl transition-all group-hover:bg-blue-600/5" />
                   <div className="relative z-10 flex flex-col items-center">
@@ -377,7 +478,7 @@ const Homepage = () => {
               </Link>
 
               {/* Right */}
-              <Link to="/cloud-software-service" className="group block">
+              <Link to="/cloud-software-service?smoothScroll=true" className="group block">
                 <div className="relative bg-gradient-to-br from-cyan-50/80 to-white rounded-2xl px-4 sm:px-6 py-5 sm:py-10 text-center shadow-lg border border-slate-200 hover:shadow-2xl hover:border-cyan-200 transition-all duration-300 h-full dark:from-slate-800 dark:to-slate-800 dark:border-slate-700 dark:hover:border-slate-600">
                   <div className="absolute inset-0 rounded-2xl transition-all group-hover:bg-cyan-600/5" />
                   <div className="relative z-10 flex flex-col items-center">
@@ -536,7 +637,7 @@ const Homepage = () => {
               </div>
 
                <div className="pt-1 sm:pt-2 flex flex-wrap items-center gap-4 sm:gap-6 mt-3 sm:mt-4">
-                <a href="#calculator" className="group relative inline-flex w-full sm:w-auto justify-center items-center gap-2 bg-slate-800/40 border border-slate-700 text-sm sm:text-base text-white px-5 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all">
+                <a href="client-portal" className="group relative inline-flex w-full sm:w-auto justify-center items-center gap-2 bg-slate-800/40 border border-slate-700 text-sm sm:text-base text-white px-5 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all">
                   Read How It Works
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
                 </a>
@@ -753,56 +854,157 @@ const Homepage = () => {
 
           <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 max-w-6xl mx-auto">
             {/* Form */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200 dark:bg-slate-900 dark:border-slate-700">
+            <div className="relative bg-white rounded-2xl p-4 sm:p-8 shadow-xl border border-slate-200 lg:h-[400px] flex flex-col dark:bg-slate-900 dark:border-slate-700">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-t-2xl" />
+
               {formStatus === "success" ? (
-                <div className="text-center py-12 sm:py-16">
-                  <div className="mx-auto w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-green-100 flex items-center justify-center mb-4 dark:bg-emerald-900/30">
-                    <CheckCircle2 className="w-7 h-7 sm:w-8 sm:h-8 text-green-600" />
+                <div className="flex-1 flex flex-col items-center justify-center text-center py-6 sm:py-8">
+                  <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-blue-600/10 to-cyan-500/10 flex items-center justify-center mb-3 sm:mb-4 border-2 border-blue-600 dark:border-cyan-500">
+                    <CheckCircle2 className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 dark:text-cyan-500" strokeWidth={2} />
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-bold mb-2 dark:text-white">Message sent</h3>
-                  <p className="text-slate-600 dark:text-slate-300">We will reach out within twenty four hours</p>
+                  <h3 className="text-lg sm:text-2xl font-bold mb-2 text-slate-900 dark:text-white">Message Sent Successfully</h3>
+                  <p className="text-xs sm:text-base text-slate-600 dark:text-slate-300 mb-3 sm:mb-4">We will reach out within 24 hours</p>
+                  <button
+                    onClick={() => setFormStatus("idle")}
+                    className="inline-flex items-center gap-2 text-blue-600 dark:text-cyan-500 font-semibold hover:gap-3 transition-all text-xs sm:text-base"
+                  >
+                    Send another message
+                    <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  </button>
                 </div>
               ) : (
-                <form onSubmit={onSubmit} className="space-y-5">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-semibold mb-2">Full Name *</label>
-                      <input required type="text" placeholder="Name" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100 dark:placeholder-slate-400 dark:focus:bg-slate-900" />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-2">Phone Number *</label>
-                      <input required type="tel" placeholder="+91 98765 43210" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100 dark:placeholder-slate-400 dark:focus:bg-slate-900" />
-                    </div>
+                <>
+                  <div className="mb-3 sm:mb-6">
+                    <h3 className="text-lg sm:text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white mb-0.5 sm:mb-2">Request a callback</h3>
+                    <p className="text-[11px] sm:text-sm text-slate-600 dark:text-slate-400">We'll reach out within 24 hours</p>
                   </div>
-                  <div>
-                    <label className="block text-sm font-semibold mb-2">Email Address *</label>
-                    <input required type="email" placeholder="Email" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100 dark:placeholder-slate-400 dark:focus:bg-slate-900" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold mb-2">Service interested in</label>
-                    <select className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100 dark:focus:bg-slate-900">
-                      <option value="">Select a service</option>
-                      <option value="web">Web Application Development</option>
-                      <option value="consultation">Cloud Software Solutions</option>
-                    </select>
-                  </div>
-                  {/* <div>
-                    <label className="block text-sm font-semibold mb-2">Project details *</label>
-                    <textarea required rows="4" placeholder="Tell us about your project requirements" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all resize-none dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100 dark:placeholder-slate-400 dark:focus:bg-slate-900" />
-                  </div> */}
-                  <button disabled={formStatus === "submitting"} className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-blue-800 text-white py-4 px-6 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
-                    {formStatus === "submitting" ? (
-                      <span className="animate-pulse">Sending…</span>
-                    ) : (
-                      <>
-                        {/* <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                        </svg> */}
-                        Send message
-                      </>
+
+                  <form onSubmit={onSubmit} className="flex-1 flex flex-col">
+                    {formStatus === "error" && formError && (
+                      <div className="mb-3 sm:mb-4 p-2.5 sm:p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-xs sm:text-sm dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
+                        {formError}
+                      </div>
                     )}
-                  </button>
-                </form>
+
+                    <div className="space-y-2.5 sm:space-y-5">
+                      <div className="grid gap-2.5 sm:gap-5 sm:grid-cols-2">
+                        <div className="group">
+                          <label className={LABEL_STYLES}>
+                            <span className="flex items-center gap-1">
+                              Full Name
+                              <span className="text-blue-600 dark:text-cyan-500">*</span>
+                            </span>
+                          </label>
+                          <input
+                            name="name"
+                            required
+                            type="text"
+                            placeholder="John Doe"
+                            className={INPUT_BASE_CLASSES}
+                          />
+                        </div>
+
+                        <div className="group">
+                          <label className={LABEL_STYLES}>
+                            <span className="flex items-center gap-1">
+                              Email Address
+                              <span className="text-blue-600 dark:text-cyan-500">*</span>
+                            </span>
+                          </label>
+                          <input
+                            name="email"
+                            required
+                            type="email"
+                            placeholder="john@example.com"
+                            className={INPUT_BASE_CLASSES}
+                            onBlur={handleEmailBlur}
+                            onChange={handleEmailChange}
+                          />
+                          {emailError && (
+                            <p className="mt-1.5 text-xs sm:text-sm text-red-600 dark:text-red-400">
+                              {emailError}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="grid gap-2.5 sm:gap-5 sm:grid-cols-2">
+                        <div className="group">
+                          <label className={LABEL_STYLES}>
+                            <span className="flex items-center gap-1">
+                              Phone Number
+                              <span className="text-blue-600 dark:text-cyan-500">*</span>
+                            </span>
+                          </label>
+                          <div className="relative">
+                            <div className="absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 flex items-center gap-1 sm:gap-2 z-10">
+                              <div className="relative">
+                                <select
+                                  value={selectedCountry}
+                                  onChange={(event) => setSelectedCountry(event.target.value)}
+                                  className="appearance-none bg-transparent border-none outline-none cursor-pointer pr-3.5 sm:pr-5 text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200"
+                                  style={{ width: '45px' }}
+                                >
+                                  {COUNTRY_OPTIONS.map((country) => (
+                                    <option key={country.value} value={country.value}>
+                                      {country.flag}
+                                    </option>
+                                  ))}
+                                </select>
+                                <ChevronDown className="pointer-events-none absolute right-0 top-1/2 h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 -translate-y-1/2 text-slate-400" />
+                              </div>
+                              <span className="text-[11px] sm:text-sm font-semibold text-slate-500 dark:text-slate-400 border-l border-slate-300 dark:border-slate-600 pl-1 sm:pl-2">
+                                {selectedDialCode}
+                              </span>
+                            </div>
+                            <input
+                              name="phone"
+                              required
+                              type="tel"
+                              inputMode="tel"
+                              placeholder="98765 43210"
+                              className={`${INPUT_BASE_CLASSES} pl-24 sm:pl-32`}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="group">
+                          <label className={LABEL_STYLES}>Service Type</label>
+                          <div className="relative">
+                            <select name="serviceType" className={`${INPUT_BASE_CLASSES} appearance-none pr-8 sm:pr-10`}>
+                              <option value="">Select a service</option>
+                              <option value="Web Application Development">Web Application Development</option>
+                              <option value="Cloud Software Solutions">Cloud Software Solutions</option>
+                            </select>
+                            <ChevronDown className="pointer-events-none absolute right-2.5 sm:right-4 top-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 -translate-y-1/2 text-slate-400" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-auto pt-3 sm:pt-6">
+                      <button
+                        disabled={formStatus === "submitting"}
+                        className="group relative w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 disabled:from-slate-400 disabled:to-slate-500 text-white py-2.5 sm:py-4 px-4 sm:px-6 rounded-xl font-semibold text-xs sm:text-base shadow-lg hover:shadow-xl disabled:shadow-none transition-all flex items-center justify-center gap-2 overflow-hidden"
+                      >
+                        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                        <span className="relative flex items-center gap-2">
+                          {formStatus === "submitting" ? (
+                            <>
+                              <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                              Sending...
+                            </>
+                          ) : (
+                            <>
+                              Request Callback
+                              <ArrowRight className="w-3.5 sm:w-5 h-3.5 sm:h-5 transition-transform group-hover:translate-x-1" />
+                            </>
+                          )}
+                        </span>
+                      </button>
+                    </div>
+                  </form>
+                </>
               )}
             </div>
 

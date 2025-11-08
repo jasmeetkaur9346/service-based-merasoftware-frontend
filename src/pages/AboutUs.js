@@ -1,18 +1,43 @@
-import React from 'react';
-import { ArrowRight, Award, Star, TrendingUp } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import director from '../images/director.jpg';
 
 export default function AboutUsPage() {
-  return (
-    <main className="min-h-screen bg-white text-slate-900">
+  const [visible, setVisible] = useState({});
 
-<div className="relative bg-slate-900 py-20 border-b border-slate-700 overflow-hidden">
+  const sectionRefs = {
+    intro: useRef(null),
+    story: useRef(null)
+  };
+
+  // IntersectionObserver for slide-in animations
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            setVisible((prev) => ({ ...prev, [e.target.dataset.section]: true }));
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
+    );
+
+    Object.values(sectionRefs).forEach((ref) => ref.current && io.observe(ref.current));
+    return () => Object.values(sectionRefs).forEach((ref) => ref.current && io.unobserve(ref.current));
+  }, []);
+
+  return (
+    <main className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+
+<div className="relative bg-slate-900 dark:bg-slate-950 py-20 border-b border-slate-700 dark:border-slate-800 overflow-hidden">
         <div className="absolute inset-0">
-          <img 
-            src="https://www.shutterstock.com/image-photo/panorama-shot-analyst-team-utilizing-260nw-2332286999.jpg" 
+          <img
+            src="https://www.shutterstock.com/image-photo/panorama-shot-analyst-team-utilizing-260nw-2332286999.jpg"
             alt="Technology web background"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-cyan-900/80 to-slate-900/80" />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-800/80 to-slate-900/80 dark:from-slate-950/95 dark:via-slate-900/80 dark:to-slate-950/80" />
         </div>
 
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
@@ -71,12 +96,17 @@ export default function AboutUsPage() {
       `}</style>
 
       {/* Intro */}
-      <section className="section bg-white">
+      <section ref={sectionRefs.intro} data-section="intro" className="section bg-white dark:bg-slate-900">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 ">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="relative order-1">
+            {/* Left - Image with animation */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={visible.intro ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6 }}
+              className="relative order-1">
               <div className="relative z-10 animate-float">
-                <div className="bg-white rounded-2xl shadow-xl p-4 border border-slate-200">
+                <div className="bg-white rounded-2xl shadow-xl p-4 border border-slate-200 dark:bg-slate-900 dark:border-slate-800 dark:shadow-blue-900/20">
                   <img
                     loading="lazy"
                     src="https://www.scnsoft.com/blog-pictures/web-apps/web-application-vs-website-01.png"
@@ -86,9 +116,14 @@ export default function AboutUsPage() {
                 </div>
               </div>
               <div className="absolute -inset-8 bg-gradient-to-r from-cyan-500 to-cyan-900 rounded-3xl opacity-20 blur-2xl -z-10" />
-            </div>
+            </motion.div>
 
-            <div className="space-y-8 order-2">
+            {/* Right - Content with animation */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={visible.intro ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="space-y-8 order-2">
               {/* <div className="inline-block mb-4">
                 <span className="bg-gradient-to-br from-cyan-500 to-cyan-900 text-white text-sm font-bold px-8 py-2 rounded-full">
                   About Us
@@ -96,9 +131,9 @@ export default function AboutUsPage() {
               </div> */}
 
               <div className="space-y-5">
-                <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
+                <h2 className="text-4xl lg:text-5xl font-bold leading-tight dark:text-slate-100">
                   About {' '}
-                  <span className="text-blue-500 bg-clip-text ">
+                  <span className="text-blue-500 bg-clip-text dark:text-blue-400">
                     Mera Software
                   </span>
                 </h2>
@@ -107,11 +142,11 @@ export default function AboutUsPage() {
                 </div>
               </div>
 
-              <p className="text-2xl text-slate-800 font-bold leading-relaxed">
-               We don’t assemble software — we engineer it.
+              <p className="text-2xl text-slate-800 font-bold leading-relaxed dark:text-slate-100">
+               We don't assemble software — we engineer it.
               </p>
 
-              <p className="text-lg text-slate-700 leading-relaxed max-w-xl">
+              <p className="text-lg text-slate-700 leading-relaxed max-w-xl dark:text-slate-300">
                 <strong>We build pure coding-based software</strong> that not only showcases your business but actually works according to its real needs.
                 <br/>
                 <br/>
@@ -129,56 +164,61 @@ export default function AboutUsPage() {
                   <span className="text-sm font-bold text-slate-800">Fully Coded Software</span>
                 </div>
               </div> */}
-            </div>
+            </motion.div>
           </div>
 
 
         </div>
       </section>
 
-       <section className="section py-12 lg:py-16 bg-slate-50 relative overflow-hidden">
+       <section ref={sectionRefs.story} data-section="story" className="section py-12 lg:py-16 bg-slate-50 dark:bg-slate-950 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          
+
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-4">
               The Story Behind Our Start
             </h2>
-            <p className="text-xl text-slate-600 leading-relaxed">
+            <p className="text-xl text-slate-600 dark:text-slate-300 leading-relaxed">
               Our journey didn’t start with comfort — It started with a challenge that demanded change
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start mb-16">    
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start mb-16">
 
-            <div className="space-y-5">
+            {/* Left - Story Content with animation */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={visible.story ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6 }}
+              className="space-y-5">
               <div>
-                <h3 className="text-4xl font-bold text-slate-900 mb-3">
+                <h3 className="text-4xl font-bold text-slate-900 dark:text-slate-100 mb-3">
                   We Almost Lost
                 </h3>
                 <div className="w-24 h-1 bg-cyan-600"></div>
               </div>
 
-              <p className="text-lg text-slate-700 leading-relaxed hyphens-auto">
+              <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed hyphens-auto">
                 <span className="font-semibold text-slate-900"></span> In 2016, we started IT solutions company focused on security and automation services. Business was running very well until the lockdown hit in 2020.
               </p>
               
-              <p className="text-lg text-slate-700 leading-relaxed hyphens-auto">
+              <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed hyphens-auto">
                 With remote operations and no office routine, entire system collapsed, leaving us with two choices — shut down or start with a new method.
               </p>
 
-              <p className="text-lg text-slate-700 leading-relaxed hyphens-auto">
+              <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed hyphens-auto">
                 We rebuilt our system and automated all manual work which created a massive profit difference.
                 </p>
 
-                <p className="text-lg text-blue-600 font-semibold leading-relaxed">Now we help other businesses avoid the same struggle.</p>
+                <p className="text-lg text-blue-600 dark:text-blue-400 font-semibold leading-relaxed">Now we help other businesses avoid the same struggle.</p>
                  <div className="mt-8 flex items-center gap-6">
                 <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                    <svg className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                     </svg>
                   </div>
-                  <span className="text-sm font-medium text-slate-600">From crisis to growth</span>
+                  <span className="text-sm font-medium text-slate-600 dark:text-slate-300">From crisis to growth</span>
                 </div>
               </div>
 
@@ -192,11 +232,11 @@ export default function AboutUsPage() {
               </div> */}
 
               <div className="lg:hidden relative mt-6">
-                <div className="relative bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
-                  <img 
-                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop&auto=format" 
+                <div className="relative bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+                  <img
+                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop&auto=format"
                     alt="Development Portal Dashboard"
-                    className="w-full"
+                    className="w-full dark:opacity-80"
                   />
                 </div>
                 <div className="absolute -top-3 -right-3 bg-cyan-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm font-bold">
@@ -210,20 +250,25 @@ export default function AboutUsPage() {
                 </h3>
                 <div className="w-16 h-1 bg-cyan-600"></div>
               </div> */}
-            </div> 
-            
-            <div className="relative hidden lg:block">
+            </motion.div>
+
+            {/* Right - Image with animation */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={visible.story ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="relative hidden lg:block">
               <div className="sticky top-8">
-                <div className="relative bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
-                  <img 
-                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop&auto=format" 
+                <div className="relative bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+                  <img
+                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop&auto=format"
                     alt="Development Portal Dashboard"
-                    className="w-full"
+                    className="w-full dark:opacity-80"
                   />
-                  <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg px-3 py-2 border border-slate-200">
+                  <div className="absolute top-4 right-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm rounded-lg shadow-lg px-3 py-2 border border-slate-200 dark:border-slate-700">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-cyan-600 rounded-full animate-pulse"></div>
-                      <span className="text-xs font-semibold text-slate-900">Live Updates</span>
+                      <span className="text-xs font-semibold text-slate-900 dark:text-slate-100">Live Updates</span>
                     </div>
                   </div>
                   <div className="absolute bottom-4 left-4 bg-cyan-600 text-white px-4 py-2 rounded-lg shadow-lg">
@@ -232,12 +277,16 @@ export default function AboutUsPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
           </div>
 
-           {/* Director */}
-          <div className="bg-white rounded-2xl overflow-hidden">
+           {/* Director Section with animation */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={visible.story ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
               <div className="lg:col-span-3 ml-10">
                 <div className="relative h-full min-h-[400px] flex items-center justify-center p-8">
@@ -246,7 +295,7 @@ export default function AboutUsPage() {
                     <div className="relative w-[250px] h-[300px] bg-white rounded-2xl overflow-hidden shadow-xl">
                       <img
                         loading="lazy"
-                        src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=600&fit=crop&crop=face"
+                        src={director}
                         alt="Director portrait"
                         className="w-full h-full object-cover"
                       />
@@ -259,14 +308,14 @@ export default function AboutUsPage() {
                 <div className="h-full flex flex-col justify-center">
                   <div className="flex items-center gap-4 mb-6">
                     <div className="w-1 h-10 bg-blue-600 rounded-full" />
-                    <h4 className="text-2xl font-bold">Director message</h4>
+                    <h4 className="text-2xl font-bold dark:text-slate-100">Director message</h4>
                   </div>
                   <div className="space-y-6">
-                    <p className="text-xl leading-relaxed">
+                    <p className="text-xl leading-relaxed dark:text-slate-300">
                       At Mera Software, your service and satisfaction are our priority. To ensure you receive the attention you deserve, we built a special portal where you can connect in real time and access your developer directly.
                     </p>
-                    <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl px-4 py-8  border-l-4 border-blue-600">
-                      <p className="text-xl italic leading-relaxed">
+                    <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-slate-800 dark:to-slate-800 rounded-2xl px-4 py-8  border-l-4 border-blue-600">
+                      <p className="text-xl italic leading-relaxed dark:text-slate-300">
                         We take time to understand your specific needs and deliver solutions that fit your budget. Professional automation should feel simple and valuable, that is our commitment to you.
                       </p>
                     </div>
@@ -274,7 +323,7 @@ export default function AboutUsPage() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
             {/* bridge section */}
            {/* <div className="mt-16 flex justify-center">
@@ -291,13 +340,13 @@ export default function AboutUsPage() {
       <div className="divider" />
 
       {/* Our Mission Section */}
-      <section className="section bg-blue-50">
+      <section className="section bg-blue-50 dark:bg-slate-900">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
           <div className="text-center mb-16">
-          
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
-              Our Mission 
+
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+              Our Mission
             </h2>
             {/* <p className="text-xl text-slate-600 leading-relaxed">
               Empower Every Business to Automate
@@ -306,35 +355,39 @@ export default function AboutUsPage() {
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
 
-            <div className="relative order-2 lg:order-1">
+            {/* Left - Mission Content */}
+            <div
+              className="relative order-2 lg:order-1">
               <div className="absolute -inset-6 bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 rounded-3xl opacity-20 blur-2xl" />
-              <div className="relative bg-white rounded-2xl shadow-xl p-8 lg:p-10 border border-slate-200">
+              <div className="relative bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-8 lg:p-10 border border-slate-200 dark:border-slate-800">
                 <div className="space-y-5">
-                  <p className="text-4xl font-bold text-slate-900 mb-3">
+                  <p className="text-4xl font-bold text-slate-900 dark:text-slate-100 mb-3">
                     Empower Every Business <br/> to Automate
                   </p>
 
                   <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full" />
 
-                  <p className="text-lg text-slate-700 leading-relaxed hyphens-auto">
+                  <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed hyphens-auto">
                     Our goal is to introduce every business to how software automation replaces manual work and drives growth.
                   </p>
 
-                  <p className="text-lg text-slate-700 leading-relaxed hyphens-auto">
+                  <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed hyphens-auto">
                    We have watched businesses transform after implementing automation, and seeing that change is our greatest satisfaction.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="relative order-1 lg:order-2">
+            {/* Right - Mission Image */}
+            <div
+              className="relative order-1 lg:order-2">
               <div className="absolute -inset-4 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-2xl opacity-20 blur-2xl" />
-              <div className="relative bg-white rounded-2xl shadow-xl p-3 border border-slate-200">
+              <div className="relative bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-3 border border-slate-200 dark:border-slate-800">
                 <img
                   loading="lazy"
                   src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop&auto=format"
                   alt="Team collaboration and mission"
-                  className="rounded-xl w-full h-[350px] object-cover"
+                  className="rounded-xl w-full h-[350px] object-cover dark:opacity-80"
                 />
               </div>
             </div>
@@ -346,14 +399,14 @@ export default function AboutUsPage() {
       <div className="divider" />
 
       {/* Why Choose Us Section */}
-      <section className="py-16 lg:py-20 bg-white">
+      <section className="py-16 lg:py-20 bg-white dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">
               Why Choose Us
             </h2>
-            <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+            <p className="text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
               Because we've walked the same path and know exactly what works
             </p>
           </div>
@@ -361,62 +414,66 @@ export default function AboutUsPage() {
           <div className="grid lg:grid-cols-2 gap-6 mb-10">
 
             {/* Card 1 */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200 hover:border-blue-300 transition-all shadow-sm hover:shadow-md">
+            <div
+              className="bg-white/80 dark:bg-slate-900/50 backdrop-blur-sm rounded-xl p-6 border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 transition-all shadow-sm hover:shadow-md dark:shadow-blue-900/20">
               <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center mb-4">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-3">
                 We Get It
               </h3>
-              <p className="text-slate-600 leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
                 Messy workflows, endless follow-ups, and wasted hours — we've been there. That's why we build tools that actually make your life easier.
               </p>
             </div>
 
             {/* Card 2 */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200 hover:border-blue-300 transition-all shadow-sm hover:shadow-md">
+            <div
+              className="bg-white/80 dark:bg-slate-900/50 backdrop-blur-sm rounded-xl p-6 border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 transition-all shadow-sm hover:shadow-md dark:shadow-blue-900/20">
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center mb-4">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-3">
                 Built Just for You
               </h3>
-              <p className="text-slate-600 leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
                 No cookie-cutter templates here. We write custom code that fits your business perfectly — because one size never fits all.
               </p>
             </div>
 
             {/* Card 3 */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200 hover:border-blue-300 transition-all shadow-sm hover:shadow-md">
+            <div
+              className="bg-white/80 dark:bg-slate-900/50 backdrop-blur-sm rounded-xl p-6 border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 transition-all shadow-sm hover:shadow-md dark:shadow-blue-900/20">
               <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center mb-4">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-3">
                 Always in the Loop
               </h3>
-              <p className="text-slate-600 leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
                 Chat directly with your developer through our portal. See what's happening, when it's happening — no surprises, just progress.
               </p>
             </div>
 
             {/* Card 4 */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200 hover:border-blue-300 transition-all shadow-sm hover:shadow-md">
+            <div
+              className="bg-white/80 dark:bg-slate-900/50 backdrop-blur-sm rounded-xl p-6 border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 transition-all shadow-sm hover:shadow-md dark:shadow-blue-900/20">
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center mb-4">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-3">
                 Budget-Friendly, Always
               </h3>
-              <p className="text-slate-600 leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
                 Great software doesn't need a big budget. We work with small businesses and make sure the price fits your reality.
               </p>
             </div>
@@ -424,9 +481,10 @@ export default function AboutUsPage() {
           </div>
 
           {/* Bottom highlight box */}
-          <div className="relative">
+          <div
+            className="relative">
             <div className="absolute -inset-1 bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 rounded-xl opacity-10 blur-xl" />
-            <div className="relative bg-white rounded-xl p-6 lg:p-8 border border-slate-200 shadow-lg">
+            <div className="relative bg-white dark:bg-slate-900 rounded-xl p-6 lg:p-8 border border-slate-200 dark:border-slate-800 shadow-lg dark:shadow-blue-900/20">
               <div className="flex flex-col lg:flex-row items-center gap-6">
                 <div className="flex-shrink-0">
                   <div className="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center">
@@ -436,10 +494,10 @@ export default function AboutUsPage() {
                   </div>
                 </div>
                 <div className="flex-1 text-center lg:text-left">
-                  <h3 className="text-2xl font-bold text-slate-900 mb-2">
+                  <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
                     We Make Things Simple
                   </h3>
-                  <p className="text-slate-600 leading-relaxed">
+                  <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
                     Our clients tell us the best part isn't just the software — it's the peace of mind that comes with it. Less chaos, more control.
                   </p>
                 </div>
@@ -588,14 +646,14 @@ export default function AboutUsPage() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-16 lg:py-20 bg-white">
+      <section className="py-16 lg:py-20 bg-white dark:bg-slate-900">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
 
           <div className="mb-8">
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">
               Ready to Transform Your Business?
             </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
               We've helped businesses like yours go from chaos to clarity. Let's see what we can build together.
             </p>
           </div>
@@ -613,14 +671,14 @@ export default function AboutUsPage() {
 
             <a
               href="/services"
-              className="inline-flex items-center gap-2 bg-white text-slate-700 px-8 py-4 rounded-xl font-semibold border-2 border-slate-200 hover:border-blue-300 hover:text-blue-600 transition-all"
+              className="inline-flex items-center gap-2 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-8 py-4 rounded-xl font-semibold border-2 border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-600 hover:text-blue-600 dark:hover:text-blue-400 transition-all"
             >
               <span>Explore Services</span>
             </a>
           </div>
 
-          <div className="mt-10 pt-10 border-t border-slate-200">
-            <p className="text-slate-500 text-sm">
+          <div className="mt-10 pt-10 border-t border-slate-200 dark:border-slate-800">
+            <p className="text-slate-500 dark:text-slate-400 text-sm">
               Have questions? We're here to help — no pressure, just honest conversations.
             </p>
           </div>

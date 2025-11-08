@@ -1,327 +1,367 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
+import { ArrowRight, CheckCircle2, ChevronDown } from "lucide-react";
 
-/**
- * Contact Page for MeraSoftware.com
- * - Tailwind CSS
- * - Accessible labels & descriptions
- * - Client-side validation
- * - Honeypot anti-spam field
- * - API POST → "/api/contact" (adjust as needed)
- * - Embeddable Google Map (replace with your place ID)
- * - FAQ accordion + contact options
- * - JSON-LD (ContactPage + Organization)
- */
+const INPUT_BASE_CLASSES =
+  "w-full rounded-xl border border-slate-200 bg-slate-50 px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base text-slate-700 placeholder:text-slate-400 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all";
 
-const fieldBase =
-  "block w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-800 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-4 focus:ring-emerald-100 focus:border-emerald-500";
+const LABEL_STYLES = "block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5 sm:mb-2";
 
-const Section = ({ children, className = "" }) => (
-  <section className={`mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 ${className}`}>{children}</section>
-);
+const COUNTRY_OPTIONS = [
+  { value: "IND", shortLabel: "IND", dialCode: "+91", flag: "🇮🇳" },
+  { value: "USA", shortLabel: "USA", dialCode: "+1", flag: "🇺🇸" },
+  { value: "AUS", shortLabel: "AUS", dialCode: "+61", flag: "🇦🇺" },
+  { value: "CAN", shortLabel: "CAN", dialCode: "+1", flag: "🇨🇦" },
+];
 
 export default function ContactPage() {
-  const [status, setStatus] = useState("idle"); // idle | sending | success | error
-  const [errors, setErrors] = useState({});
+  const [formStatus, setFormStatus] = useState("idle");
+  const [formError, setFormError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState(COUNTRY_OPTIONS[0].value);
 
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    company: "",
-    projectType: "Website",
-    budget: "",
-    message: "",
-    newsletter: false,
-    // honeypot
-    company_url: "",
-  });
+  const selectedCountryOption = COUNTRY_OPTIONS.find((country) => country.value === selectedCountry) ?? COUNTRY_OPTIONS[0];
+  const selectedDialCode = selectedCountryOption.dialCode;
 
-  const projectTypes = [
-    "Website",
-    "Web Application",
-    "Mobile App",
-    "UI/UX Design",
-    "Automation / Integrations",
-    "Consultation",
-    "Other",
-  ];
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regex.test(email)) return false;
+    const fakeEmails = ['test@gmail.com', 'example@gmail.com', 'test@test.com', 'fake@gmail.com', 'demo@gmail.com', 'sample@gmail.com'];
+    if (fakeEmails.includes(email.toLowerCase())) return false;
+    return true;
+  };
 
-  const budgets = [
-    "< ₹25,000",
-    "₹25,000 – ₹50,000",
-    "₹50,000 – ₹1,00,000",
-    "₹1,00,000 – ₹3,00,000",
-    "> ₹3,00,000",
-    "Not sure yet",
-  ];
+  const handleEmailBlur = (e) => {
+    const email = e.target.value.trim();
+    if (!email) {
+      setEmailError("");
+      return;
+    }
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regex.test(email)) {
+      setEmailError("Please enter a valid email format (e.g., example@gmail.com)");
+      return;
+    }
+    const fakeEmails = ['test@gmail.com', 'example@gmail.com', 'test@test.com', 'fake@gmail.com', 'demo@gmail.com', 'sample@gmail.com'];
+    if (fakeEmails.includes(email.toLowerCase())) {
+      setEmailError("Please use a real email address, not a test email");
+      return;
+    }
+    setEmailError("");
+  };
 
-  function validate(values) {
-    const e = {};
-    if (!values.name?.trim()) e.name = "Please enter your name.";
-    if (!values.email?.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)) e.email = "Enter a valid email.";
-    if (values.phone && !values.phone.match(/^[0-9+\-()\s]{6,}$/)) e.phone = "Enter a valid phone (digits only).";
-    if (!values.message?.trim()) e.message = "Tell us a bit about your project.";
-    if (values.company_url) e.spam = "Spam detected"; // honeypot
-    return e;
-  }
+  const handleEmailChange = () => {
+    if (emailError) {
+      setEmailError("");
+    }
+  };
 
-  async function onSubmit(e) {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    setStatus("sending");
-    const v = validate(form);
-    setErrors(v);
-    if (Object.keys(v).length) {
-      setStatus("error");
+    setFormError("");
+    setFormStatus("submitting");
+
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const phone = formData.get("phone");
+    const serviceType = formData.get("serviceType");
+
+    if (!validateEmail(email)) {
+      setFormStatus("idle");
+      setFormError("Please enter a valid email format (e.g., example@gmail.com)");
       return;
     }
 
     try {
-      const res = await fetch("/api/contact", {
+      const response = await fetch("/api/callback", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, source: "contact-page" }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.toLowerCase().trim(),
+          phone: selectedDialCode + phone.trim(),
+          serviceType: serviceType || "",
+        }),
       });
-      if (!res.ok) throw new Error("Request failed");
-      setStatus("success");
-      setForm({
-        name: "",
-        email: "",
-        phone: "",
-        company: "",
-        projectType: "Website",
-        budget: "",
-        message: "",
-        newsletter: false,
-        company_url: "",
-      });
-    } catch (err) {
-      setStatus("error");
-    }
-  }
 
-  const ldJson = useMemo(() => ({
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: "Contact Mera Software",
-    url: "https://merasoftware.com/contact",
-    isPartOf: { "@type": "WebSite", name: "Mera Software", url: "https://merasoftware.com" },
-    mainEntity: {
-      "@type": "Organization",
-      name: "Mera Software",
-      url: "https://merasoftware.com",
-      email: "contact@merasoftware.com",
-      telephone: "+91 93563-93094",
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: "VAST ACADEMY",
-        addressLocality: "Amritsar",
-        addressRegion: "Punjab",
-        postalCode: "143001",
-        addressCountry: "IN",
-      },
-    },
-  }), []);
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setFormStatus("success");
+        setSelectedCountry(COUNTRY_OPTIONS[0].value);
+        e.currentTarget.reset();
+      } else {
+        setFormStatus("error");
+        setFormError(data.message || "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error("Callback form error:", error);
+      setFormStatus("error");
+      setFormError("Unable to submit request. Please check your connection and try again.");
+    }
+  };
 
   return (
-    <>
-      {/* SEO */}
-      <title>Contact Mera Software – Talk to an Expert</title>
-      <meta name="description" content="Contact Mera Software for custom-coded websites, web apps, and mobile apps. Get a free consultation and project estimate." />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ldJson) }} />
+    <main className="min-h-screen bg-white text-slate-900">
+      {/* Hero Section */}
+      <div className="relative bg-slate-900 py-20 border-b border-slate-700 overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="https://www.shutterstock.com/image-photo/panorama-shot-analyst-team-utilizing-260nw-2332286999.jpg"
+            alt="Contact background"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-800/80 to-slate-900/80" />
+        </div>
 
-      {/* Hero */}
-      <div className="bg-gradient-to-br from-emerald-50 via-white to-white">
-        <Section className="py-16 sm:py-20">
-          <div className="grid items-center gap-10 lg:grid-cols-2">
-            <div>
-              <p className="mb-3 inline-block rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-800">We reply within 24 hours</p>
-              <h1 className="text-3xl font-black text-slate-900 sm:text-4xl lg:text-5xl">Let’s Build Something Reliable, Fast & Yours</h1>
-              <p className="mt-4 max-w-2xl text-slate-600">No templates, no shortcuts. Tell us what you need and our team will suggest the cleanest approach, accurate timelines, and a fair price—plus real after‑sales support.</p>
-              <div className="mt-6 flex flex-wrap gap-3 text-sm text-slate-600">
-                <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1">📞 +91 93563-93094</span>
-                <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1">✉️ contact@merasoftware.com</span>
-                <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1">🕘 Mon–Sat, 9:30am–7:00pm</span>
-              </div>
-            </div>
-            <div className="relative">
-              <div className="absolute -inset-6 -z-10 rounded-3xl bg-emerald-200/30 blur-2xl" />
-              <img
-                alt="Team collaboration dashboard"
-                src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1600&auto=format&fit=crop"
-                className="aspect-[4/3] w-full rounded-3xl object-cover shadow-xl"
-              />
-            </div>
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+          <div className="flex items-center gap-3 text-sm mb-6">
+            <a href="/" className="text-slate-300 hover:text-white transition-colors font-medium flex items-center gap-2 hover:gap-3">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+              </svg>
+              Home
+            </a>
+            <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+            <span className="text-white font-semibold">Contact Us</span>
           </div>
-        </Section>
+
+          <h1 className="text-3xl sm:text-4xl lg:text-4xl font-bold text-white leading-tight">
+            Get in Touch
+          </h1>
+        </div>
       </div>
 
-      {/* Contact options */}
-      <Section className="py-10">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              title: "Call Us",
-              desc: "Talk to a human about your idea or issue.",
-              action: "+91 93563-93094",
-              href: "tel:+919356393094",
-              icon: "📞",
-            },
-            {
-              title: "Email",
-              desc: "Share your brief, docs or RFQ.",
-              action: "contact@merasoftware.com",
-              href: "mailto:contact@merasoftware.com",
-              icon: "✉️",
-            },
-            {
-              title: "WhatsApp",
-              desc: "Quick questions & follow‑ups.",
-              action: "+91 93563-93094",
-              href: "https://wa.me/919356393094",
-              icon: "💬",
-            },
-          ].map((c) => (
-            <a key={c.title} href={c.href} className="group block rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-              <div className="flex items-start gap-4">
-                <div className="text-2xl">{c.icon}</div>
-                <div>
-                  <h3 className="text-lg font-semibold text-slate-900">{c.title}</h3>
-                  <p className="mt-1 text-sm text-slate-600">{c.desc}</p>
-                  <p className="mt-3 text-emerald-700">{c.action} →</p>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
-      </Section>
+      {/* Form + Contact Info Section */}
+      <section className="py-16 lg:py-20 bg-white" id="callback-form">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-2 mb-12">
+            {/* Left: Callback Form */}
+            <div className="relative bg-white rounded-2xl p-4 sm:p-8 shadow-xl border border-slate-200">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-t-2xl" />
 
-      {/* Form + Map */}
-      <Section className="py-6 lg:py-10">
-        <div className="grid gap-10 lg:grid-cols-2">
-          {/* Form */}
-          <div className="rounded-3xl h-[750px] border border-slate-200 bg-white p-6 sm:p-7 shadow-sm">
-            <h2 className="text-2xl font-bold text-slate-900">Start a Project</h2>
-            <p className="mt-1 text-sm text-slate-600">Fill this form and we’ll get back with the next steps.</p>
-
-            {status === "success" ? (
-              <div className="mt-6 rounded-xl bg-emerald-50 p-4 text-emerald-800">
-                <p className="font-semibold">Thanks! Your message is on its way.</p>
-                <p className="text-sm">We’ll reply within one business day. For urgent matters, call or WhatsApp.</p>
-              </div>
-            ) : (
-              <form onSubmit={onSubmit} className="mt-6 space-y-3 sm:space-y-4" noValidate>
-                {/* Honeypot */}
-                <input
-                  type="text"
-                  id="company_url"
-                  name="company_url"
-                  autoComplete="off"
-                  tabIndex="-1"
-                  className="hidden"
-                  value={form.company_url}
-                  onChange={(e) => setForm({ ...form, company_url: e.target.value })}
-                />
-
-                <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
-                  <div>
-                    <label htmlFor="name" className="mb-2 block text-sm font-medium text-slate-700">Full name *</label>
-                    <input id="name" className={`${fieldBase} py-2.5`} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-                    {errors.name && <p className="mt-1 text-sm text-rose-600">{errors.name}</p>}
+              {formStatus === "success" ? (
+                <div className="flex flex-col items-center justify-center text-center py-8">
+                  <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-blue-600/10 to-cyan-500/10 flex items-center justify-center mb-3 sm:mb-4 border-2 border-blue-600">
+                    <CheckCircle2 className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" strokeWidth={2} />
                   </div>
-                  <div>
-                    <label htmlFor="email" className="mb-2 block text-sm font-medium text-slate-700">Email *</label>
-                    <input id="email" type="email" className={`${fieldBase} py-2.5`} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-                    {errors.email && <p className="mt-1 text-sm text-rose-600">{errors.email}</p>}
-                  </div>
-                </div>
-
-                <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
-                  <div>
-                    <label htmlFor="phone" className="mb-2 block text-sm font-medium text-slate-700">Phone</label>
-                    <input id="phone" inputMode="tel" className={`${fieldBase} py-2.5`} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
-                    {errors.phone && <p className="mt-1 text-sm text-rose-600">{errors.phone}</p>}
-                  </div>
-                  <div>
-                    <label htmlFor="company" className="mb-2 block text-sm font-medium text-slate-700">Company (optional)</label>
-                    <input id="company" className={`${fieldBase} py-2.5`} value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} />
-                  </div>
-                </div>
-
-                <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
-                  <div>
-                    <label htmlFor="projectType" className="mb-2 block text-sm font-medium text-slate-700">Project type</label>
-                    <select id="projectType" className={`${fieldBase} py-2.5`} value={form.projectType} onChange={(e) => setForm({ ...form, projectType: e.target.value })}>
-                      {projectTypes.map((p) => (
-                        <option key={p} value={p}>{p}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label htmlFor="budget" className="mb-2 block text-sm font-medium text-slate-700">Estimated budget</label>
-                    <select id="budget" className={`${fieldBase} py-2.5`} value={form.budget} onChange={(e) => setForm({ ...form, budget: e.target.value })}>
-                      {budgets.map((b) => (
-                        <option key={b} value={b}>{b}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="mb-2 block text-sm font-medium text-slate-700">Project details *</label>
-                  <textarea id="message" rows={5} className={`${fieldBase} py-2.5`} placeholder="What are you building? Any deadlines? Links welcome." value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
-                  {errors.message && <p className="mt-1 text-sm text-rose-600">{errors.message}</p>}
-                </div>
-
-                <label className="flex items-center gap-3 text-sm text-slate-700">
-                  <input type="checkbox" className="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500" checked={form.newsletter} onChange={(e) => setForm({ ...form, newsletter: e.target.checked })} />
-                  Keep me posted about product updates & tips
-                </label>
-
-                {errors.spam && <p className="text-sm text-rose-600">{errors.spam}</p>}
-
-                <div className="pt-1.5 sm:pt-2">
-                  <button disabled={status === "sending"} className="inline-flex w-full items-center justify-center rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-200 disabled:opacity-60">
-                    {status === "sending" ? "Sending…" : "Send message"}
+                  <h3 className="text-lg sm:text-2xl font-bold mb-2 text-slate-900">Message Sent Successfully</h3>
+                  <p className="text-xs sm:text-base text-slate-600 mb-3 sm:mb-4">We will reach out within 24 hours</p>
+                  <button
+                    onClick={() => setFormStatus("idle")}
+                    className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:gap-3 transition-all text-xs sm:text-base"
+                  >
+                    Send another message
+                    <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </button>
-                  <p className="mt-3 text-xs text-center text-slate-500">By submitting, you agree to our Terms and Privacy Policy.</p>
                 </div>
-              </form>
-            )}
-          </div>
+              ) : (
+                <>
+                  <div className="mb-3 sm:mb-6">
+                    <h3 className="text-lg sm:text-2xl lg:text-3xl font-bold text-slate-900 mb-0.5 sm:mb-2">Request a callback</h3>
+                    <p className="text-[11px] sm:text-sm text-slate-600">We'll reach out within 24 hours</p>
+                  </div>
 
-          {/* Map + office + After-sales + FAQ (moved here) */}
-          <div className="space-y-6">
-            <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-              <iframe
-                title="Mera Software on Google Maps"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3392.496011579894!2d74.951172!3d31.7569549!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39196189f617a1b1%3A0x866333ec3727c42b!2sVA%20Computers!5e0!3m2!1sen!2sin!4v1755770980835!5m2!1sen!2sin"
-                className="h-80 w-full"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-              {/* <div className="grid gap-4 p-6 sm:grid-cols-2">
-                <div>
-                  <h3 className="text-sm font-semibold text-slate-900">Office</h3>
-                  <p className="mt-1 text-sm text-slate-600">Ranjit Avenue, Amritsar, Punjab 143001</p>
+                  <div onSubmit={onSubmit} className="space-y-2.5 sm:space-y-5">
+                    {formStatus === "error" && formError && (
+                      <div className="mb-3 sm:mb-4 p-2.5 sm:p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-xs sm:text-sm">
+                        {formError}
+                      </div>
+                    )}
+
+                    <div className="grid gap-2.5 sm:gap-5 sm:grid-cols-2">
+                      <div className="group">
+                        <label className={LABEL_STYLES}>
+                          <span className="flex items-center gap-1">
+                            Full Name
+                            <span className="text-blue-600">*</span>
+                          </span>
+                        </label>
+                        <input
+                          name="name"
+                          required
+                          type="text"
+                          placeholder="John Doe"
+                          className={INPUT_BASE_CLASSES}
+                        />
+                      </div>
+
+                      <div className="group">
+                        <label className={LABEL_STYLES}>
+                          <span className="flex items-center gap-1">
+                            Email Address
+                            <span className="text-blue-600">*</span>
+                          </span>
+                        </label>
+                        <input
+                          name="email"
+                          required
+                          type="email"
+                          placeholder="john@example.com"
+                          className={INPUT_BASE_CLASSES}
+                          onBlur={handleEmailBlur}
+                          onChange={handleEmailChange}
+                        />
+                        {emailError && (
+                          <p className="mt-1.5 text-xs sm:text-sm text-red-600">
+                            {emailError}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="grid gap-2.5 sm:gap-5 sm:grid-cols-2">
+                      <div className="group">
+                        <label className={LABEL_STYLES}>
+                          <span className="flex items-center gap-1">
+                            Phone Number
+                            <span className="text-blue-600">*</span>
+                          </span>
+                        </label>
+                        <div className="relative">
+                          <div className="absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 flex items-center gap-1 sm:gap-2 z-10">
+                            <div className="relative">
+                              <select
+                                value={selectedCountry}
+                                onChange={(event) => setSelectedCountry(event.target.value)}
+                                className="appearance-none bg-transparent border-none outline-none cursor-pointer pr-3.5 sm:pr-5 text-sm sm:text-base font-medium text-slate-700"
+                                style={{ width: '45px' }}
+                              >
+                                {COUNTRY_OPTIONS.map((country) => (
+                                  <option key={country.value} value={country.value}>
+                                    {country.flag}
+                                  </option>
+                                ))}
+                              </select>
+                              <ChevronDown className="pointer-events-none absolute right-0 top-1/2 h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 -translate-y-1/2 text-slate-400" />
+                            </div>
+                            <span className="text-[11px] sm:text-sm font-semibold text-slate-500 border-l border-slate-300 pl-1 sm:pl-2">
+                              {selectedDialCode}
+                            </span>
+                          </div>
+                          <input
+                            name="phone"
+                            required
+                            type="tel"
+                            inputMode="tel"
+                            placeholder="98765 43210"
+                            className={`${INPUT_BASE_CLASSES} pl-24 sm:pl-32`}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="group">
+                        <label className={LABEL_STYLES}>Service Type</label>
+                        <div className="relative">
+                          <select name="serviceType" className={`${INPUT_BASE_CLASSES} appearance-none pr-8 sm:pr-10`}>
+                            <option value="">Select a service</option>
+                            <option value="Web Application Development">Web Application Development</option>
+                            <option value="Cloud Software Solutions">Cloud Software Solutions</option>
+                          </select>
+                          <ChevronDown className="pointer-events-none absolute right-2.5 sm:right-4 top-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 -translate-y-1/2 text-slate-400" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-3 sm:pt-6">
+                      <button
+                        onClick={onSubmit}
+                        disabled={formStatus === "submitting"}
+                        className="group relative w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 disabled:from-slate-400 disabled:to-slate-500 text-white py-2.5 sm:py-4 px-4 sm:px-6 rounded-xl font-semibold text-xs sm:text-base shadow-lg hover:shadow-xl disabled:shadow-none transition-all flex items-center justify-center gap-2 overflow-hidden"
+                      >
+                        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                        <span className="relative flex items-center gap-2">
+                          {formStatus === "submitting" ? (
+                            <>
+                              <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                              Sending...
+                            </>
+                          ) : (
+                            <>
+                              Request Callback
+                              <ArrowRight className="w-3.5 sm:w-5 h-3.5 sm:h-5 transition-transform group-hover:translate-x-1" />
+                            </>
+                          )}
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Right: Contact Info */}
+            <div className="space-y-6">
+              {/* Address */}
+              <div className="rounded-2xl h-52 border border-slate-200 bg-gradient-to-br from-cyan-50 to-cyan-100 p-6 shadow-md">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-cyan-600 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-900 mb-1">Our Address</h3>
+                    <p className="text-slate-700 text-sm">Ground Floor, Shop No.5, MK Complex, Market,  <br/> Bhagat Kabir Marg, Avatar Avenue, <br /> Gobind Nagar, Amritsar, Punjab 143001</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-slate-900">Hours</h3>
-                  <p className="mt-1 text-sm text-slate-600">Mon–Sat: 9:30am – 7:00pm</p>
+              </div>
+
+              {/* Email */}
+              <div className="rounded-2xl h-52 border border-slate-200 bg-gradient-to-br from-blue-50 to-blue-100 p-6 shadow-md">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-900 mb-1">Email Us</h3>
+                    <p className="text-slate-700 text-sm">contact@merasoftware.com<br/>info@merasoftware.com</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Phone */}
+              {/* <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-emerald-50 to-emerald-100 p-6 shadow-md">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-emerald-600 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M17.92 7.02C17.45 6.18 16.48 5.74 15.54 5.74c-.85 0-1.69.32-2.36.97l-2.91 2.91c-.46.46-.71 1.08-.71 1.73s.25 1.27.71 1.73l2.5 2.5c.46.46.71 1.08.71 1.73 0 .65-.25 1.27-.71 1.73l-2.91 2.91c-.67.65-1.51.97-2.36.97-.85 0-1.69-.32-2.36-.97L2.44 15.9c-.67-.65-1.02-1.59-1.02-2.54 0-.95.35-1.89 1.02-2.54l2.91-2.91C6.04 7.02 6.88 6.7 7.73 6.7c.85 0 1.69.32 2.36.97l2.91 2.91c.46.46.71 1.08.71 1.73 0 .65-.25 1.27-.71 1.73l-2.5 2.5c-.46.46-.71 1.08-.71 1.73 0 .65.25 1.27.71 1.73l2.91 2.91c.67.65 1.51.97 2.36.97s1.69-.32 2.36-.97l2.91-2.91c.46-.46.71-1.08.71-1.73 0-.65-.25-1.27-.71-1.73l-2.5-2.5c-.46-.46-.71-1.08-.71-1.73 0-.65.25-1.27.71-1.73l2.91-2.91z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-900 mb-1">Call Us</h3>
+                    <p className="text-slate-700 text-sm">+91 93563-93094</p>
+                  </div>
                 </div>
               </div> */}
             </div>
+          </div>
 
-            <div className="rounded-3xl border border-slate-200 bg-emerald-50 p-6 text-emerald-900">
-              <h3 className="text-base font-semibold">After‑Sales Support Promise</h3>
-              <p className="mt-1 text-sm">
-                We don’t vanish after delivery. Get updates, bug fixes, and help whenever you need—fast responses via WhatsApp and email.
-              </p>
+          <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent mb-12" />
+
+          {/* Map + FAQ Section */}
+          <div className="grid gap-10 lg:grid-cols-2">
+            {/* Map */}
+            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-md h-[400px]">
+              <iframe
+                title="Mera Software on Google Maps"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d212.25142720139917!2d74.8882188674591!3d31.660595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39196390828b9ba9%3A0x58d143848a8f0bd4!2s*2A3G%20Digital*2A%20%7C%20CCTV%20Camera%20Dealer%20%26%20Biometric%20Attendance%20Systems%20%7C%20Security%20Solutions%20in%20Amritsar!5e0!3m2!1sen!2sin!4v1761040814061!5m2!1sen!2sin"
+                className="w-full h-full"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
 
-            {/* FAQ moved under After‑Sales Support Promise */}
-            <div className="rounded-3xl border border-slate-200 bg-white p-5 sm:p-6">
-              <h2 className="text-xl font-bold text-slate-900">Frequently Asked Questions</h2>
-              <div className="mt-4 divide-y divide-slate-200">
+            {/* FAQ */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-lg">
+              <h2 className="text-2xl font-bold text-slate-900 mb-4">Frequently Asked Questions</h2>
+              <div className="divide-y divide-slate-200">
                 {[
                   {
                     q: "How soon can you start?",
@@ -329,52 +369,109 @@ export default function ContactPage() {
                   },
                   {
                     q: "Do you work with fixed budgets?",
-                    a: "Yes. We’ll suggest the cleanest way to meet your goals and offer a fixed quote with clear milestones.",
+                    a: "Yes. We'll suggest the cleanest way to meet your goals and offer a fixed quote with clear milestones.",
                   },
                   {
                     q: "Will you maintain our site/app?",
                     a: "Absolutely. We provide maintenance plans with SLAs for updates, uptime and quick issue resolution.",
                   },
                 ].map((item, i) => (
-                  <details key={i} className="group p-4">
-                    <summary className="flex cursor-pointer list-none items-center justify-between text-slate-800">
-                      <span className="font-medium">{item.q}</span>
-                      <span className="ml-4 rounded-full border border-slate-200 px-2 py-0.5 text-xs text-slate-500 transition group-open:rotate-45">+</span>
+                  <details key={i} className="group py-4">
+                    <summary className="flex cursor-pointer list-none items-center justify-between text-slate-900 hover:text-blue-600 transition-colors">
+                      <span className="font-semibold text-base">{item.q}</span>
+                      <span className="ml-4 flex-shrink-0 w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center text-slate-500 transition group-open:rotate-45 group-open:border-blue-500 group-open:text-blue-600">
+                        <span className="text-lg font-light">+</span>
+                      </span>
                     </summary>
-                    <p className="mt-2 text-sm text-slate-600">{item.a}</p>
+                    <p className="mt-3 text-base text-slate-600 leading-relaxed pr-8">{item.a}</p>
                   </details>
                 ))}
               </div>
             </div>
           </div>
         </div>
-      </Section>
+      </section>
 
-      {/* CTA */}
-      <div className="bg-emerald-600">
-        <Section className="py-12 text-center text-white">
-          <h3 className="text-2xl font-semibold">Prefer talking to a human?</h3>
-          <p className="mt-2 opacity-90">Call us now and we’ll guide you step‑by‑step.</p>
-          <a href="tel:+919356393094" className="mt-5 inline-flex items-center justify-center rounded-xl bg-white px-5 py-3 font-semibold text-emerald-700 shadow-sm transition hover:bg-emerald-50">Call +91 93563-93094</a>
-        </Section>
-      </div>
-    </>
+      {/* Company Info Section */}
+      {/* <section className="py-16 lg:py-20 bg-white border-t border-slate-200">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+              Part of the 3G Digital Family
+            </h2>
+            <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+              Mera Software is a specialized unit of 3G Digital, bringing you professional web development and automation solutions backed by years of IT expertise.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="bg-blue-50 rounded-2xl p-8 border border-blue-200">
+              <h3 className="text-2xl font-bold text-slate-900 mb-3">Mera Software</h3>
+              <p className="text-base text-slate-700 mb-4 leading-relaxed">
+                Specialized in custom web development, web applications, and business automation solutions.
+              </p>
+              <ul className="space-y-2 text-sm text-slate-600">
+                <li className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Custom Web Development</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Business Process Automation</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Client Portal & Dashboard Solutions</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-slate-100 rounded-2xl p-8 border border-slate-300">
+              <h3 className="text-2xl font-bold text-slate-900 mb-3">3G Digital (Parent Company)</h3>
+              <p className="text-base text-slate-700 mb-4 leading-relaxed">
+                Complete IT solutions provider with expertise in security systems, infrastructure, and enterprise services.
+              </p>
+              <ul className="space-y-2 text-sm text-slate-600">
+                <li className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-slate-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>IT Security & Surveillance</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-slate-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Network Infrastructure</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-slate-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Enterprise IT Solutions</span>
+                </li>
+              </ul>
+              <a
+                href="https://www.3gdigital.net"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 mt-6 text-blue-600 font-semibold hover:gap-3 transition-all"
+              >
+                Visit 3G Digital
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section> */}
+    </main>
   );
 }
-
-/**
- * --- OPTIONAL SERVER ROUTE EXAMPLE (Express/Node) ---
- * Place this in your server or /api/contact (Next.js). Adjust as needed.
- *
- * import express from 'express';
- * import nodemailer from 'nodemailer';
- * const app = express();
- * app.use(express.json());
- * app.post('/api/contact', async (req, res) => {
- *   const { name, email, phone, company, projectType, budget, message, company_url } = req.body;
- *   if (company_url) return res.status(200).json({ ok: true }); // honeypot
- *   // TODO: Validate + persist to DB/Sheet/CRM
- *   // TODO: Send notification email via Nodemailer or any provider
- *   res.json({ ok: true });
- * });
- */

@@ -443,14 +443,15 @@ const WebsiteDevelopmentPage = () => {
                 </div>
 
                 {/* Call to Action Button */}
-                <a
-                  href="/practice"
+                <button
+                   type="button"
+                    onClick={openPlannerModal}
                   className="group relative inline-flex items-center justify-center gap-3 w-full rounded-xl bg-gradient-to-r from-blue-500 to-blue-900 text-white px-6 py-4 text-base font-bold shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
                 >
                   <span>Launch Planning Tool</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-900 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity -z-10 blur-lg" />
-                </a>
+                </button>
 
                 {/* Note */}
                 <p className="text-xs text-slate-500 text-center mt-4">

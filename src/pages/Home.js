@@ -839,6 +839,21 @@ const Homepage = () => {
         </div>
       </section>
 
+       {/* <section className="bg-gradient-to-br from-blue-600 to-blue-800 py-16 lg:py-20">
+              <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+                <h3 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+                  Ready to Get Started?
+                </h3>
+                <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
+                  Have questions or need more information? Fill out the callback form above and our team will reach out to guide you through the process.
+                </p>
+                <a href="#callback-form" className="inline-flex items-center gap-2 bg-white text-blue-700 px-8 py-4 rounded-xl font-semibold hover:bg-slate-100 hover:shadow-lg transition-all">
+                  <span>Request a Callback Now</span>
+                  <ArrowRight className="w-5 h-5" />
+                </a>
+              </div>
+            </section> */}
+
       {/* Contact Section */}
       <section ref={sectionRefs.contact} data-section="contact" className="py-14 sm:py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -853,7 +868,6 @@ const Homepage = () => {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 max-w-6xl mx-auto">
-            {/* Form */}
             <div className="relative bg-white rounded-2xl p-4 sm:p-8 shadow-xl border border-slate-200 lg:h-[400px] flex flex-col dark:bg-slate-900 dark:border-slate-700">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-t-2xl" />
 
@@ -1008,12 +1022,11 @@ const Homepage = () => {
               )}
             </div>
 
-            {/* Map and quick contacts */}
             <div className="space-y-5 sm:space-y-6">
               <div className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200 h-[260px] sm:h-[340px] lg:h-[400px] dark:bg-slate-900 dark:border-slate-700">
                 <iframe
                   title="Office location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3430.1234567890!2d75.8573!3d30.9010!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDU0JzAzLjYiTiA3NcKwNTEnMjYuMyJF!5e0!3m2!1sen!2sin!4v1234567890"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d212.25142720139917!2d74.8882188674591!3d31.660595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39196390828b9ba9%3A0x58d143848a8f0bd4!2s*2A3G%20Digital*2A%20%7C%20CCTV%20Camera%20Dealer%20%26%20Biometric%20Attendance%20Systems%20%7C%20Security%20Solutions%20in%20Amritsar!5e0!3m2!1sen!2sin!4v1761040814061!5m2!1sen!2sin"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}

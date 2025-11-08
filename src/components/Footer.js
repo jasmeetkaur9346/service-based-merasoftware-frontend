@@ -49,6 +49,11 @@ const Footer = () => {
               <p className="text-sm">
                 Your one-stop shop for all digital services. We help businesses build and enhance their online presence.
               </p>
+
+               {/* NEW: division line under brand */}
+              <p className="mt-3 text-xs text-slate-400">
+                A division of <span className="font-medium text-slate-300">3G Digital</span>, Amritsar
+              </p>
             </div>
 
             <div>
@@ -117,8 +122,8 @@ const Footer = () => {
               <h4 className="font-bold text-white mb-4">Contact Us</h4>
               <ul className="space-y-2 text-sm">
                 <li>Email: contact@merasoftware.com</li>
-                <li>Phone: +91 93563 93094</li>
-                <li>Address: VA Computers, Amritsar - 143601</li>
+                {/* <li>Phone: +91 93563 93094</li> */}
+                <li>Address: Ground Floor, Shop No.5, MK Complex, Market, Bhagat Kabir Marg, Avatar Avenue, Gobind Nagar, Amritsar, Punjab 143001</li>
               </ul>
               {/* <div className="flex space-x-4 mt-4">
                 <a href="#" className="text-gray-400 hover:text-white transition-colors">

@@ -854,7 +854,7 @@ const Homepage = () => {
               </div>
             </section> */}
 
-      {/* Contact Section */}
+      {/* Contact Section Added Last*/}
       <section ref={sectionRefs.contact} data-section="contact" className="py-14 sm:py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-10 sm:mb-12">

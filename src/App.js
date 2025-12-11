@@ -10,6 +10,7 @@ import AboutUs from './pages/AboutUs';
 import ContactPage from './pages/ContactPage';
 import WebsiteDevelopmentService from './pages/WebsiteDevelopmentService';
 import WebSoftwareService from './pages/WebSoftwareService';
+import ProjectPlannerPage from './pages/ProjectPlannerPage';
 import TermsAndConditionsPage from './pages/TermsAndConditionsPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import CookiesPolicyPage from './pages/CookiesPolicyPage';
@@ -17,6 +18,7 @@ import RefundPolicyPage from './pages/RefundPolicyPage';
 import DeliveryPolicyPage from './pages/DeliveryPolicyPage';
 import DisclaimersPage from './pages/DisclaimersPage';
 import ClientPortal from './pages/ClientPortal';
+import Practice from './pages/Practice';
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
             {/* Service Routes */}
             <Route path="/website-development-service" element={<WebsiteDevelopmentService />} />
             <Route path="/cloud-software-service" element={<WebSoftwareService />} />
+             <Route path="/project-planner" element={<ProjectPlannerPage />} />
+              <Route path="/practice" element={<Practice />} />
 
             {/* Info Pages */}
             <Route path="/about-us" element={<AboutUs />} />

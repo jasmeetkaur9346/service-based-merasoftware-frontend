@@ -1,10 +1,11 @@
 ﻿import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Award, TrendingUp, UserCheck, HelpCircle, Download, CheckCircle2, MessageSquare, IndianRupee, Globe, Globe2, ChevronDown } from "lucide-react";
+import { ArrowRight, Award, TrendingUp, UserCheck, HelpCircle, Download, CheckCircle2, MessageSquare, IndianRupee, Globe, Globe2, ChevronDown, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { CgWebsite } from "react-icons/cg";
 import { useAuth } from "../context/AuthContext";
 import director from "../images/director.jpg";
+import homePopup from "../images/home_popup.jpg";
 import SummaryApi from "../common";
 
 const COUNTRY_OPTIONS = [
@@ -28,6 +29,7 @@ const Homepage = () => {
   const [emailError, setEmailError] = useState(""); // Real-time email validation error
   const [selectedCountry, setSelectedCountry] = useState(COUNTRY_OPTIONS[0].value);
   const [selectedTestimonial, setSelectedTestimonial] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
   const { user, customerPortalUrl } = useAuth();
   const isAuthenticated = Boolean(user?._id);
   const selectedCountryOption = COUNTRY_OPTIONS.find((country) => country.value === selectedCountry) ?? COUNTRY_OPTIONS[0];
@@ -57,6 +59,15 @@ const Homepage = () => {
 
     Object.values(sectionRefs).forEach((ref) => ref.current && io.observe(ref.current));
     return () => Object.values(sectionRefs).forEach((ref) => ref.current && io.unobserve(ref.current));
+  }, []);
+
+  // Popup timer - show after 2 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 1000);
+
+    return () => clearTimeout(timer);
   }, []);
 
 
@@ -178,6 +189,36 @@ const Homepage = () => {
 
   return (
     <div className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+      {/* Popup Modal */}
+      {showPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fadeIn">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setShowPopup(false)}
+          />
+
+          {/* Popup Content */}
+          <div className="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden animate-scaleIn dark:bg-slate-800">
+            {/* Close Button */}
+            <button
+              onClick={() => setShowPopup(false)}
+              className="absolute top-3 right-3 z-10 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-white/90 hover:bg-white rounded-full shadow-lg transition-all hover:scale-110 dark:bg-slate-700 dark:hover:bg-slate-600"
+              aria-label="Close popup"
+            >
+              <X className="w-5 h-5 sm:w-6 sm:h-6 text-slate-700 dark:text-slate-200" />
+            </button>
+
+            {/* Popup Image */}
+            <img
+              src={homePopup}
+              alt="Anniversary Celebration Offer"
+              className="w-full h-auto"
+            />
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <section ref={sectionRefs.hero} data-section="hero" className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
         <div className="absolute inset-0 pointer-events-none">
@@ -323,14 +364,14 @@ const Homepage = () => {
           <div className="text-center mb-10 sm:mb-16 lg:mb-20">
             <div className="inline-block mb-3 sm:mb-6">
               <span className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white text-xs sm:text-sm font-bold px-4 sm:px-8 py-1.5 sm:py-2 rounded-full">
-                Interactive Project Planner
+              System Built for Trust and Service
               </span>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 sm:mb-4 leading-tight dark:text-white">
-              We Understand the Challenges
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-3 sm:mb-4 leading-tight dark:text-white">
+            Simplify Business Needs Into System
             </h2>
-            <p className="text-base sm:text-xl text-blue-600 font-bold dark:text-cyan-500">
-              It's never easy to manage expenses in a startup
+            <p className="text-base sm:text-2xl text-blue-600 font-bold dark:text-cyan-500">
+            Understand your project before you start building it
             </p>
           </div>
 
@@ -340,16 +381,18 @@ const Homepage = () => {
                 <h3 className="text-xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-5 leading-snug sm:leading-tight text-slate-900 dark:text-white">
                   <span className="sm:hidden">The biggest cost usually comes from software development</span>
                   <span className="hidden sm:block">
-                    The biggest cost
-                    <br /> usually comes from
-                    <br /> software development
+                  We understand 
+                    <br /> every business challenge 
+                    <br /> and make its planning easier 
+
                   </span>
                 </h3>
                 <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full" />
               </div>
 
-              <p className="block dark:hidden text-base sm:text-xl font-bold text-blue-600 leading-snug">
-                Know your budget before you start
+              <p className="hidden block dark:hidden text-base sm:text-xl font-bold text-gray-900 leading-snug">
+              Use our <span className="font-bold text-blue-600 dark:!text-cyan-500">Project Planner</span> to map your entire software plan 
+
               </p>
               <p className="hidden dark:block text-base sm:text-xl font-bold !text-cyan-500 leading-snug">
                 Know your budget before you start
@@ -381,7 +424,7 @@ const Homepage = () => {
 
               <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-5 sm:p-6 md:p-8 border-l-4 border-blue-600 shadow-sm dark:from-slate-800 dark:to-slate-800 dark:border-cyan-500">
                 <p className="text-sm sm:text-lg md:text-xl font-semibold text-slate-900 dark:text-slate-100">
-                  Use our interactive <span className="font-bold text-blue-600 dark:!text-cyan-500">Project Planner</span> absolutely free
+                  Use our <span className="font-bold text-blue-600 dark:!text-cyan-500">Project Planner</span> to plan your software 
                 </p>
               </div>
 
@@ -508,7 +551,7 @@ const Homepage = () => {
         </div>
       </section>
 
-      {/* Client Portal Section */}
+     {/* Client Portal Section */}
       <section ref={sectionRefs.portal} data-section="portal" className="py-16 sm:py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
         {/* Ambient glows */}
         <div className="pointer-events-none absolute inset-0 opacity-5">
@@ -739,7 +782,7 @@ const Homepage = () => {
         `}</style>
       </section>
 
-      {/* About Us Section */}
+     {/* About Us Section */}
       <section ref={sectionRefs.about} data-section="about" className="py-14 sm:py-20 bg-white relative overflow-hidden dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="mb-10 sm:mb-12 text-center">
@@ -839,23 +882,7 @@ const Homepage = () => {
         </div>
       </section>
 
-       {/* <section className="bg-gradient-to-br from-blue-600 to-blue-800 py-16 lg:py-20">
-              <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
-                <h3 className="text-3xl lg:text-4xl font-bold text-white mb-4">
-                  Ready to Get Started?
-                </h3>
-                <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
-                  Have questions or need more information? Fill out the callback form above and our team will reach out to guide you through the process.
-                </p>
-                <a href="#callback-form" className="inline-flex items-center gap-2 bg-white text-blue-700 px-8 py-4 rounded-xl font-semibold hover:bg-slate-100 hover:shadow-lg transition-all">
-                  <span>Request a Callback Now</span>
-                  <ArrowRight className="w-5 h-5" />
-                </a>
-              </div>
-            </section> */}
-
-      {/* Contact Section Added Last*/}
-      <section ref={sectionRefs.contact} data-section="contact" className="py-14 sm:py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-900">
+       <section ref={sectionRefs.contact} data-section="contact" className="py-14 sm:py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-10 sm:mb-12">
             <div className="inline-block mb-4 sm:mb-6">
@@ -868,6 +895,7 @@ const Homepage = () => {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 max-w-6xl mx-auto">
+            {/* Form */}
             <div className="relative bg-white rounded-2xl p-4 sm:p-8 shadow-xl border border-slate-200 lg:h-[400px] flex flex-col dark:bg-slate-900 dark:border-slate-700">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-t-2xl" />
 
@@ -894,12 +922,6 @@ const Homepage = () => {
                   </div>
 
                   <form onSubmit={onSubmit} className="flex-1 flex flex-col">
-                    {formStatus === "error" && formError && (
-                      <div className="mb-3 sm:mb-4 p-2.5 sm:p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-xs sm:text-sm dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
-                        {formError}
-                      </div>
-                    )}
-
                     <div className="space-y-2.5 sm:space-y-5">
                       <div className="grid gap-2.5 sm:gap-5 sm:grid-cols-2">
                         <div className="group">
@@ -910,7 +932,6 @@ const Homepage = () => {
                             </span>
                           </label>
                           <input
-                            name="name"
                             required
                             type="text"
                             placeholder="John Doe"
@@ -926,19 +947,11 @@ const Homepage = () => {
                             </span>
                           </label>
                           <input
-                            name="email"
                             required
                             type="email"
                             placeholder="john@example.com"
                             className={INPUT_BASE_CLASSES}
-                            onBlur={handleEmailBlur}
-                            onChange={handleEmailChange}
                           />
-                          {emailError && (
-                            <p className="mt-1.5 text-xs sm:text-sm text-red-600 dark:text-red-400">
-                              {emailError}
-                            </p>
-                          )}
                         </div>
                       </div>
 
@@ -972,7 +985,6 @@ const Homepage = () => {
                               </span>
                             </div>
                             <input
-                              name="phone"
                               required
                               type="tel"
                               inputMode="tel"
@@ -985,10 +997,10 @@ const Homepage = () => {
                         <div className="group">
                           <label className={LABEL_STYLES}>Service Type</label>
                           <div className="relative">
-                            <select name="serviceType" className={`${INPUT_BASE_CLASSES} appearance-none pr-8 sm:pr-10`}>
+                            <select className={`${INPUT_BASE_CLASSES} appearance-none pr-8 sm:pr-10`}>
                               <option value="">Select a service</option>
-                              <option value="Web Application Development">Web Application Development</option>
-                              <option value="Cloud Software Solutions">Cloud Software Solutions</option>
+                              <option value="web">Web Application Development</option>
+                              <option value="cloud">Cloud Software Solutions</option>
                             </select>
                             <ChevronDown className="pointer-events-none absolute right-2.5 sm:right-4 top-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 -translate-y-1/2 text-slate-400" />
                           </div>
@@ -1022,6 +1034,7 @@ const Homepage = () => {
               )}
             </div>
 
+            {/* Map and quick contacts */}
             <div className="space-y-5 sm:space-y-6">
               <div className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200 h-[260px] sm:h-[340px] lg:h-[400px] dark:bg-slate-900 dark:border-slate-700">
                 <iframe

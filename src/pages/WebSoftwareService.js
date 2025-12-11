@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Code,
@@ -11,7 +11,6 @@ import {
   CheckCircle,
   ArrowRight
 } from 'lucide-react';
-import SmartPlanner from './ProjectPlanner';
 
 const WebSoftwareService = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -20,9 +19,9 @@ const WebSoftwareService = () => {
   const [selectedType, setSelectedType] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [visible, setVisible] = useState({});
-  const plannerRef = useRef(null);
-  const plannerSectionRef = useRef(null);
+    const plannerSectionRef = useRef(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const heroRef = useRef(null);
   const featuresRef = useRef(null);
@@ -70,10 +69,8 @@ const WebSoftwareService = () => {
     setSelectedType('');
     setSubmitted(false);
   };
-   const openPlannerModal = () => {
-    if (plannerRef.current && typeof plannerRef.current.open === 'function') {
-      plannerRef.current.open();
-    }
+  const handlePlannerNavigation = () => {
+    navigate('/project-planner');
   };
 
   // IntersectionObserver for hero and features animations
@@ -103,31 +100,29 @@ const WebSoftwareService = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const shouldSmoothScroll = params.get('smoothScroll') === 'true';
+    let isMounted = true;
+    let timeoutId = null;
 
-    if (shouldSmoothScroll && plannerSectionRef.current) {
-      // Start at top
+    if (shouldSmoothScroll) {
       window.scrollTo(0, 0);
 
-      // Smooth scroll to planner section after delay
-      setTimeout(() => {
+      timeoutId = setTimeout(() => {
+        if (!isMounted || !plannerSectionRef.current) return;
         const targetPosition = plannerSectionRef.current.getBoundingClientRect().top + window.pageYOffset;
         const startPosition = window.pageYOffset;
         const distance = targetPosition - startPosition;
-        const duration = 2000; // 2 seconds
+        const duration = 2000;
         let start = null;
 
-        const easeInOutQuad = (t) => {
-          return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-        };
+        const easeInOutQuad = (t) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
 
         const animation = (currentTime) => {
+          if (!isMounted) return;
           if (start === null) start = currentTime;
           const timeElapsed = currentTime - start;
           const progress = Math.min(timeElapsed / duration, 1);
           const ease = easeInOutQuad(progress);
-
           window.scrollTo(0, startPosition + distance * ease);
-
           if (timeElapsed < duration) {
             requestAnimationFrame(animation);
           }
@@ -136,6 +131,11 @@ const WebSoftwareService = () => {
         requestAnimationFrame(animation);
       }, 400);
     }
+
+    return () => {
+      isMounted = false;
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, [location]);
 
   return (
@@ -263,7 +263,7 @@ const WebSoftwareService = () => {
               </p>
 
               <p className="text-lg text-slate-700 leading-relaxed max-w-xl dark:text-slate-300">
-                Get a management software that automates your business, eliminates manual work, and keeps operations running even when you're away — with real-time reports at your fingertips.
+                Get a management software that automates your business, eliminates manual work, and keeps operations running even when you're away � with real-time reports at your fingertips.
               </p>
 
               <div className="flex flex-wrap gap-4 pt-4">
@@ -292,7 +292,7 @@ const WebSoftwareService = () => {
               Cloud-Based Solutions
             </h2>
             <p className="text-xl text-slate-600 leading-relaxed dark:text-slate-300">
-              We understand how important your data is — Discover why cloud-based solutions matter
+              We understand how important your data is � Discover why cloud-based solutions matter
             </p>
           </div>
 
@@ -311,11 +311,11 @@ const WebSoftwareService = () => {
               </div>
 
               <p className="text-lg text-slate-700 leading-relaxed dark:text-slate-300">
-                <span className="font-semibold text-slate-900 dark:text-slate-100"></span> Management software helps businesses handle everyday tasks like sales tracking, staff management, and inventory — keeping everything organized and easy to manage from one place. Popular examples include CRM, CMS, LMS, and project management systems.
+                <span className="font-semibold text-slate-900 dark:text-slate-100"></span> Management software helps businesses handle everyday tasks like sales tracking, staff management, and inventory � keeping everything organized and easy to manage from one place. Popular examples include CRM, CMS, LMS, and project management systems.
               </p>
               
               <p className="text-lg text-slate-700 leading-relaxed dark:text-slate-300">
-                Cloud-based solutions make any software more effective, secure, and easy to access from anywhere — the main benefits are listed below.
+                Cloud-based solutions make any software more effective, secure, and easy to access from anywhere � the main benefits are listed below.
               </p>
 
                <div className="relative !mt-10">
@@ -408,7 +408,7 @@ const WebSoftwareService = () => {
                   <div>
                     <h4 className="text-lg font-bold text-slate-900 mb-1 dark:text-slate-100">Access Anywhere</h4>
                     <p className="text-base text-slate-600 leading-snug dark:text-slate-300">
-                      Work from any device — your business stays connected.
+                      Work from any device � your business stays connected.
                     </p>
                   </div>
                 </div>
@@ -450,7 +450,7 @@ const WebSoftwareService = () => {
                   <div>
                     <h4 className="text-lg font-bold text-slate-900 mb-1 dark:text-slate-100">Cost Efficient</h4>
                     <p className="text-base text-slate-600 leading-snug dark:text-slate-300">
-                      Save on servers and IT costs — pay only for what you use.
+                      Save on servers and IT costs � pay only for what you use.
                     </p>
                   </div>
                 </div>
@@ -476,7 +476,7 @@ const WebSoftwareService = () => {
            <div className="mt-16 flex justify-center">
             <div className="bg-white rounded-xl p-6 shadow-md border border-slate-200 max-w-5xl text-center dark:bg-slate-900 dark:border-slate-800 dark:shadow-cyan-900/20">
             <p className="text-lg font-semibold text-slate-800 dark:text-slate-100 flex items-center justify-center gap-1.5">
-        See what fits your business and what it costs — with our <span className="text-cyan-600 font-semibold dark:text-cyan-400">Project Planner</span> below.
+        See what fits your business and what it costs � with our <span className="text-cyan-600 font-semibold dark:text-cyan-400">Project Planner</span> below.
              </p>
             </div>
           </div>
@@ -488,7 +488,7 @@ const WebSoftwareService = () => {
       <div className="divider" />
 
      {/* Project Planner */}
-      <section ref={plannerSectionRef} id="project-planner" className="section bg-gradient-to-br from-slate-50 via-cyan-50 to-white">
+      <section ref={plannerSectionRef} id="project-planner" className="section bg-gradient-to-br from-slate-50 via-cyan-50 to-white dark:from-slate-900 dark:via-slate-950 dark:to-slate-900">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-16">
@@ -510,7 +510,7 @@ const WebSoftwareService = () => {
           <div className="grid lg:grid-cols-12 gap-10 items-start">
             {/* Left Info Box - Project Planning Tool Intro */}
             <aside className="lg:col-span-4">
-              <div className="bg-gradient-to-br from-cyan-50 via-white to-slate-50 rounded-2xl shadow-xl border-2 border-cyan-200 p-8 sticky top-6">
+              <div className="bg-gradient-to-br from-cyan-50 via-white to-slate-50 dark:from-slate-800 dark:via-slate-900 dark:to-slate-800 rounded-2xl shadow-xl border-2 border-cyan-200 dark:border-slate-700 p-8 sticky top-6">
                 {/* Icon with Animation */}
                 <div className="relative mb-6">
                   <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-cyan-900 rounded-2xl flex items-center justify-center shadow-2xl mx-auto animate-pulse">
@@ -520,50 +520,49 @@ const WebSoftwareService = () => {
                 </div>
 
                 {/* Heading */}
-                <h3 className="text-2xl font-bold text-slate-900 mb-4 text-center">
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 text-center">
                   Try Our Smart Project Planning Tool
                 </h3>
 
                 {/* Description */}
-                <p className="text-base text-slate-700 leading-relaxed mb-6 text-center">
-                  An intelligent wizard that helps you select your business category, explore features, and get instant AI-powered recommendations with pricing estimates.
+                <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed mb-6 text-center">
+                A smart planning tool that lets you explore the features you need and instantly view an estimated budget for your software project.
                 </p>
 
                 {/* Features List */}
                 <div className="space-y-3 mb-6">
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-cyan-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <CheckCircle className="w-4 h-4 text-cyan-600" />
+                    <div className="w-6 h-6 bg-cyan-100 dark:bg-cyan-900/30 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
                     </div>
-                    <p className="text-sm text-slate-600 font-medium">6 Business Categories with Smart Recommendations</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-300 font-medium">Decide Your Budget With the Features You Need</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-cyan-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <CheckCircle className="w-4 h-4 text-cyan-600" />
+                    <div className="w-6 h-6 bg-cyan-100 dark:bg-cyan-900/30 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
                     </div>
-                    <p className="text-sm text-slate-600 font-medium">Interactive Feature Selection & Configuration</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-300 font-medium">No Signups Required</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-cyan-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <CheckCircle className="w-4 h-4 text-cyan-600" />
+                    <div className="w-6 h-6 bg-cyan-100 dark:bg-cyan-900/30 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
                     </div>
-                    <p className="text-sm text-slate-600 font-medium">Instant Price Estimation & Project Preview</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-300 font-medium">100% Free to Use</p>
                   </div>
                 </div>
 
                 {/* Call to Action Button */}
                 <button
-                   type="button"
-                    onClick={openPlannerModal}
+                  type="button"
                   className="group relative inline-flex items-center justify-center gap-3 w-full rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-900 text-white px-6 py-4 text-base font-bold shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
                 >
-                  <span>Launch Planning Tool</span>
+                  <span>Know More</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-900 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity -z-10 blur-lg" />
                 </button>
 
                 {/* Note */}
-                <p className="text-xs text-slate-500 text-center mt-4">
+                <p className="text-xs text-slate-500 dark:text-slate-400 text-center mt-4">
                   No orders will be created automatically
                 </p>
               </div>
@@ -591,18 +590,18 @@ const WebSoftwareService = () => {
                 </h1>
 
                 {/* Description */}
-                <p className="text-xl text-slate-600 max-w-2xl mx-auto mb-10 text-center leading-relaxed">
-                  Intelligent wizard to guide you through selecting business categories and services with AI-powered recommendations
+                <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10 text-center leading-relaxed">
+                A simple tool that helps you choose the features your software needs and plan your approximate budget with clarity
                 </p>
 
                 {/* CTA Button */}
                 <div className="text-center mb-8">
                   <button
                     type="button"
-                    onClick={openPlannerModal}
+                    onClick={handlePlannerNavigation}
                     className="group relative inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-cyan-600 to-cyan-500 text-white px-10 py-5 text-lg font-bold shadow-2xl shadow-cyan-500/50 hover:shadow-cyan-500/70 transition-all duration-300 hover:scale-105"
                   >
-                    <span>Start Planning</span>
+                    <span>Launch Planning Tool</span>
                     <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity -z-10 blur-xl" />
                   </button>
@@ -610,20 +609,20 @@ const WebSoftwareService = () => {
 
               </div>
 
-                   <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 sm:p-12">
+                   <div className="bg-white dark:bg-slate-800/50 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-8 sm:p-12">
                     {/* Features */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-                  <div className="flex items-center justify-center gap-3 text-slate-700">
-                    <CheckCircle2 className="w-5 h-5 text-cyan-500" />
-                    <span className="text-sm font-medium">6 Business Categories</span>
+                  <div className="flex items-center justify-center gap-3 text-slate-700 dark:text-slate-300">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-500 dark:text-cyan-400" />
+                    <span className="text-sm font-medium">No Orders Are Created</span>
                   </div>
-                  <div className="flex items-center justify-center gap-3 text-slate-700">
-                    <CheckCircle2 className="w-5 h-5 text-cyan-500" />
-                    <span className="text-sm font-medium">Smart Recommendations</span>
+                  <div className="flex items-center justify-center gap-3 text-slate-700 dark:text-slate-300">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-500 dark:text-cyan-400" />
+                    <span className="text-sm font-medium">Free for Everyone</span>
                   </div>
-                  <div className="flex items-center justify-center gap-3 text-slate-700">
-                    <CheckCircle2 className="w-5 h-5 text-cyan-500" />
-                    <span className="text-sm font-medium">Instant Preview</span>
+                  <div className="flex items-center justify-center gap-3 text-slate-700 dark:text-slate-300">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-500 dark:text-cyan-400" />
+                    <span className="text-sm font-medium">Built for Planning Only</span>
                   </div>
                 </div>
                    </div>
@@ -694,10 +693,10 @@ const WebSoftwareService = () => {
               Your Project Portal
             </span>
             <h2 className="text-3xl lg:text-4xl font-bold text-white mb-3 leading-tight">
-              Introducing the <span className="text-cyan-500 bg-clip-text">Client Portal </span> —  Built for You
+              Introducing the <span className="text-cyan-500 bg-clip-text">Client Portal </span> �  Built for You
             </h2>
             <p className="text-2xl text-slate-300 max-w-7xl mx-auto">
-            We built this portal to make you feel part of every milestone — Take a look at how it keeps you involved.
+            We built this portal to make you feel part of every milestone � Take a look at how it keeps you involved.
             </p>
           </div>
 
@@ -768,7 +767,7 @@ const WebSoftwareService = () => {
                     </svg>
                   </div>
                   <h4 className="text-lg font-semibold mb-1">Live Project Progress</h4>
-                  <p className="text-sm text-cyan-100">Monitor your project's journey from 0—100% completion.</p>
+                  <p className="text-sm text-cyan-100">Monitor your project's journey from 0�100% completion.</p>
                 </div>
 
                 <div className="bg-gradient-to-br from-cyan-800 to-cyan-900 border border-cyan-700 rounded-xl p-5 text-white">
@@ -911,7 +910,7 @@ const WebSoftwareService = () => {
                   </button>
                   
                   <p className="text-center text-cyan-100 text-sm">
-                    ðŸ”’ Your information is secure and will never be shared
+                    🔒 Your information is secure and will never be shared
                   </p>
                 </div>
               ) : (
@@ -937,8 +936,7 @@ const WebSoftwareService = () => {
           </div>
         </div>
       </section>
-      <SmartPlanner ref={plannerRef} showHero={false} />
-    </div>
+          </div>
   );
 };
 

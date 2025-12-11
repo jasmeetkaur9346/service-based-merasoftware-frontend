@@ -525,7 +525,7 @@ export default function AboutUsPage() {
 
             {/* Website Development */}
             <a
-              href="https://codeonwork.com"
+              href="/website-development-service"
               target="_blank"
               rel="noopener noreferrer"
               className="group bg-slate-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-slate-700 hover:border-cyan-500 transition-all duration-300 hover:shadow-xl hover:shadow-cyan-500/20"
@@ -551,18 +551,18 @@ export default function AboutUsPage() {
                 <p className="text-slate-400 leading-relaxed">
                   Custom websites and web portals built from scratch to match your exact requirements
                 </p>
-                <div className="mt-4 flex items-center text-cyan-400 font-semibold">
+                {/* <div className="mt-4 flex items-center text-cyan-400 font-semibold">
                   <span>Visit Codeonwork</span>
                   <svg className="w-4 h-4 ml-1 group-hover:ml-2 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                   </svg>
-                </div>
+                </div> */}
               </div>
             </a>
 
             {/* Digital Marketing */}
             <a
-              href="https://vacomputers.com"
+              href=""
               target="_blank"
               rel="noopener noreferrer"
               className="group bg-slate-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-slate-700 hover:border-blue-500 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/20"
@@ -588,12 +588,12 @@ export default function AboutUsPage() {
                 <p className="text-slate-400 leading-relaxed">
                   Strategic campaigns and growth solutions to expand your online presence
                 </p>
-                <div className="mt-4 flex items-center text-blue-400 font-semibold">
+                {/* <div className="mt-4 flex items-center text-blue-400 font-semibold">
                   <span>Visit VA Computers</span>
                   <svg className="w-4 h-4 ml-1 group-hover:ml-2 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                   </svg>
-                </div>
+                </div> */}
               </div>
             </a>
 
@@ -625,12 +625,12 @@ export default function AboutUsPage() {
                 <p className="text-slate-400 leading-relaxed">
                   Complete IT infrastructure, security systems, and automation services
                 </p>
-                <div className="mt-4 flex items-center text-cyan-400 font-semibold">
+                {/* <div className="mt-4 flex items-center text-cyan-400 font-semibold">
                   <span>Visit 3G Digital</span>
                   <svg className="w-4 h-4 ml-1 group-hover:ml-2 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                   </svg>
-                </div>
+                </div> */}
               </div>
             </a>
 

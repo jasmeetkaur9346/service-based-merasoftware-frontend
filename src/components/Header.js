@@ -232,7 +232,7 @@ const Header = () => {
   return (
     <>
       {/* Desktop Header */}
-      <header className='hidden lg:block bg-white dark:bg-slate-950 sticky top-0 z-50 border-b border-gray-100 dark:border-slate-800 py-4'>
+      <header className='hidden lg:block fixed top-0 left-0 right-0 w-full bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/75 dark:bg-slate-950/85 dark:supports-[backdrop-filter]:bg-slate-950/70 z-50 border-b border-gray-100 dark:border-slate-900 shadow-sm py-4'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-12">
@@ -426,7 +426,7 @@ const Header = () => {
       </header>
 
       {/* Mobile Header */}
-      <header className="lg:hidden bg-white dark:bg-slate-900 sticky top-0 z-50 border-b border-gray-100 dark:border-slate-800">
+      <header className="lg:hidden fixed top-0 left-0 right-0 w-full bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/80 dark:bg-slate-900/85 dark:supports-[backdrop-filter]:bg-slate-900/70 z-50 border-b border-gray-100 dark:border-slate-900 shadow-sm py-4">
         <div className="px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
@@ -608,6 +608,12 @@ const Header = () => {
           </div>
         )}
       </header>
+
+      {/* Spacer to offset fixed headers */}
+      <div
+        className="w-full h-[72px] sm:h-[84px] lg:h-[104px] bg-white dark:bg-slate-950"
+        aria-hidden="true"
+      />
 
       <ClientPortalModal
         isOpen={showLoginModal}

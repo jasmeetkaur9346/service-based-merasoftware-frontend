@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Code,
+  HelpCircle,
   CheckCircle,
   CheckCircle2,
   MessageCircle,
@@ -11,7 +12,6 @@ import {
   ArrowRight
 } from 'lucide-react';
 
-import SmartPlanner from './ProjectPlanner';
 
 const WebsiteDevelopmentPage = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -21,9 +21,9 @@ const WebsiteDevelopmentPage = () => {
   const [selectedType, setSelectedType] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [visible, setVisible] = useState({});
-  const plannerRef = useRef(null);
   const calculatorSectionRef = useRef(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const sectionRefs = {
     intro: useRef(null),
@@ -135,10 +135,8 @@ const WebsiteDevelopmentPage = () => {
   };
 
   const handleFormSubmit = () => setFormSubmitted(true);
-  const openPlannerModal = () => {
-    if (plannerRef.current && typeof plannerRef.current.open === 'function') {
-      plannerRef.current.open();
-    }
+  const handlePlannerNavigation = () => {
+    navigate('/project-planner');
   };
 
   return (
@@ -378,7 +376,7 @@ const WebsiteDevelopmentPage = () => {
       <div className="divider" />
 
       {/* Project Planner */}
-      <section id="project-planner" ref={calculatorSectionRef} className="section bg-gradient-to-br from-slate-50 via-blue-50 to-white">
+      <section id="project-planner" ref={calculatorSectionRef} className="section bg-gradient-to-br from-slate-50 via-blue-50 to-white dark:from-slate-900 dark:via-slate-950 dark:to-slate-900">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-16">
@@ -400,7 +398,7 @@ const WebsiteDevelopmentPage = () => {
           <div className="grid lg:grid-cols-12 gap-10 items-start">
             {/* Left Info Box - Project Planning Tool Intro */}
             <aside className="lg:col-span-4">
-              <div className="bg-gradient-to-br from-blue-50 via-white to-slate-50 rounded-2xl shadow-xl border-2 border-blue-200 p-8 sticky top-6">
+              <div className="bg-gradient-to-br from-blue-50 via-white to-slate-50 dark:from-slate-800 dark:via-slate-900 dark:to-slate-800 rounded-2xl shadow-xl border-2 border-blue-200 dark:border-slate-700 p-8 sticky top-6">
                 {/* Icon with Animation */}
                 <div className="relative mb-6">
                   <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-900 rounded-2xl flex items-center justify-center shadow-2xl mx-auto animate-pulse">
@@ -410,50 +408,49 @@ const WebsiteDevelopmentPage = () => {
                 </div>
 
                 {/* Heading */}
-                <h3 className="text-2xl font-bold text-slate-900 mb-4 text-center">
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 text-center">
                   Try Our Smart Project Planning Tool
                 </h3>
 
                 {/* Description */}
-                <p className="text-base text-slate-700 leading-relaxed mb-6 text-center">
-                  An intelligent wizard that helps you select your business category, explore features, and get instant AI-powered recommendations with pricing estimates.
+                <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed mb-6 text-center">
+                A smart planning tool that lets you explore the features you need and instantly view an estimated budget for your software project.
                 </p>
 
                 {/* Features List */}
                 <div className="space-y-3 mb-6">
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <CheckCircle className="w-4 h-4 text-blue-600" />
+                    <div className="w-6 h-6 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                     </div>
-                    <p className="text-sm text-slate-600 font-medium">6 Business Categories with Smart Recommendations</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-300 font-medium">Decide Your Budget With the Features You Need</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <CheckCircle className="w-4 h-4 text-blue-600" />
+                    <div className="w-6 h-6 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                     </div>
-                    <p className="text-sm text-slate-600 font-medium">Interactive Feature Selection & Configuration</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-300 font-medium">No Signups Required</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <CheckCircle className="w-4 h-4 text-blue-600" />
+                    <div className="w-6 h-6 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                     </div>
-                    <p className="text-sm text-slate-600 font-medium">Instant Price Estimation & Project Preview</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-300 font-medium">100% Free to Use</p>
                   </div>
                 </div>
 
                 {/* Call to Action Button */}
                 <button
-                   type="button"
-                    onClick={openPlannerModal}
+                  type="button"
                   className="group relative inline-flex items-center justify-center gap-3 w-full rounded-xl bg-gradient-to-r from-blue-500 to-blue-900 text-white px-6 py-4 text-base font-bold shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
                 >
-                  <span>Launch Planning Tool</span>
+                  <span>Know More</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-900 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity -z-10 blur-lg" />
                 </button>
 
                 {/* Note */}
-                <p className="text-xs text-slate-500 text-center mt-4">
+                <p className="text-xs text-slate-500 dark:text-slate-400 text-center mt-4">
                   No orders will be created automatically
                 </p>
               </div>
@@ -481,7 +478,7 @@ const WebsiteDevelopmentPage = () => {
                 </h1>
 
                 {/* Description */}
-                <p className="text-xl text-slate-600 max-w-2xl mx-auto mb-10 text-center leading-relaxed">
+                <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10 text-center leading-relaxed">
                   Intelligent wizard to guide you through selecting business categories and services with AI-powered recommendations
                 </p>
 
@@ -489,7 +486,7 @@ const WebsiteDevelopmentPage = () => {
                 <div className="text-center mb-8">
                   <button
                     type="button"
-                    onClick={openPlannerModal}
+                    onClick={handlePlannerNavigation}
                     className="group relative inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-10 py-5 text-lg font-bold shadow-2xl shadow-blue-500/50 hover:shadow-blue-500/70 transition-all duration-300 hover:scale-105"
                   >
                     <span>Start Planning</span>
@@ -500,19 +497,19 @@ const WebsiteDevelopmentPage = () => {
 
               </div>
 
-                   <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 sm:p-12">
+                   <div className="bg-white dark:bg-slate-800/50 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-8 sm:p-12">
                     {/* Features */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-                  <div className="flex items-center justify-center gap-3 text-slate-700">
-                    <CheckCircle2 className="w-5 h-5 text-cyan-500" />
+                  <div className="flex items-center justify-center gap-3 text-slate-700 dark:text-slate-300">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-500 dark:text-cyan-400" />
                     <span className="text-sm font-medium">6 Business Categories</span>
                   </div>
-                  <div className="flex items-center justify-center gap-3 text-slate-700">
-                    <CheckCircle2 className="w-5 h-5 text-cyan-500" />
+                  <div className="flex items-center justify-center gap-3 text-slate-700 dark:text-slate-300">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-500 dark:text-cyan-400" />
                     <span className="text-sm font-medium">Smart Recommendations</span>
                   </div>
-                  <div className="flex items-center justify-center gap-3 text-slate-700">
-                    <CheckCircle2 className="w-5 h-5 text-cyan-500" />
+                  <div className="flex items-center justify-center gap-3 text-slate-700 dark:text-slate-300">
+                    <CheckCircle2 className="w-5 h-5 text-cyan-500 dark:text-cyan-400" />
                     <span className="text-sm font-medium">Instant Preview</span>
                   </div>
                 </div>
@@ -823,7 +820,6 @@ const WebsiteDevelopmentPage = () => {
           </div>
         </div>
       </section>
-      <SmartPlanner ref={plannerRef} showHero={false} />
     </div>
   );
 };

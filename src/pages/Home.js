@@ -70,6 +70,18 @@ const Homepage = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Close popup on ESC key press
+  useEffect(() => {
+    const handleEscKey = (event) => {
+      if (event.key === "Escape" && showPopup) {
+        setShowPopup(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscKey);
+    return () => window.removeEventListener("keydown", handleEscKey);
+  }, [showPopup]);
+
 
   // Client-side email validation function
   const validateEmail = (email) => {

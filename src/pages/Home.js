@@ -7,6 +7,9 @@ import { useAuth } from "../context/AuthContext";
 import director from "../images/director.jpg";
 import homePopup from "../images/home_popup.jpg";
 import SummaryApi from "../common";
+import hero from "../images/home-hero1.jpg";
+import home2 from "../images/home2.jpg";
+import home3 from "../images/home3.jpg";
 
 const COUNTRY_OPTIONS = [
   { value: "IND", shortLabel: "IND", dialCode: "+91", flag: "🇮🇳" },
@@ -267,7 +270,7 @@ const Homepage = () => {
                   <div className="bg-white rounded-2xl shadow-xl p-3 border border-slate-200 dark:bg-slate-800 dark:border-slate-700">
                     <img
                       loading="lazy"
-                      src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&h=600&fit=crop&auto=format"
+                      src={hero}
                       alt="Digital business dashboard"
                       className="rounded-xl w-full"
                     />
@@ -338,7 +341,7 @@ const Homepage = () => {
                 <div className="bg-white rounded-xl shadow-2xl p-3 border border-slate-200 dark:bg-slate-800 dark:border-slate-700">
                   <img
                     loading="lazy"
-                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&h=600&fit=crop&auto=format"
+                    src={hero}
                     alt="Digital business dashboard"
                     className="rounded-xl w-full"
                   />
@@ -415,7 +418,7 @@ const Homepage = () => {
                   <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200 dark:bg-slate-800 dark:border-slate-700">
                     <img
                       loading="lazy"
-                      src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=900&h=600&fit=crop&auto=format"
+                      src={home2}
                       alt="Price calculator preview"
                       className="w-full"
                     />
@@ -472,7 +475,7 @@ const Homepage = () => {
               <div className="relative bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200 dark:bg-slate-800 dark:border-slate-700">
                 <img
                   loading="lazy"
-                  src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=900&h=600&fit=crop&auto=format"
+                  src={home2}
                   alt="Price calculator preview"
                   className="w-full"
                 />
@@ -598,7 +601,7 @@ const Homepage = () => {
               <div className="relative bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden min-h-[220px] sm:min-h-[320px] dark:bg-slate-800 dark:border-slate-700">
                 <img
                   loading="lazy"
-                  src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=800&fit=crop&auto=format"
+                  src={home3}
                   alt="Portal dashboard preview"
                   className="w-full h-full object-cover"
                 />

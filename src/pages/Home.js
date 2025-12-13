@@ -10,6 +10,7 @@ import SummaryApi from "../common";
 import hero from "../images/home-hero1.jpg";
 import home2 from "../images/home2.jpg";
 import home3 from "../images/home3.jpg";
+import home4 from "../images/home4.jpg";
 
 const COUNTRY_OPTIONS = [
   { value: "IND", shortLabel: "IND", dialCode: "+91", flag: "🇮🇳" },
@@ -839,7 +840,7 @@ const Homepage = () => {
               <div className="relative rounded-2xl overflow-hidden shadow-xl">
                 <img
                   loading="lazy"
-                  src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1000&h=700&fit=crop"
+                  src={home4}
                   alt="Business transformation"
                   className="w-full h-[240px] sm:h-[360px] lg:h-[260px] sm:h-[340px] lg:h-[400px] object-cover"
                 />

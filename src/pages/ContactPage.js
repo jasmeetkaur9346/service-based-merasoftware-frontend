@@ -306,7 +306,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-slate-900 mb-1">Our Address</h3>
-                    <p className="text-slate-700 text-sm">Ground Floor, Shop No.5, MK Complex, Market,  <br/> Bhagat Kabir Marg, Avatar Avenue, <br /> Gobind Nagar, Amritsar, Punjab 143001</p>
+                    <p className="text-slate-700 text-sm">Ground Floor, of Vast Academy, <br />Sohiyan Road, Majitha, Amritsar, <br /> Punjab 143601</p>
                   </div>
                 </div>
               </div>
@@ -351,7 +351,7 @@ export default function ContactPage() {
             <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-md h-[400px]">
               <iframe
                 title="Mera Software on Google Maps"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d212.25142720139917!2d74.8882188674591!3d31.660595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39196390828b9ba9%3A0x58d143848a8f0bd4!2s*2A3G%20Digital*2A%20%7C%20CCTV%20Camera%20Dealer%20%26%20Biometric%20Attendance%20Systems%20%7C%20Security%20Solutions%20in%20Amritsar!5e0!3m2!1sen!2sin!4v1761040814061!5m2!1sen!2sin"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13569.480505387803!2d74.95006156546785!3d31.76038949677353!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39196189f617a1b1%3A0x866333ec3727c42b!2sVA%20Computers!5e0!3m2!1sen!2sin!4v1765695474605!5m2!1sen!2sin"
                 className="w-full h-full"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"

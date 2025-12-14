@@ -51,9 +51,9 @@ const Footer = () => {
               </p>
 
                {/* NEW: division line under brand */}
-              <p className="mt-3 text-xs text-slate-400">
+              {/* <p className="mt-3 text-xs text-slate-400">
                 A division of <span className="font-medium text-slate-300">3G Digital</span>, Amritsar
-              </p>
+              </p> */}
             </div>
 
             <div>
@@ -123,7 +123,7 @@ const Footer = () => {
               <ul className="space-y-2 text-sm">
                 <li>Email: contact@merasoftware.com</li>
                 {/* <li>Phone: +91 93563 93094</li> */}
-                <li>Address: Ground Floor, Shop No.5, MK Complex, Market, Bhagat Kabir Marg, Avatar Avenue, Gobind Nagar, Amritsar, Punjab 143001</li>
+                <li>Address: Ground Floor, of Vast Academy, Sohiyan Road, Majitha, Amritsar, Punjab 143601</li>
               </ul>
               {/* <div className="flex space-x-4 mt-4">
                 <a href="#" className="text-gray-400 hover:text-white transition-colors">

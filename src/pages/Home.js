@@ -1051,7 +1051,7 @@ const Homepage = () => {
               <div className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200 h-[260px] sm:h-[340px] lg:h-[400px] dark:bg-slate-900 dark:border-slate-700">
                 <iframe
                   title="Office location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d212.25142720139917!2d74.8882188674591!3d31.660595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39196390828b9ba9%3A0x58d143848a8f0bd4!2s*2A3G%20Digital*2A%20%7C%20CCTV%20Camera%20Dealer%20%26%20Biometric%20Attendance%20Systems%20%7C%20Security%20Solutions%20in%20Amritsar!5e0!3m2!1sen!2sin!4v1761040814061!5m2!1sen!2sin"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13569.480505387803!2d74.95006156546785!3d31.76038949677353!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39196189f617a1b1%3A0x866333ec3727c42b!2sVA%20Computers!5e0!3m2!1sen!2sin!4v1765695474605!5m2!1sen!2sin"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}

@@ -206,17 +206,14 @@ const Homepage = () => {
   return (
     <div className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       {/* Popup Modal */}
-      {showPopup && (
+      {/* {showPopup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fadeIn">
-          {/* Backdrop */}
           <div
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setShowPopup(false)}
           />
 
-          {/* Popup Content */}
           <div className="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden animate-scaleIn dark:bg-slate-800">
-            {/* Close Button */}
             <button
               onClick={() => setShowPopup(false)}
               className="absolute top-3 right-3 z-10 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-white/90 hover:bg-white rounded-full shadow-lg transition-all hover:scale-110 dark:bg-slate-700 dark:hover:bg-slate-600"
@@ -225,7 +222,6 @@ const Homepage = () => {
               <X className="w-5 h-5 sm:w-6 sm:h-6 text-slate-700 dark:text-slate-200" />
             </button>
 
-            {/* Popup Image */}
             <img
               src={homePopup}
               alt="Anniversary Celebration Offer"
@@ -233,7 +229,7 @@ const Homepage = () => {
             />
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Hero Section */}
       <section ref={sectionRefs.hero} data-section="hero" className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">

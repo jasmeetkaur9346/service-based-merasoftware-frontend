@@ -19,6 +19,8 @@ import DeliveryPolicyPage from './pages/DeliveryPolicyPage';
 import DisclaimersPage from './pages/DisclaimersPage';
 import ClientPortal from './pages/ClientPortal';
 import Practice from './pages/Practice';
+import WorkOpsPrivacyPolicy from './pages/WorkOpsPrivacyPolicy';
+
 
 function App() {
   return (
@@ -47,6 +49,7 @@ function App() {
             <Route path="/refund-policy" element={<RefundPolicyPage />} />
             <Route path="/delivery-policy" element={<DeliveryPolicyPage />} />
             <Route path="/disclaimers" element={<DisclaimersPage />} />
+            <Route path="/workops-privacy-policy" element={<WorkOpsPrivacyPolicy />} />
 
             <Route path="/client-portal" element={<ClientPortal />} />
 

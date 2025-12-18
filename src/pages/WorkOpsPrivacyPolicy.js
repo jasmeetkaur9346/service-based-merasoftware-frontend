@@ -165,7 +165,7 @@ export default function PrivacyPolicy() {
                 If you have any questions or concerns about this Privacy Policy or your data, you can contact us at:
               </p>
               <a 
-                href="mailto:support@workops.app" 
+                href="mailto:contact@merasoftware.com" 
                 className="inline-flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors duration-200"
               >
                 <Mail className="w-5 h-5" />

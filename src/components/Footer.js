@@ -115,6 +115,16 @@ const Footer = () => {
                     User Guidelines and Disclaimer
                   </a>
                 </li>
+                <li>
+                  <a href="/workops-privacy-policy" className="hover:text-white transition-colors">
+                    WorkOps Policy
+                  </a>
+                </li>
+                <li>
+                  <a href="/mysavings-privacy-policy" className="hover:text-white transition-colors">
+                    My Savings & Khata App Policy
+                  </a>
+                </li>
               </ul>
             </div>
 

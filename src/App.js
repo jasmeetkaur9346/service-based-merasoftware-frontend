@@ -20,6 +20,7 @@ import DisclaimersPage from './pages/DisclaimersPage';
 import ClientPortal from './pages/ClientPortal';
 import Practice from './pages/Practice';
 import WorkOpsPrivacyPolicy from './pages/WorkOpsPrivacyPolicy';
+import MySavingsPrivacyPolicy from './pages/MySavingsPrivacyPolicy';
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
             <Route path="/delivery-policy" element={<DeliveryPolicyPage />} />
             <Route path="/disclaimers" element={<DisclaimersPage />} />
             <Route path="/workops-privacy-policy" element={<WorkOpsPrivacyPolicy />} />
+            <Route path="/mysavings-privacy-policy" element={<MySavingsPrivacyPolicy />} />
 
             <Route path="/client-portal" element={<ClientPortal />} />
 

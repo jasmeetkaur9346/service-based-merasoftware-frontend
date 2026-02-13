@@ -51,7 +51,7 @@ function App() {
             <Route path="/delivery-policy" element={<DeliveryPolicyPage />} />
             <Route path="/disclaimers" element={<DisclaimersPage />} />
             <Route path="/workops-privacy-policy" element={<WorkOpsPrivacyPolicy />} />
-            <Route path="/mysavings-privacy-policy" element={<MySavingsPrivacyPolicy />} />
+            <Route path="/savingo-privacy-policy" element={<MySavingsPrivacyPolicy />} />
 
             <Route path="/client-portal" element={<ClientPortal />} />
 

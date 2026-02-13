@@ -121,8 +121,8 @@ const Footer = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="/mysavings-privacy-policy" className="hover:text-white transition-colors">
-                    My Savings & Khata App Policy
+                  <a href="/savingo-privacy-policy" className="hover:text-white transition-colors">
+                    Savingo App Policy
                   </a>
                 </li>
               </ul>

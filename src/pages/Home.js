@@ -11,6 +11,8 @@ import hero from "../images/home-hero1.jpg";
 import home2 from "../images/home2.jpg";
 import home3 from "../images/home3.jpg";
 import home4 from "../images/home4.jpg";
+import savingoLogo from "../logo/savingo-logo.png";
+import workopsLogo from "../logo/workops-logo.png";
 
 const COUNTRY_OPTIONS = [
   { value: "IND", shortLabel: "IND", dialCode: "+91", flag: "🇮🇳" },
@@ -559,6 +561,137 @@ const Homepage = () => {
                 </div>
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Products Section */}
+      <section className="py-14 sm:py-20 lg:py-24 bg-white dark:bg-slate-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10 sm:mb-16 lg:mb-20">
+            <div className="inline-block mb-3 sm:mb-6">
+              <span className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white text-xs sm:text-sm font-bold px-4 sm:px-8 py-1.5 sm:py-2 rounded-full">
+                Our Products
+              </span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 sm:mb-4 leading-tight dark:text-white">
+              Apps built for productivity
+            </h2>
+            <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto dark:text-slate-300">
+              Powerful applications available on Google Play Store
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto">
+            {/* Savingo Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="group relative bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 sm:p-8 shadow-lg border border-slate-200 hover:shadow-2xl hover:border-green-200 transition-all dark:from-slate-800 dark:to-slate-800 dark:border-slate-700 dark:hover:border-green-500"
+            >
+              <div className="absolute inset-0 rounded-2xl transition-all group-hover:bg-green-600/5" />
+
+              <div className="relative z-10 space-y-5 sm:space-y-6">
+                {/* Logo */}
+                <div className="h-24 sm:h-32 flex items-center justify-center mb-2">
+                  <img
+                    src={savingoLogo}
+                    alt="Savingo App Logo"
+                    className="h-20 sm:h-28 w-auto object-contain group-hover:scale-105 transition-transform"
+                  />
+                </div>
+
+                {/* Content */}
+                <div>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2 sm:mb-3 dark:text-white">
+                    Savingo
+                  </h3>
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Personal finance management app to track expenses, manage budgets, and take control of your financial goals with ease.
+                  </p>
+                </div>
+
+                {/* Features */}
+                <div className="space-y-2.5">
+                  <div className="flex items-center gap-2.5 text-sm text-slate-700 dark:text-slate-200">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-400" />
+                    <span>Expense tracking & budgeting</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-sm text-slate-700 dark:text-slate-200">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-400" />
+                    <span>Financial analytics & insights</span>
+                  </div>
+                </div>
+
+                {/* Play Store Button */}
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.jasmeet.accountapp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold text-sm sm:text-base shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center"
+                >
+                  <Download className="w-4 h-4 sm:w-5 sm:h-5" />
+                  Download on Play Store
+                </a>
+              </div>
+            </motion.div>
+
+            {/* WorkOps Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="group relative bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-6 sm:p-8 shadow-lg border border-slate-200 hover:shadow-2xl hover:border-orange-200 transition-all dark:from-slate-800 dark:to-slate-800 dark:border-slate-700 dark:hover:border-orange-500"
+            >
+              <div className="absolute inset-0 rounded-2xl transition-all group-hover:bg-orange-600/5" />
+
+              <div className="relative z-10 space-y-5 sm:space-y-6">
+                {/* Logo */}
+                <div className="h-24 sm:h-32 flex items-center justify-center mb-2">
+                  <img
+                    src={workopsLogo}
+                    alt="WorkOps App Logo"
+                    className="h-20 sm:h-28 w-auto object-contain group-hover:scale-105 transition-transform"
+                  />
+                </div>
+
+                {/* Content */}
+                <div>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2 sm:mb-3 dark:text-white">
+                    WorkOps
+                  </h3>
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Task scheduling and project management app designed for engineers to organize daily work, collaborate, and boost productivity.
+                  </p>
+                </div>
+
+                {/* Features */}
+                <div className="space-y-2.5">
+                  <div className="flex items-center gap-2.5 text-sm text-slate-700 dark:text-slate-200">
+                    <div className="w-1.5 h-1.5 rounded-full bg-orange-600 dark:bg-orange-400" />
+                    <span>Task & project scheduling</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-sm text-slate-700 dark:text-slate-200">
+                    <div className="w-1.5 h-1.5 rounded-full bg-orange-600 dark:bg-orange-400" />
+                    <span>Team collaboration & tracking</span>
+                  </div>
+                </div>
+
+                {/* Play Store Button */}
+                <a
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold text-sm sm:text-base shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center"
+                >
+                  <Download className="w-4 h-4 sm:w-5 sm:h-5" />
+                  Download on Play Store
+                </a>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>

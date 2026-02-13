@@ -62,6 +62,10 @@ const MySavingsPrivacyPolicy = () => {
                       <span className="w-1.5 h-1.5 bg-green-600 rounded-full"></span>
                       <span>Your name</span>
                     </li>
+                  <li className="flex items-center space-x-2">
+                      <span className="w-1.5 h-1.5 bg-green-600 rounded-full"></span>
+                      <span>Phone number</span>
+                    </li>
                     <li className="flex items-center space-x-2">
                       <span className="w-1.5 h-1.5 bg-green-600 rounded-full"></span>
                       <span>Your email address</span>
@@ -80,10 +84,6 @@ const MySavingsPrivacyPolicy = () => {
                     <h3 className="font-semibold text-gray-900">We do not collect:</h3>
                   </div>
                   <ul className="space-y-2 text-gray-700">
-                    <li className="flex items-center space-x-2">
-                      <span className="w-1.5 h-1.5 bg-red-600 rounded-full"></span>
-                      <span>Phone number</span>
-                    </li>
                     <li className="flex items-center space-x-2">
                       <span className="w-1.5 h-1.5 bg-red-600 rounded-full"></span>
                       <span>Contacts</span>

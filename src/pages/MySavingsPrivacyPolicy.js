@@ -13,13 +13,13 @@ const MySavingsPrivacyPolicy = () => {
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Privacy Policy</h1>
-              <p className="text-gray-600 mt-1">My Savings & Khata App</p>
+              <p className="text-gray-600 mt-1">Savingo: Ledger, Money Manager</p>
             </div>
           </div>
           <div className="flex items-center space-x-4 text-sm text-gray-500">
             <span>Last updated: January 8, 2026</span>
             {/* <span>•</span>
-            <span>Effective Date: January 8, 2026</span> */}
+            <span>Effective Date: February 13, 2026</span> */}
           </div>
         </div>
       </div>
@@ -34,7 +34,7 @@ const MySavingsPrivacyPolicy = () => {
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-3">Introduction</h2>
               <p className="text-gray-700 leading-relaxed">
-                My Savings & Khata App respects your privacy. This Privacy Policy explains what information we collect, how it is used, and your rights related to your data. By using this app, you agree to the practices described in this policy.
+                Savingo: Ledger, Money Manager app respects your privacy. This Privacy Policy explains what information we collect, how it is used, and your rights related to your data. By using this app, you agree to the practices described in this policy.
               </p>
             </div>
           </div>
@@ -242,7 +242,7 @@ const MySavingsPrivacyPolicy = () => {
 
         {/* Footer */}
         <div className="mt-12 text-center text-gray-500 text-sm border-t border-gray-200 pt-8">
-          <p>© 2026 My Savings & Khata App. All rights reserved.</p>
+          <p>© 2026 Savingo: Ledger, Money Manager App. All rights reserved.</p>
           <p className="mt-2">Developed by Mera Software</p>
         </div>
       </div>
